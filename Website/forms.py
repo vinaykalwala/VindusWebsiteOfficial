@@ -4,7 +4,7 @@ from .models import Contact, CareerApplication, InternshipApplication
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'subject', 'message']
+        fields = ['name', 'email', 'phone', 'subject', 'message']
 
 class CareerForm(forms.ModelForm):
     class Meta:
