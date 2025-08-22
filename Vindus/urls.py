@@ -30,5 +30,7 @@ urlpatterns = [
     path('privacy-policy/', privacy_policy, name='privacy_policy'),
     path('cookies/', cookies_policy, name='cookies_policy'),
     path('sitemap/', sitemap, name='sitemap'),
+    path('case_studies/', sitemap, name='case_studies'),
+    path('how_it_works/', sitemap, name='how_it_works'),
 ]
 
