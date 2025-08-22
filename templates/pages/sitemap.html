@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sitemap | Vindus{% endblock %}
+
+{% block content %}
+
+<style>
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 280px;
+  background: linear-gradient(rgba(87, 38, 122, 0.7), rgba(214, 51, 132, 0.7)),
+              url("{% static 'images/hero-bg.jpg' %}") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 0 20px 20px;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: auto;
+}
+
+/* Sitemap Layout */
+.sitemap-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.sitemap-heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: #57267A;
+}
+
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 25px;
+}
+
+.sitemap-item {
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sitemap-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.sitemap-link {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #d63384;
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.sitemap-link:hover {
+  color: #57267A;
+}
+
+.sitemap-sublist {
+  list-style: none;
+  padding-left: 15px;
+}
+
+.sitemap-sublist li {
+  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+</style>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Explore Our Website</h1>
+        <p>A complete sitemap to help you discover Vindus services, solutions, and insights effortlessly.</p>
+    </div>
+</section>
+
+<!-- Sitemap Grid -->
+<div class="sitemap-container">
+    <h2 class="sitemap-heading">Project Sitemap</h2>
+    <div class="sitemap-grid">
+
+        <!-- Column 1 -->
+        <div class="sitemap-column">
+            <div class="sitemap-item">
+                <a href="{% url 'home' %}" class="sitemap-link">🏠 Home Page</a>
+                <ul class="sitemap-sublist">
+                    <li>Carousel Banner</li>
+                    <li>Business Analytics Section</li>
+                    <li>Services Grid</li>
+                    <li>SEO Section</li>
+                    <li>Development Process Cards</li>
+                    <li>Technology Stack</li>
+                    <li>Client Showcase</li>
+                    <li>Social Media Links</li>
+                    <li>Chatbox</li>
+                </ul>
+            </div>
+
+            <div class="sitemap-item">
+                <a href="{% url 'services' %}" class="sitemap-link">🛠 Services</a>
+                <ul class="sitemap-sublist">
+                    <li>SEO Tools</li>
+                    <li>Software Development</li>
+                    <li>Digital Marketing</li>
+                    <li>AWS Cloud</li>
+                    <li>Software Testing</li>
+                    <li>Video Marketing</li>
+                    <li>Blockchain</li>
+                    <li>IoT Solutions</li>
+                    <li>AI/ML Solutions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="sitemap-column">
+            <div class="sitemap-item">
+                <a href="{% url 'about' %}" class="sitemap-link">ℹ️ About Us</a>
+                <ul class="sitemap-sublist">
+                    <li>Company Overview</li>
+                    <li>Mission Statement</li>
+                    <li>Vision Statement</li>
+                    <li>Core Values</li>
+                    <li>Team/Leadership Section</li>
+                </ul>
+            </div>
+
+            <div class="sitemap-item">
+                <a href="{% url 'careers' %}" class="sitemap-link">💼 Careers</a>
+                <ul class="sitemap-sublist">
+                    <li>Current Openings List</li>
+                    <li>Job Cards</li>
+                    <li>Join Our Team Section</li>
+                    <li>Resume Submission Form</li>
+                    <li>Application Status Popups</li>
+                </ul>
+            </div>
+
+            <div class="sitemap-item">
+                <a href="{% url 'contact' %}" class="sitemap-link">📞 Contact Us</a>
+                <ul class="sitemap-sublist">
+                    <li>Contact Cards</li>
+                    <li>Contact Form</li>
+                    <li>Location Map</li>
+                    <li>Message Submission Popups</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
