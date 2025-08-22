@@ -17,8 +17,60 @@ def terms_of_use(request):
 def privacy_policy(request):
     return render(request, 'pages/privacy_policy.html')
 
+
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 def cookies_policy(request):
+    """Display cookie preferences page"""
     return render(request, 'pages/cookies.html')
+
+@require_POST
+def save_cookie_preferences(request):
+    """Save user's cookie preferences to session"""
+    action = request.POST.get('action')
+    
+    # Initialize cookie preferences in session if not exists
+    if 'cookie_preferences' not in request.session:
+        request.session['cookie_preferences'] = {
+            'necessary': True,  # Always required
+            'analytics': False,
+            'marketing': False
+        }
+    
+    if action == 'accept_all':
+        # Accept all cookies
+        request.session['cookie_preferences']['analytics'] = True
+        request.session['cookie_preferences']['marketing'] = True
+    elif action == 'decline_all':
+        # Decline all optional cookies
+        request.session['cookie_preferences']['analytics'] = False
+        request.session['cookie_preferences']['marketing'] = False
+    elif action == 'save_preferences':
+        # Save individual preferences
+        request.session['cookie_preferences']['analytics'] = 'analytics' in request.POST
+        request.session['cookie_preferences']['marketing'] = 'marketing' in request.POST
+    
+    # Mark that user has set their preferences
+    request.session['cookie_preferences_set'] = True
+    request.session.modified = True
+    
+    # Return to the same page or redirect as needed
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+def some_protected_view(request):
+    """Example view that checks cookie preferences"""
+    # Check if user has allowed analytics cookies
+    analytics_allowed = request.session.get('cookie_preferences', {}).get('analytics', False)
+    
+    if analytics_allowed:
+        # Track analytics here
+        pass
+        
+    return render(request, 'some_template.html')
 
 def sitemap(request):
     return render(request, 'pages/sitemap.html')
@@ -53,3 +105,94 @@ def internship(request):
     else:
         form = InternshipForm()
     return render(request, 'pages/internship.html', {'form': form})
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
+from .models import Contact, CareerApplication, InternshipApplication
+from .forms import InternshipApplicationForm  # Form for editing internship applicants
+
+# Decorator to allow only superusers
+def superuser_required(view_func):
+    return user_passes_test(lambda u: u.is_active and u.is_superuser)(view_func)
+
+# Login
+def admin_login(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_superuser:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Invalid credentials or not authorized.')
+    return render(request, 'admin_login.html')
+
+def admin_logout(request):
+    logout(request)
+    return redirect('home')
+
+@superuser_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+# Contact List
+@superuser_required
+def contact_list(request):
+    contacts = Contact.objects.all().order_by('-created_at')
+    return render(request, 'contact_list.html', {'contacts': contacts})
+
+# Career List
+@superuser_required
+def career_list(request):
+    careers = CareerApplication.objects.all().order_by('-applied_at')
+    return render(request, 'career_list.html', {'careers': careers})
+
+# Internship List with filters
+@superuser_required
+def internship_list(request):
+    qs = InternshipApplication.objects.all().order_by('-applied_at')
+
+    # Filtering
+    status = request.GET.get('status')
+    batch = request.GET.get('batch')
+    name = request.GET.get('name')
+    internship_type = request.GET.get('internship_type')
+
+    if status:
+        qs = qs.filter(status__icontains=status)
+    if batch:
+        qs = qs.filter(batch_assigned__icontains=batch)
+    if name:
+        qs = qs.filter(name__icontains=name)
+    if internship_type:
+        qs = qs.filter(internship_type__icontains=internship_type)
+
+    return render(request, 'internship_list.html', {'internships': qs})
+
+# Internship Detail
+@superuser_required
+def internship_detail(request, pk):
+    applicant = get_object_or_404(InternshipApplication, pk=pk)
+    return render(request, 'internship_detail.html', {'applicant': applicant})
+
+# Internship Edit
+@superuser_required
+def internship_edit(request, pk):
+    applicant = get_object_or_404(InternshipApplication, pk=pk)
+    if request.method == 'POST':
+        form = InternshipApplicationForm(request.POST, request.FILES, instance=applicant)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Applicant updated successfully.')
+            return redirect('internship_list')
+    else:
+        form = InternshipApplicationForm(instance=applicant)
+    return render(request, 'internship_edit.html', {'form': form})
+
+

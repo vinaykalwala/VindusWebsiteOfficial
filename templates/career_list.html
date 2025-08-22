@@ -1,0 +1,116 @@
+{% extends 'admin_base.html' %}
+{% block title %}Career Applications{% endblock %}
+
+{% block content %}
+<style>
+    .career-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+
+    .career-card h3 {
+        color: #5a2a83;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .career-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .career-table th, .career-table td {
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .career-table th {
+        background-color: #5a2a83;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .career-table tr:nth-child(even) {
+        background-color: #f8f8f8;
+    }
+
+    .career-table tr:hover {
+        background-color: #f0e6f8;
+    }
+
+    .btn-accent {
+        background-color: #f72585;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 25px;
+        padding: 5px 12px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .btn-accent:hover {
+        background-color: #d81b70;
+    }
+
+    .message-cell {
+        max-width: 250px;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+<div class="career-card">
+    <div class="d-flex justify-content-between align-items-center" style="margin-bottom:15px;">
+        <h3>Career Applications</h3>
+        <span style="color:#777;">{{ careers.count }} applications found</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="career-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Resume</th>
+                    <th>Message</th>
+                    <th>Applied At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in careers %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.email }}</td>
+                    <td>{{ c.phone }}</td>
+                    <td>
+                        {% if c.resume %}
+                        <a href="{{ c.resume.url }}" target="_blank" class="btn-accent">Download</a>
+                        {% else %}
+                        <span style="color:#777;">No file</span>
+                        {% endif %}
+                    </td>
+                    <td class="message-cell">{{ c.message }}</td>
+                    <td>{{ c.applied_at|date:"d M, Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center; color:#777; padding:20px 0;">
+                        No career applications found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
