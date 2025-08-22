@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section>
+<section class="vindus-services">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Modern CSS Reset */
+        /* Modern CSS Reset & Base Styles */
+        :root {
+            --primary: #5a2a83;
+            --secondary: #f72585;
+            --accent: #8b5cf6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #f1f5f9;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,111 +22,110 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
-        body {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            color: #334155;
+        .vindus-services {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light) 0%, var(--light-gray) 100%);
+            color: var(--dark);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+            padding: 2rem 0;
         }
 
-        .services-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-
-        /* Animated background elements */
+        /* Animated background elements - FIXED: Removed fixed positioning */
         .bg-elements {
-            position: fixed;
+            position: absolute; /* Changed from fixed to absolute */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 1; /* Lower z-index */
             overflow: hidden;
         }
 
         .bg-element {
             position: absolute;
             border-radius: 50%;
-            opacity: 0.1;
+            opacity: 0.05;
             filter: blur(40px);
         }
 
         .bg-element-1 {
-            width: 400px;
-            height: 400px;
-            background: #f72585;
-            top: -100px;
-            left: -100px;
-            animation: float 15s ease-in-out infinite;
+            width: 40vmax;
+            height: 40vmax;
+            background: var(--secondary);
+            top: -10vmax;
+            left: -10vmax;
+            animation: float 20s ease-in-out infinite;
         }
 
         .bg-element-2 {
-            width: 600px;
-            height: 600px;
-            background: #8b5cf6;
-            bottom: -200px;
-            right: -200px;
-            animation: float 18s ease-in-out infinite reverse;
+            width: 60vmax;
+            height: 60vmax;
+            background: var(--accent);
+            bottom: -20vmax;
+            right: -20vmax;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .bg-element-3 {
+            width: 30vmax;
+            height: 30vmax;
+            background: var(--primary);
+            top: 50%;
+            left: 20%;
+            animation: float 15s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(30px, 40px) rotate(5deg); }
+            33% { transform: translate(30px, 40px) rotate(5deg); }
+            66% { transform: translate(-20px, 30px) rotate(-3deg); }
+        }
+
+        /* Container */
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2; /* Higher z-index than background */
         }
 
         /* Header section */
         .services-header {
             text-align: center;
-            margin-bottom: 80px;
-            padding: 0 20px;
+            margin-bottom: 4rem;
+            padding: 0 1rem;
             position: relative;
         }
 
         .services-header h1 {
-            font-size: 3.5rem;
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 24px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            position: relative;
-            display: inline-block;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #5a2a83;
+            margin-bottom: 12px;
         }
 
-        .services-header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 5px;
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
-            border-radius: 3px;
-        }
 
         .services-header p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-            color: #64748b;
-            line-height: 1.8;
+            font-size: 1.15rem;
+            color: #555;
+            margin-bottom: 50px;
         }
 
         /* Services grid */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+            gap: 2rem;
             perspective: 1000px;
         }
 
         /* Service cards */
         .service-card {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             overflow: hidden;
@@ -127,6 +136,7 @@
             flex-direction: column;
             border: 1px solid rgba(255, 255, 255, 0.5);
             transform-style: preserve-3d;
+            height: 100%;
         }
 
         .service-card::before {
@@ -136,7 +146,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.5s ease;
@@ -153,17 +163,17 @@
 
         .service-icon {
             position: absolute;
-            top: 25px;
-            right: 25px;
+            top: 1.5rem;
+            right: 1.5rem;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             z-index: 3;
             box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
             transition: all 0.4s ease;
@@ -192,16 +202,16 @@
         }
 
         .service-text {
-            padding: 30px;
+            padding: 2rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .service-text h3 {
-            font-size: 1.6rem;
-            margin-bottom: 18px;
-            color: #1e293b;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
             font-weight: 700;
             position: relative;
             display: inline-block;
@@ -210,11 +220,11 @@
         .service-text h3::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -0.5rem;
             left: 0;
             width: 40px;
             height: 3px;
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border-radius: 2px;
             transition: width 0.4s ease;
         }
@@ -224,77 +234,10 @@
         }
 
         .service-text p {
-            margin-bottom: 24px;
-            color: #64748b;
+            margin-bottom: 1.5rem;
+            color: var(--gray);
             flex-grow: 1;
             line-height: 1.7;
-        }
-         .service-text ul {
-            margin-bottom: 30px;
-            padding-left: 24px;
-        }
-
-        .service-text li {
-            margin-bottom: 10px;
-            color: #475569;
-            position: relative;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .service-text li:hover {
-            color: #f72585;
-            transform: translateX(5px);
-        }
-
-        .service-text li::before {
-            content: "•";
-            color: #f72585;
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
-            font-size: 1.2rem;
-        }
-
-        .learn-more-btn {
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.4s ease;
-            align-self: flex-start;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .learn-more-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(90, 42, 131, 0.8) 0%, rgba(247, 37, 133, 0.8) 100%);
-            transition: all 0.6s ease;
-        }
-
-        .learn-more-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.5);
-        }
-
-        .learn-more-btn:hover::before {
-            left: 100%;
         }
 
         /* Animation for cards on scroll */
@@ -321,11 +264,68 @@
         .service-card:nth-child(5) { animation-delay: 0.5s; }
         .service-card:nth-child(6) { animation-delay: 0.6s; }
         .service-card:nth-child(7) { animation-delay: 0.7s; }
+        .service-card:nth-child(8) { animation-delay: 0.8s; }
+        .service-card:nth-child(9) { animation-delay: 0.9s; }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .services-grid {
+                gap: 1.5rem;
+            }
+            
+            .service-text {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .services-header {
+                margin-bottom: 3rem;
+            }
+            
+            .service-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+            
+            .service-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-header h1::after {
+                width: 60px;
+                bottom: -0.5rem;
+            }
+            
+            .service-text {
+                padding: 1.25rem;
+            }
+            
+            .service-text h3 {
+                font-size: 1.35rem;
+            }
+            
+            .service-icon {
+                top: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 
     <div class="bg-elements">
         <div class="bg-element bg-element-1"></div>
         <div class="bg-element bg-element-2"></div>
+        <div class="bg-element bg-element-3"></div>
     </div>
 
     <div class="services-container">
@@ -336,6 +336,35 @@
 
         <div class="services-grid">
             
+            <!-- Web & App Development Card -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/web.png' %}" alt="Web & App Development">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Web & App Development</h3>
+                    <p>We create responsive, user-friendly web applications using modern technologies. Our full-stack development approach ensures seamless integration between frontend and backend systems.</p>
+                </div>
+            </div>
+
+            <!-- Mobile App Development Card -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/mobile.png' %}" alt="Mobile App Development">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Mobile App Development</h3>
+                    <p>We develop native and cross-platform mobile applications for iOS and Android that deliver exceptional user experiences and drive engagement.</p>
+                </div>
+            </div>
 
             <div class="service-card">
                 <div class="service-icon">
@@ -347,16 +376,7 @@
                 
                 <div class="service-text">
                     <h3>Software Development</h3>
-                    <p>We build custom software solutions tailored to your specific business requirements, ensuring scalability, performance, and security. Whether you're looking for enterprise software, web applications, or cloud-based systems, we design and develop solutions that evolve with your business.</p>
-                    <ul>
-                        <li>Business Software Development</li>
-                        <li>Enterprise Solutions</li>
-                        <li>Cloud-Based Software</li>
-                        <li>Microservices Architecture</li>
-                        <li>Custom API Development</li>
-                        <li>SaaS Application Development</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <p>We build custom software solutions tailored to your specific business requirements, ensuring scalability, performance, and security.</p>
                 </div>
             </div>
 
@@ -370,16 +390,7 @@
                 
                 <div class="service-text">
                     <h3>Cloud & DevOps</h3>
-                    <p>Leverage the power of Amazon Web Services (AWS) for secure, scalable, and cost-effective cloud solutions. From cloud migration to infrastructure management, we ensure your applications are optimized for performance and security.</p>
-                    <ul>
-                        <li>Cloud Computing</li>
-                        <li>Storage Solutions</li>
-                        <li>Database Services</li>
-                        <li>Networking</li>
-                        <li>AWS Lambda and Serverless</li>
-                        <li>DevOps and Automation</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <p>Leverage the power of Amazon Web Services (AWS) for secure, scalable, and cost-effective cloud solutions.</p>
                 </div>
             </div>
 
@@ -393,16 +404,7 @@
                 
                 <div class="service-text">
                     <h3>Software Testing</h3>
-                    <p>Ensure the quality and reliability of your software with our comprehensive testing services. Our testing solutions cover everything from functionality to performance, security, and usability.</p>
-                    <ul>
-                        <li>Functional Testing</li>
-                        <li>Performance Testing</li>
-                        <li>Security Testing</li>
-                        <li>Automation Testing</li>
-                        <li>Usability Testing</li>
-                        <li>Regression Testing</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <p>Ensure the quality and reliability of your software with our comprehensive testing services covering functionality to performance.</p>
                 </div>
             </div>
 
@@ -416,16 +418,7 @@
                 
                 <div class="service-text">
                     <h3>Blockchain Services</h3>
-                    <p>Harness the transformative power of blockchain technology with our comprehensive blockchain services. We develop decentralized applications, smart contracts, and secure blockchain solutions tailored to your business needs.</p>
-                    <ul>
-                        <li>Decentralized Application (DApp) Development</li>
-                        <li>Smart Contract Development</li>
-                        <li>Blockchain Consulting</li>
-                        <li>Cryptocurrency Integration</li>
-                        <li>Supply Chain Transparency</li>
-                        <li>Secure Data Sharing</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <p>Harness the transformative power of blockchain technology with our comprehensive blockchain services.</p>
                 </div>
             </div>
 
@@ -439,16 +432,7 @@
                 
                 <div class="service-text">
                     <h3>IoT Solutions</h3>
-                    <p>Transform your business with our cutting-edge Internet of Things (IoT) solutions. We design and implement IoT systems that connect devices, collect data, and provide actionable insights to enhance operational efficiency and innovation.</p>
-                    <ul>
-                        <li>Smart Device Integration</li>
-                        <li>Sensor Deployment</li>
-                        <li>IoT Platform Development</li>
-                        <li>Data Analytics</li>
-                        <li>Remote Monitoring</li>
-                        <li>IoT Security Solutions</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <p>Transform your business with our cutting-edge Internet of Things (IoT) solutions that connect devices and provide actionable insights.</p>
                 </div>
             </div>
 
@@ -461,19 +445,11 @@
                 </div>
                 
                 <div class="service-text">
-                    <h3>AI and Machine Learning Solutions</h3>
-                    <p>Transform your business processes with our AI and machine learning solutions. We develop intelligent systems that analyze data, automate tasks, and enhance decision-making capabilities.</p>
-                    <ul>
-                        <li>Predictive Analytics</li>
-                        <li>Natural Language Processing (NLP)</li>
-                        <li>Machine Learning Model Development</li>
-                        <li>AI-Powered Automation</li>
-                        <li>Image and Video Recognition</li>
-                        <li>Custom AI Solutions</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <h3>AI and Machine Learning</h3>
+                    <p>Transform your business processes with our AI and machine learning solutions that analyze data and enhance decision-making.</p>
                 </div>
             </div>
+            
             <div class="service-card">
                 <div class="service-icon">
                     <i class="fas fa-search"></i>
@@ -484,24 +460,10 @@
                 
                 <div class="service-text">
                     <h3>SEO Tool</h3>
-                    <p>Our advanced SEO tools help you analyze and improve your website's ranking on search engines. From comprehensive keyword research to backlink analysis, we provide actionable insights to drive more traffic to your website and improve overall visibility.</p>
-                    <ul>
-                        <li>Keyword Analysis</li>
-                        <li>Backlink Checker</li>
-                        <li>SEO Audits</li>
-                        <li>Competitor Analysis</li>
-                        <li>On-Page Optimization Tools</li>
-                        <li>Rank Tracking</li>
-                    </ul>
-                    <button class="learn-more-btn">Learn More <i class="fas fa-arrow-right"></i></button>
+                    <p>Our advanced SEO tools help you analyze and improve your website's ranking on search engines with actionable insights.</p>
                 </div>
             </div>
-            
         </div>
-        </div>
-        
-       
-        
     </div>
 </section>
 {% endblock %}

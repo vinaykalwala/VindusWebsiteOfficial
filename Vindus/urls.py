@@ -29,6 +29,7 @@ urlpatterns = [
     path('terms-of-use/', terms_of_use, name='terms_of_use'),
     path('privacy-policy/', privacy_policy, name='privacy_policy'),
     path('cookies/', cookies_policy, name='cookies_policy'),
+    path('save-cookie-preferences/', save_cookie_preferences, name='save_cookie_preferences'),
     path('sitemap/', sitemap, name='sitemap'),
 ]
 
