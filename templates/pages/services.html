@@ -1,9 +1,469 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<section>
-    <h2>Our Services</h2>
-    <ul>
+<section class="vindus-services">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern CSS Reset & Base Styles */
+        :root {
+            --primary: #5a2a83;
+            --secondary: #f72585;
+            --accent: #8b5cf6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #f1f5f9;
+        }
         
-    </ul>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        .vindus-services {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light) 0%, var(--light-gray) 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        /* Animated background elements - FIXED: Removed fixed positioning */
+        .bg-elements {
+            position: absolute; /* Changed from fixed to absolute */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Lower z-index */
+            overflow: hidden;
+        }
+
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.05;
+            filter: blur(40px);
+        }
+
+        .bg-element-1 {
+            width: 40vmax;
+            height: 40vmax;
+            background: var(--secondary);
+            top: -10vmax;
+            left: -10vmax;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-element-2 {
+            width: 60vmax;
+            height: 60vmax;
+            background: var(--accent);
+            bottom: -20vmax;
+            right: -20vmax;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .bg-element-3 {
+            width: 30vmax;
+            height: 30vmax;
+            background: var(--primary);
+            top: 50%;
+            left: 20%;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, 40px) rotate(5deg); }
+            66% { transform: translate(-20px, 30px) rotate(-3deg); }
+        }
+
+        /* Container */
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2; /* Higher z-index than background */
+        }
+
+        /* Header section */
+        .services-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .services-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #5a2a83;
+            margin-bottom: 12px;
+        }
+
+
+        .services-header p {
+            font-size: 1.15rem;
+            color: #555;
+            margin-bottom: 50px;
+        }
+
+        /* Services grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        /* Service cards */
+        .service-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transform-style: preserve-3d;
+            height: 100%;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 3;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .service-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-text {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .service-text h3::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+            transition: width 0.4s ease;
+        }
+
+        .service-card:hover .service-text h3::after {
+            width: 80px;
+        }
+
+        .service-text p {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        /* Animation for cards on scroll */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
+        .service-card:nth-child(7) { animation-delay: 0.7s; }
+        .service-card:nth-child(8) { animation-delay: 0.8s; }
+        .service-card:nth-child(9) { animation-delay: 0.9s; }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .services-grid {
+                gap: 1.5rem;
+            }
+            
+            .service-text {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .services-header {
+                margin-bottom: 3rem;
+            }
+            
+            .service-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+            
+            .service-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-header h1::after {
+                width: 60px;
+                bottom: -0.5rem;
+            }
+            
+            .service-text {
+                padding: 1.25rem;
+            }
+            
+            .service-text h3 {
+                font-size: 1.35rem;
+            }
+            
+            .service-icon {
+                top: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+
+    <div class="bg-elements">
+        <div class="bg-element bg-element-1"></div>
+        <div class="bg-element bg-element-2"></div>
+        <div class="bg-element bg-element-3"></div>
+    </div>
+
+    <div class="services-container">
+        <div class="services-header">
+            <h1>Our Services</h1>
+            <p>We offer comprehensive digital solutions designed to elevate your business. Explore our specialized services below.</p>
+        </div>
+
+        <div class="services-grid">
+            
+            <!-- Web & App Development Card -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/web.png' %}" alt="Web & App Development">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Web & App Development</h3>
+                    <p>We create responsive, user-friendly web applications using modern technologies. Our full-stack development approach ensures seamless integration between frontend and backend systems.</p>
+                </div>
+            </div>
+
+            <!-- Mobile App Development Card -->
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/mobile.png' %}" alt="Mobile App Development">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Mobile App Development</h3>
+                    <p>We develop native and cross-platform mobile applications for iOS and Android that deliver exceptional user experiences and drive engagement.</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/software.png' %}" alt="Software Development">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Software Development</h3>
+                    <p>We build custom software solutions tailored to your specific business requirements, ensuring scalability, performance, and security.</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/cloud.png' %}" alt="AWS Cloud">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Cloud & DevOps</h3>
+                    <p>Leverage the power of Amazon Web Services (AWS) for secure, scalable, and cost-effective cloud solutions.</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/testing.png' %}" alt="Software Testing">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Software Testing</h3>
+                    <p>Ensure the quality and reliability of your software with our comprehensive testing services covering functionality to performance.</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/block.jpg' %}" alt="Blockchain Services">
+                </div>
+                
+                <div class="service-text">
+                    <h3>Blockchain Services</h3>
+                    <p>Harness the transformative power of blockchain technology with our comprehensive blockchain services.</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/iot.png' %}" alt="IoT Solutions">
+                </div>
+                
+                <div class="service-text">
+                    <h3>IoT Solutions</h3>
+                    <p>Transform your business with our cutting-edge Internet of Things (IoT) solutions that connect devices and provide actionable insights.</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/ai.jpg' %}" alt="AI and Machine Learning Solutions">
+                </div>
+                
+                <div class="service-text">
+                    <h3>AI and Machine Learning</h3>
+                    <p>Transform your business processes with our AI and machine learning solutions that analyze data and enhance decision-making.</p>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="service-image">
+                    <img src="{% static 'images/seoclient.png' %}" alt="SEO Tool">
+                </div>
+                
+                <div class="service-text">
+                    <h3>SEO Tool</h3>
+                    <p>Our advanced SEO tools help you analyze and improve your website's ranking on search engines with actionable insights.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock %}
