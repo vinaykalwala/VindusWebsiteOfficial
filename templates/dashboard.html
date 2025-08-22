@@ -1,0 +1,48 @@
+{% extends 'admin_base.html' %}
+{% block title %}Vindus Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Centered Welcome Message -->
+<div class="text-center mb-5">
+    <h2 class="display-6 fw-semibold">Welcome, {{ request.user.username }}</h2>
+    <p class="text-muted">This dashboard is accessible only to superusers. Manage contacts, career applications, and internship applicants efficiently.</p>
+</div>
+
+<div class="row g-4">
+    <!-- Contacts Card -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-envelope fa-2x mb-3 text-primary"></i>
+                <h5 class="card-title">Contacts</h5>
+                <p class="card-text">View all contact messages submitted by users.</p>
+                <a href="{% url 'contact_list' %}" class="btn btn-accent btn-sm">View Contacts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Applications Card -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-briefcase fa-2x mb-3 text-success"></i>
+                <h5 class="card-title">Career Applications</h5>
+                <p class="card-text">Manage all career applications and resumes submitted by candidates.</p>
+                <a href="{% url 'career_list' %}" class="btn btn-accent btn-sm">View Careers</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Internship Applicants Card -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-user-graduate fa-2x mb-3 text-warning"></i>
+                <h5 class="card-title">Internship Applicants</h5>
+                <p class="card-text">Check, filter, view, and edit internship applications.</p>
+                <a href="{% url 'internship_list' %}" class="btn btn-accent btn-sm">View Internships</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

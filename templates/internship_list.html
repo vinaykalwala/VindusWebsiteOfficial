@@ -1,0 +1,168 @@
+{% extends 'admin_base.html' %}
+{% block title %}Internship Applicants{% endblock %}
+
+{% block content %}
+<style>
+    .internship-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+
+    .internship-card h3 {
+        color: #5a2a83;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .internship-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .internship-table th, .internship-table td {
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: top;
+        word-wrap: break-word;
+        max-width: 200px;
+    }
+
+    .internship-table th {
+        background-color: #5a2a83;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .internship-table tr:nth-child(even) {
+        background-color: #f8f8f8;
+    }
+
+    .internship-table tr:hover {
+        background-color: #f0e6f8;
+    }
+
+    .btn-accent, .btn-filter {
+        background-color: #f72585;
+        color: #fff;
+        border-radius: 30px;
+        padding: 6px 15px;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .btn-accent:hover, .btn-filter:hover {
+        background-color: #d81b70;
+    }
+
+    .filter-form input, .filter-form select {
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+    }
+
+    .filter-form button {
+        margin-top: 0;
+    }
+
+    .action-btns a {
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 0.85rem;
+        margin-right: 4px;
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .btn-view {
+        background-color: #1e7e34;
+    }
+
+    .btn-view:hover {
+        background-color: #145a27;
+    }
+
+    .btn-edit {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .btn-edit:hover {
+        background-color: #e0a800;
+    }
+</style>
+
+<div class="internship-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Internship Applicants</h3>
+        <span style="color:#777;">{{ internships.count }} applicants found</span>
+    </div>
+
+    <!-- Filter Form -->
+    <form method="get" class="filter-form" style="margin-bottom:15px; display:flex; flex-wrap:wrap; gap:10px;">
+        <input type="text" name="name" value="{{ request.GET.name }}" placeholder="Name">
+        <input type="text" name="batch" value="{{ request.GET.batch }}" placeholder="Batch">
+        <select name="status">
+            <option value="">Status</option>
+            <option value="Pending" {% if request.GET.status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="Reviewed" {% if request.GET.status == "Reviewed" %}selected{% endif %}>Reviewed</option>
+            <option value="Shortlisted" {% if request.GET.status == "Shortlisted" %}selected{% endif %}>Shortlisted</option>
+            <option value="Rejected" {% if request.GET.status == "Rejected" %}selected{% endif %}>Rejected</option>
+            <option value="Selected" {% if request.GET.status == "Selected" %}selected{% endif %}>Selected</option>
+        </select>
+        <select name="internship_type">
+            <option value="">Type</option>
+            <option value="Paid" {% if request.GET.internship_type == "Paid" %}selected{% endif %}>Paid</option>
+            <option value="Unpaid" {% if request.GET.internship_type == "Unpaid" %}selected{% endif %}>Unpaid</option>
+        </select>
+        <button type="submit" class="btn-filter">Filter</button>
+    </form>
+
+    <!-- Applicants Table -->
+    <div class="table-responsive">
+        <table class="internship-table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Batch</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in internships %}
+                <tr>
+                    <td>
+            {% if i.profile_photo %}
+            <img src="{{ i.profile_photo.url }}" alt="{{ i.name }}" style="width:40px; height:40px; border-radius:50%;">
+            {% else %}
+            <span style="color:#777;">N/A</span>
+            {% endif %}
+        </td>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.email }}</td>
+                    <td>{{ i.phone }}</td>
+                    <td>{{ i.status }}</td>
+                    <td>{{ i.batch_assigned }}</td>
+                    <td class="action-btns">
+                        <a href="{% url 'internship_detail' i.pk %}" class="btn-view">View</a>
+                        <a href="{% url 'internship_edit' i.pk %}" class="btn-edit">Edit</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center; color:#777; padding:20px 0;">
+                        No applicants found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
