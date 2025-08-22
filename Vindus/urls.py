@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Website.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +33,15 @@ urlpatterns = [
     path('cookies/', cookies_policy, name='cookies_policy'),
     path('save-cookie-preferences/', save_cookie_preferences, name='save_cookie_preferences'),
     path('sitemap/', sitemap, name='sitemap'),
+    path('login/', admin_login, name='admin_login'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('logout/', admin_logout, name='admin_logout'),
+    path('contacts/', contact_list, name='contact_list'),
+    path('careerlist/', career_list, name='career_list'),
+    path('internships/', internship_list, name='internship_list'),
+    path('internship/<int:pk>/', internship_detail, name='internship_detail'),
+    path('internship/<int:pk>/edit/', internship_edit, name='internship_edit'),
+    
 ]
-
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,170 @@
+{% extends 'admin_base.html' %}
+{% block title %}Edit Internship Applicant{% endblock %}
+
+{% block content %}
+<style>
+    .edit-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 25px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .edit-card h3 {
+        color: #5a2a83;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    form label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="number"],
+    form input[type="file"],
+    form select,
+    form textarea {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 0.95rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    form textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .form-section {
+        border-top: 2px solid #f72585;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+
+    .btn-accent, .btn-secondary {
+        border-radius: 25px;
+        padding: 8px 18px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+
+    .btn-accent {
+        background-color: #f72585;
+        color: #fff;
+        border: none;
+    }
+    .btn-accent:hover {
+        background-color: #d81b70;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        border: none;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+</style>
+
+<div class="edit-card">
+    <h3>Edit Applicant: {{ form.instance.name }}</h3>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Personal Information -->
+        <div class="form-section">
+            <h4 style="color:#5a2a83;">Personal Information</h4>
+            {{ form.name.label_tag }} {{ form.name }}
+            {{ form.email.label_tag }} {{ form.email }}
+            {{ form.phone.label_tag }} {{ form.phone }}
+            {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+            {{ form.gender.label_tag }} {{ form.gender }}
+            {{ form.address.label_tag }} {{ form.address }}
+            {% if form.profile_photo %}
+                {{ form.profile_photo.label_tag }} {{ form.profile_photo }}
+                {% if form.instance.profile_photo %}
+                    <img src="{{ form.instance.profile_photo.url }}" alt="Profile" style="width:60px; height:60px; border-radius:50%; margin-top:5px;">
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- Academic Information -->
+        <div class="form-section">
+            <h4 style="color:#5a2a83;">Academic Information</h4>
+            {{ form.qualification.label_tag }} {{ form.qualification }}
+            {{ form.specialization.label_tag }} {{ form.specialization }}
+            {{ form.college.label_tag }} {{ form.college }}
+            {{ form.university.label_tag }} {{ form.university }}
+            {{ form.graduation_year.label_tag }} {{ form.graduation_year }}
+            {{ form.aggregate_percentage.label_tag }} {{ form.aggregate_percentage }}
+        </div>
+
+        <!-- Skills & Experience -->
+        <div class="form-section">
+            <h4 style="color:#5a2a83;">Skills & Experience</h4>
+            {{ form.skills.label_tag }} {{ form.skills }}
+            {{ form.prior_experience.label_tag }} {{ form.prior_experience }}
+        </div>
+
+        <!-- Internship Details -->
+        <div class="form-section">
+            <h4 style="color:#5a2a83;">Internship Details</h4>
+            {{ form.why_choose.label_tag }} {{ form.why_choose }}
+            {{ form.expectations.label_tag }} {{ form.expectations }}
+            {{ form.career_goals.label_tag }} {{ form.career_goals }}
+            {{ form.device_access.label_tag }} {{ form.device_access }}
+            {{ form.batch_assigned.label_tag }} {{ form.batch_assigned }}
+            {{ form.internship_type.label_tag }} {{ form.internship_type }}
+            {{ form.status.label_tag }} {{ form.status }}
+            {{ form.interview_score.label_tag }} {{ form.interview_score }}
+        </div>
+
+        <!-- Documents -->
+        <div class="form-section">
+            <h4 style="color:#5a2a83;">Documents</h4>
+            {{ form.resume.label_tag }} {{ form.resume }}
+            {% if form.instance.resume %}
+                <a href="{{ form.instance.resume.url }}" target="_blank" class="btn-accent" style="font-size:0.85rem;">Download Resume</a>
+            {% endif %}
+            {{ form.cover_letter.label_tag }} {{ form.cover_letter }}
+            {% if form.instance.cover_letter %}
+                <a href="{{ form.instance.cover_letter.url }}" target="_blank" class="btn-accent" style="font-size:0.85rem;">Download Cover Letter</a>
+            {% endif %}
+            {{ form.college_id_card.label_tag }} {{ form.college_id_card }}
+            {% if form.instance.college_id_card %}
+                <a href="{{ form.instance.college_id_card.url }}" target="_blank" class="btn-accent" style="font-size:0.85rem;">Download ID Card</a>
+            {% endif %}
+        </div>
+
+        <!-- Agreement -->
+        <div class="form-section">
+            {{ form.agreement_acceptance }}
+            {{ form.agreement_acceptance.label_tag }}
+        </div>
+
+        <div style="margin-top:20px;">
+            <button type="submit" class="btn-accent">Save Changes</button>
+            <a href="{% url 'internship_list' %}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
