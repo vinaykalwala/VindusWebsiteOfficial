@@ -269,3 +269,81 @@ def apply_for_job(request, pk):
     else:
         form = CareerForm()
     return render(request, 'pages/apply_for_job.html', {'job': job, 'form': form})
+
+
+from django.shortcuts import render
+from django.views.generic import TemplateView
+
+class ProductsView(TemplateView):
+    template_name = 'pages/products.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Product data that can be passed to the template
+        context['products'] = [
+            {
+                'number': 1,
+                'name': 'QTipStore',
+                'tagline': 'Smart & Scalable E-Commerce Platform',
+                'for_text': 'Retailers, B2B & B2C Businesses, Entrepreneurs',
+                'features': [
+                    'Customizable Online Store – Fully responsive and tailored to your brand',
+                    'Secure Payment Gateway – Supports multiple payment methods',
+                    'AI-Based Product Recommendations – Enhances customer shopping experience',
+                    'Inventory & Order Management – Real-time stock tracking',
+                    'Multi-Vendor Support – Manage multiple sellers on one platform'
+                ],
+                'cta': 'Grow your business online with QTipStore!',
+                'link_text': 'Visit QTipStore'
+            },
+            {
+                'number': 2,
+                'name': 'VAudit',
+                'tagline': 'Powerful SEO & Website Analysis Tool',
+                'for_text': 'Digital Marketers, SEO Experts, Website Owners',
+                'features': [
+                    'Comprehensive SEO Audit – Identify technical issues',
+                    'Keyword & Competitor Research – Gain insights to rank higher',
+                    'On-Page & Off-Page Optimization – Actionable recommendations',
+                    'Real-Time Monitoring – Track traffic and backlinks',
+                    'Automated Reports & Suggestions – AI-powered analysis'
+                ],
+                'cta': 'Boost your website\'s performance with VAudit!',
+                'link_text': 'Try VAudit Now'
+            },
+            {
+                'number': 3,
+                'name': 'VOrbit',
+                'tagline': 'Advanced Business & Employee Management Tool',
+                'for_text': 'Startups, Enterprises, HR Teams, Project Managers',
+                'features': [
+                    'Attendance & Break Management – Track employee work hours',
+                    'Client & User Management – Organize interactions and permissions',
+                    'Portfolio Generation – Create professional employee portfolios',
+                    'Asset & Leave Tracking – Manage company assets and time off',
+                    'Email Login Integration – Secure authentication system'
+                ],
+                'cta': 'Streamline your business operations with VOrbit!',
+                'link_text': 'Explore VOrbit'
+            },
+            {
+                'number': 4,
+                'name': 'Case Management Solutions',
+                'tagline': 'Streamlining Legal Workflows',
+                'for_text': 'Law Firms, Legal Advisors, Corporate Legal Teams',
+                'features': [
+                    'Case & Client Management – Organize legal records seamlessly',
+                    'Automated Legal Research – AI-powered insights',
+                    'Document Storage & Security – Cloud-based access to files',
+                    'Billing & Invoicing – Simplifies legal fee management',
+                    'Appointment & Scheduling – Manage meetings efficiently'
+                ],
+                'cta': 'Enhance legal operations with our solutions!',
+                'link_text': 'Request a Demo'
+            }
+        ]
+        
+       
+        
+        return context

@@ -1,0 +1,877 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products | Vindus Environment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #5a2a83;
+            --primary-light: #7e3ca8;
+            --primary-dark: #451c6a;
+            --accent-color: #f72585;
+            --accent-light: #ff5ba1;
+            --light-bg: #f9f5ff;
+            --light-purple: #e6d9f7;
+            --text-dark: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --shadow-sm: 0 2px 10px rgba(90, 42, 131, 0.08);
+            --shadow-md: 0 5px 20px rgba(90, 42, 131, 0.12);
+            --shadow-lg: 0 10px 30px rgba(90, 42, 131, 0.15);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        /* Banner Section - Similar to About Page */
+        .banner-container {
+            width: 100%;
+            height: 450px;
+            position: relative;
+            background: 
+                linear-gradient(135deg, rgba(90,42,131,0.9) 40%, rgba(247,37,133,0.8) 100%),
+                url("{% static 'images/product.png' %}") no-repeat center/cover;
+            margin-bottom: 60px;
+            overflow: hidden;
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            text-align: left;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            max-width: 600px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+        }
+
+        .banner-text h1 {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+
+        .banner-text p {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards 0.8s;
+        }
+        
+        /* Modern Product Showcase - Redesigned */
+        .products-showcase {
+            margin-bottom: 80px;
+            padding: 0 40px;
+        }
+        
+        .product-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 100px;
+            position: relative;
+            min-height: 500px;
+            align-items: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-item:nth-child(even) {
+            direction: rtl;
+        }
+        
+        .product-item:nth-child(even) > * {
+            direction: ltr;
+        }
+        
+        .product-content {
+            padding: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .product-number {
+            font-size: 10rem;
+            font-weight: 800;
+            color: rgba(90, 42, 131, 0.05);
+            position: absolute;
+            top: -40px;
+            left: 0;
+            z-index: -1;
+            line-height: 1;
+            transition: all 0.5s ease;
+        }
+        
+        .product-item:hover .product-number {
+            color: rgba(90, 42, 131, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .product-item:nth-child(even) .product-number {
+            left: auto;
+            right: 0;
+        }
+        
+        .product-item h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .product-item h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .product-item:hover h2::after {
+            width: 100px;
+        }
+        
+        .product-tagline {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .product-for {
+            display: inline-block;
+            background: var(--light-purple);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 500;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover .product-for {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(90, 42, 131, 0.2);
+        }
+        
+        .product-features {
+            margin-bottom: 30px;
+        }
+        
+        .product-features h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .product-features ul {
+            list-style: none;
+        }
+        
+        .product-features li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .product-features li.animated {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .product-features li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-features li:hover:before {
+            transform: translateX(5px);
+        }
+        
+        .product-cta {
+            margin-top: 30px;
+        }
+        
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .product-link:hover::before {
+            left: 100%;
+        }
+        
+        .product-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            animation: pulse 1s infinite;
+        }
+        
+        .product-visual {
+            position: relative;
+            height: 100%;
+            min-height: 400px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, var(--light-purple) 0%, var(--light-bg) 100%);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(0);
+            transition: all 0.5s ease;
+        }
+        
+        .product-item:hover .product-visual {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(90, 42, 131, 0.25);
+        }
+        
+        .product-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(90, 42, 131, 0.1), rgba(247, 37, 133, 0.1));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1;
+        }
+        
+        .product-visual:hover::before {
+            opacity: 1;
+        }
+        
+        .product-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            z-index: 2;
+            position: relative;
+            transform: scale(1);
+        }
+        
+        .product-visual:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Why Choose Section */
+        .why-choose-section {
+            background: var(--white);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .why-choose-section h2 {
+            color: var(--primary-color);
+            font-size: 2.4rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        
+        
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .reason-item {
+            padding: 30px;
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+        }
+        
+        .reason-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            transition: width 0.3s ease;
+        }
+        
+        .reason-item:hover::before {
+            width: 8px;
+        }
+        
+        .reason-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .reason-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+        }
+        
+        .reason-item:hover .reason-icon {
+            transform: scale(1.2) rotate(5deg);
+            color: var(--accent-color);
+        }
+        
+        .reason-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .reason-item p {
+            color: var(--text-light);
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, rgba(90,42,131,0.9) 40%, rgba(247,37,133,0.8) 100%);
+            color: var(--white);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11  c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3  3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        .contact-info {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .contact-info p {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .contact-info p.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: var(--white);
+            color: var(--primary-color);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(247, 37, 133, 0.1), transparent);
+            transition: 0.5s;
+            transform: translateX(-100%);
+        }
+        
+        .contact-link:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .contact-link:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            background: var(--accent-light);
+            color: var(--white);
+            animation: pulse 1s infinite;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(90, 42, 131, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(90, 42, 131, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(90, 42, 131, 0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-item.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Parallax effect for banner */
+        .parallax {
+            background-attachment: fixed;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1100px) {
+            .product-item {
+                grid-template-columns: 1fr;
+                direction: ltr !important;
+                text-align: center;
+            }
+            
+            .product-content {
+                padding: 30px 20px;
+            }
+            
+            .product-visual {
+                width: 100%;
+                height: 400px;
+            }
+            
+            .product-number {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .product-item h2::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-showcase {
+                padding: 0 20px;
+            }
+            
+            .product-item h2 {
+                font-size: 2rem;
+            }
+            
+            .product-number {
+                font-size: 8rem;
+            }
+            
+            .why-choose-section {
+                padding: 60px 20px;
+            }
+            
+            .why-choose-section h2 {
+                font-size: 2rem;
+            }
+            
+            .contact-section {
+                padding: 60px 20px;
+            }
+            
+            .contact-info p {
+                font-size: 1.1rem;
+            }
+            
+            /* Disable parallax on mobile */
+            .parallax {
+                background-attachment: scroll;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .product-visual {
+                height: 300px;
+            }
+            
+            .product-number {
+                font-size: 6rem;
+                top: -20px;
+            }
+            
+            .reasons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-link {
+                padding: 14px 30px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="products-wrapper">
+        <!-- Banner Section - Similar to About Page -->
+        <div class="banner-container parallax">
+            <div class="banner-text">
+                <h1>Innovative Digital Solutions</h1>
+                <p>Transforming businesses with cutting-edge technology and expert software development</p>
+            </div>
+        </div>
+        
+        <!-- Modern Product Showcase - Redesigned -->
+        <div class="products-showcase">
+            <!-- Vaudit Product -->
+            <div class="product-item animate-item">
+                <div class="product-content">
+                    <div class="product-number">01</div>
+                    <h2>Vaudit</h2>
+                    <p class="product-tagline">Comprehensive Audit Management Solution</p>
+                    <span class="product-for"><strong>For:</strong> Businesses & Auditors</span>
+                    
+                    <div class="product-features">
+                        <h3><i class="fas fa-star"></i> Key Features</h3>
+                        <ul>
+                            <li>Streamlined audit planning and scheduling</li>
+                            <li>Real-time collaboration tools</li>
+                            <li>Automated compliance tracking</li>
+                            <li>Customizable audit templates</li>
+                            <li>Comprehensive reporting dashboard</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="product-cta">
+                        <a href="/contact" class="product-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="product-visual">
+                    <img src="{% static 'images/vaudit.png' %}" alt="Vaudit - Audit Management Solution" onerror="this.src='https://via.placeholder.com/800x600/5a2a83/ffffff?text=Vaudit'">
+                </div>
+            </div>
+            
+            <!-- Vorbit Product -->
+            <div class="product-item animate-item">
+                <div class="product-content">
+                    <div class="product-number">02</div>
+                    <h2>Vorbit</h2>
+                    <p class="product-tagline">Orbital Visualization and Analytics Platform</p>
+                    <span class="product-for"><strong>For:</strong> Researchers & Analysts</span>
+                    
+                    <div class="product-features">
+                        <h3><i class="fas fa-star"></i> Key Features</h3>
+                        <ul>
+                            <li>Advanced 3D orbital visualization</li>
+                            <li>Real-time satellite tracking</li>
+                            <li>Collision prediction algorithms</li>
+                            <li>Customizable data overlays</li>
+                            <li>Historical trajectory analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="product-cta">
+                        <a href="/contact" class="product-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="product-visual">
+                    <img src="{% static 'images/vorbit.png' %}" alt="Vorbit - Orbital Visualization Platform" onerror="this.src='https://via.placeholder.com/800x600/7e3ca8/ffffff?text=Vorbit'">
+                </div>
+            </div>
+            
+            <!-- Qtip Product -->
+            <div class="product-item animate-item">
+                <div class="product-content">
+                    <div class="product-number">03</div>
+                    <h2>Qtip</h2>
+                    <p class="product-tagline">Quick Task Integration Platform</p>
+                    <span class="product-for"><strong>For:</strong> Teams & Individuals</span>
+                    
+                    <div class="product-features">
+                        <h3><i class="fas fa-star"></i> Key Features</h3>
+                        <ul>
+                            <li>Seamless task management</li>
+                            <li>Intelligent workflow automation</li>
+                            <li>Cross-platform synchronization</li>
+                            <li>Team collaboration tools</li>
+                            <li>Custom notification system</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="product-cta">
+                        <a href="/contact" class="product-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="product-visual">
+                    <img src="{% static 'images/qtipstore.jpg' %}" alt="Qtip - Task Integration Platform" onerror="this.src='https://via.placeholder.com/800x600/f72585/ffffff?text=Qtip'">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Why Choose Section -->
+        <section class="why-choose-section">
+            <h2>Why Choose Our Solutions?</h2>
+            <div class="reasons-grid">
+                <div class="reason-item animate-item">
+                    <div class="reason-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>High Performance</h3>
+                    <p>Our solutions are optimized for speed and efficiency, ensuring smooth operation even with large datasets.</p>
+                </div>
+                
+                <div class="reason-item animate-item">
+                    <div class="reason-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Reliable Security</h3>
+                    <p>We implement industry-leading security measures to protect your data and ensure compliance.</p>
+                </div>
+                
+                <div class="reason-item animate-item">
+                    <div class="reason-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Proven Results</h3>
+                    <p>Our tools have helped businesses increase productivity by an average of 40% within the first month.</p>
+                </div>
+                
+                <div class="reason-item animate-item">
+                    <div class="reason-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Easy Integration</h3>
+                    <p>Seamlessly integrate with your existing systems and workflows with our flexible API.</p>
+                </div>
+                
+                <div class="reason-item animate-item">
+                    <div class="reason-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>User-Friendly</h3>
+                    <p>Intuitive interfaces designed for users of all technical levels with comprehensive support.</p>
+                </div>
+                
+                <div class="reason-item animate-item">
+                    <div class="reason-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovative Approach</h3>
+                    <p>We continuously update our products with the latest technological advancements.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="contact-info">
+                <p>Ready to transform your business with our solutions?</p>
+                <p>Get in touch with our team today!</p>
+            </div>
+            <a href="/contact" class="contact-link">Contact Us <i class="fas fa-arrow-right"></i></a>
+        </section>
+    </div>
+
+    <script>
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-item');
+            const featureItems = document.querySelectorAll('.product-features li');
+            const contactTexts = document.querySelectorAll('.contact-info p');
+            
+            // Animate banner text
+            setTimeout(() => {
+                document.querySelector('.banner-text h1').style.animation = 'fadeInUp 1s ease forwards';
+                document.querySelector('.banner-text p').style.animation = 'fadeInUp 1s ease forwards';
+            }, 500);
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animated');
+                            
+                            // If it's a product item, animate its list items
+                            if (entry.target.classList.contains('product-item')) {
+                                const listItems = entry.target.querySelectorAll('.product-features li');
+                                listItems.forEach((item, index) => {
+                                    setTimeout(() => {
+                                        item.classList.add('animated');
+                                    }, index * 150);
+                                });
+                            }
+                        }, entries.indexOf(entry) * 200);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Animate contact section text
+            const contactObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    contactTexts.forEach((text, index) => {
+                        setTimeout(() => {
+                            text.classList.add('animated');
+                        }, index * 300);
+                    });
+                }
+            }, { threshold: 0.5 });
+            
+            contactObserver.observe(document.querySelector('.contact-section'));
+            
+            // Add hover effect to product items
+            const productItems = document.querySelectorAll('.product-item');
+            productItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateY(-10px)';
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
