@@ -50,6 +50,8 @@ urlpatterns = [
     path('jobs/<int:pk>/delete/', job_delete, name='job_delete'),
     path('case_studies', case_studies, name='case_studies'),
     path('jobs/<int:pk>/apply/', apply_for_job, name='apply_for_job'),
+    path('howitworks/',how_it_works,name='how_it_works'),
+    path('whychooseus/',why_choose_us,name='why_choose_us'),
 
 ]
 if settings.DEBUG:

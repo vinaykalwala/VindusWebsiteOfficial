@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+.how-it-works {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9f9fb;
+}
+
+.how-it-works__intro {
+  max-width: 900px;
+  margin: 0 auto 50px;
+}
+
+.how-it-works__intro h1 {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #5a2a83;
+}
+
+.how-it-works__intro-text {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.how-it-works__services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.how-it-works__service-card-how {
+  background: linear-gradient(135deg, #fff, #F0F1F5);
+  border: 2px solid #5a2a83; /* updated border to match theme */
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  flex: 0 0 calc(50% - 40px);
+  padding: 40px 25px 25px 25px;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.how-it-works__service-card-how:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(90, 42, 131, 0.3); /* purple shadow */
+}
+
+.how-it-works__icon-container {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5a2a83, #f72585);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.how-it-works__icon-container i {
+  font-size: 35px; /* increased size */
+  color: #fff; /* white icons */
+}
+
+.how-it-works__service-title {
+  font-size: 1.5rem;
+  margin: 30px 0 12px;
+  font-weight: 700;
+  color: #5a2a83;
+}
+
+.how-it-works__service-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+  text-align: left;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .how-it-works__service-card-how {
+    flex: 0 0 100%;
+  }
+}
+
+  /* FAQ Section */
+  .how-it-works__faq {
+    max-width: 800px;
+    margin: 0 auto 60px;
+    text-align: left;
+  }
+
+  .how-it-works__faq-heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    font-weight: bold;
+    color: #5a2a83;
+  }
+
+  .how-it-works__accordion-item {
+    background: #fff;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .how-it-works__accordion-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    cursor: pointer;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #5a2a83;
+    margin-bottom: 15px;
+  }
+
+  .how-it-works__accordion-icon {
+    font-size: 1.5rem;
+    color: #5a2a83;
+    transition: transform 0.3s;
+  }
+
+  .how-it-works__accordion-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 22px;
+    color: #555;
+  }
+
+  .how-it-works__accordion-item.active .how-it-works__accordion-answer {
+    max-height: 300px;
+    padding: 15px 22px;
+  }
+
+  .how-it-works__accordion-item.active .how-it-works__accordion-icon {
+    transform: rotate(45deg);
+  }
+
+  /* CTA Section */
+  .how-it-works__cta {
+    background: linear-gradient(135deg, rgba(90, 42, 131, 0.9) 40%, rgba(247, 37, 133, 0.8) 100%);;
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 12px;
+    margin-top: 50px;
+  }
+
+  .how-it-works__cta-heading {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  .how-it-works__cta-text {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+  }
+
+  .how-it-works__cta-button {
+    background: #f72585;;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    color: #fff;
+  }
+
+  .how-it-works__cta-button:hover {
+    background: #f72585;
+  }
+</style>
+
+<!-- How It Works Section -->
+<div class="how-it-works">
+  <!-- Intro Section -->
+  <section class="how-it-works__intro">
+    <h1>How It Works</h1>
+    <p class="how-it-works__intro-text">
+      At <strong>Vindus Environment Pvt. Ltd.</strong>, we provide a comprehensive range of digital solutions tailored to your business needs. 
+      Discover how our services can elevate your digital presence and operational efficiency.
+    </p>
+  </section>
+
+  <!-- Services Section -->
+  <section class="how-it-works__services">
+    <div class="how-it-works__service-card-how">
+      <div class="how-it-works__icon-container">
+        <i class="fas fa-bullhorn"></i>
+      </div>
+      <h2 class="how-it-works__service-title">Digital Marketing</h2>
+      <p class="how-it-works__service-description">
+        <strong>Step 1:</strong> We begin by understanding your business goals and crafting a tailored digital marketing strategy.<br/>
+        <strong>Step 2:</strong> Our experts create engaging campaigns on Google, Facebook, LinkedIn, and other platforms.<br/>
+        <strong>Step 3:</strong> We monitor campaign performance and optimize them in real-time to maximize ROI.
+      </p>
+    </div>
+
+    <div class="how-it-works__service-card-how">
+      <div class="how-it-works__icon-container">
+        <i class="fas fa-code"></i>
+      </div>
+      <h2 class="how-it-works__service-title">Web Development</h2>
+      <p class="how-it-works__service-description">
+        <strong>Step 1:</strong> Understand your needs and plan your website's functionality and design.<br/>
+        <strong>Step 2:</strong> We design responsive, SEO-friendly websites tailored to your brand.<br/>
+        <strong>Step 3:</strong> After development, we test and launch your website to ensure it performs optimally.
+      </p>
+    </div>
+
+    <div class="how-it-works__service-card-how">
+      <div class="how-it-works__icon-container">
+        <i class="fab fa-react"></i>
+      </div>
+      <h2 class="how-it-works__service-title">Web Application Development</h2>
+      <p class="how-it-works__service-description">
+        <strong>Step 1:</strong> We collaborate with you to define key features and functionalities.<br/>
+        <strong>Step 2:</strong> We develop secure, scalable web applications using technologies like React and Angular.<br/>
+        <strong>Step 3:</strong> We test thoroughly and provide maintenance for a seamless experience.
+      </p>
+    </div>
+
+    <div class="how-it-works__service-card-how">
+      <div class="how-it-works__icon-container">
+        <i class="fas fa-search"></i>
+      </div>
+      <h2 class="how-it-works__service-title">SEO (Search Engine Optimization)</h2>
+      <p class="how-it-works__service-description">
+        <strong>Step 1:</strong> Perform an SEO audit and research relevant keywords.<br/>
+        <strong>Step 2:</strong> Implement on-page and off-page optimization techniques.<br/>
+        <strong>Step 3:</strong> Monitor SEO performance with regular reports and improve continuously.
+      </p>
+    </div>
+
+    <div class="how-it-works__service-card-how">
+      <div class="how-it-works__icon-container">
+        <i class="fab fa-aws"></i>
+      </div>
+      <h2 class="how-it-works__service-title">AWS Cloud Services</h2>
+      <p class="how-it-works__service-description">
+        <strong>Step 1:</strong> We design your cloud architecture according to your business needs.<br/>
+        <strong>Step 2:</strong> Migrate your data to AWS Cloud securely and efficiently.<br/>
+        <strong>Step 3:</strong> Provide ongoing monitoring and support for your cloud infrastructure.
+      </p>
+    </div>
+
+    <div class="how-it-works__service-card-how">
+      <div class="how-it-works__icon-container">
+        <i class="fas fa-vials"></i>
+      </div>
+      <h2 class="how-it-works__service-title">Software Testing</h2>
+      <p class="how-it-works__service-description">
+        <strong>Step 1:</strong> We gather your software requirements and test for functionality, performance, and security.<br/>
+        <strong>Step 2:</strong> Our QA team runs thorough tests and reports issues.<br/>
+        <strong>Step 3:</strong> We retest after issues are fixed, ensuring smooth performance.
+      </p>
+    </div>
+  </section>
+</div>
+
+
+  <!-- FAQ Section -->
+  <section class="how-it-works__faq">
+    <h2 class="how-it-works__faq-heading">Frequently Asked Questions</h2>
+    <div class="how-it-works__accordion">
+      <div class="how-it-works__accordion-item">
+        <div class="how-it-works__accordion-question">
+          <h4>How do I get started with your services?</h4>
+          <span class="how-it-works__accordion-icon">+</span>
+        </div>
+        <div class="how-it-works__accordion-answer">
+          <p>Simply contact us through the 'Contact Us' button, and our team will guide you through the onboarding process.</p>
+        </div>
+      </div>
+
+      <div class="how-it-works__accordion-item">
+        <div class="how-it-works__accordion-question">
+          <h4>What is the pricing structure?</h4>
+          <span class="how-it-works__accordion-icon">+</span>
+        </div>
+        <div class="how-it-works__accordion-answer">
+          <p>We offer customized pricing based on the specific needs of your business. Contact us for a detailed quote.</p>
+        </div>
+      </div>
+
+      <div class="how-it-works__accordion-item">
+        <div class="how-it-works__accordion-question">
+          <h4>Do you provide support after project completion?</h4>
+          <span class="how-it-works__accordion-icon">+</span>
+        </div>
+        <div class="how-it-works__accordion-answer">
+          <p>Yes, we offer ongoing support and maintenance services to ensure your digital solutions remain effective.</p>
+        </div>
+      </div>
+
+      <div class="how-it-works__accordion-item">
+        <div class="how-it-works__accordion-question">
+          <h4>How long does a typical project take?</h4>
+          <span class="how-it-works__accordion-icon">+</span>
+        </div>
+        <div class="how-it-works__accordion-answer">
+          <p>Project timelines vary based on complexity and scope. During the consultation phase, we'll provide a detailed timeline.</p>
+        </div>
+      </div>
+
+      <div class="how-it-works__accordion-item">
+        <div class="how-it-works__accordion-question">
+          <h4>Can you handle projects of any size?</h4>
+          <span class="how-it-works__accordion-icon">+</span>
+        </div>
+        <div class="how-it-works__accordion-answer">
+          <p>Absolutely! We cater to businesses of all sizes, from startups to large enterprises.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="how-it-works__cta">
+    <h2 class="how-it-works__cta-heading">Ready to Take Your Business to the Next Level?</h2>
+    <p class="how-it-works__cta-text">
+      Get in touch with us today to discover how Vindus Environment Pvt. Ltd. can help your business grow digitally.
+    </p>
+    <button class="how-it-works__cta-button" onclick="window.location.href='/contact'">Contact Us</button>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll(".how-it-works__accordion-question").forEach(item => {
+    item.addEventListener("click", () => {
+      const parent = item.parentElement;
+      parent.classList.toggle("active");
+    });
+  });
+</script>
+
+{% endblock %}
