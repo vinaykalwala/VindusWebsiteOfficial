@@ -5,7 +5,7 @@
 <style>
     .banner-container {
     width: 100%;
-    height: 550px;
+    height: 300px;
     position: relative;
     background: 
     linear-gradient(135deg, rgba(90,42,131,0.9) 40%, rgba(247,37,133,0.8) 100%),
@@ -223,55 +223,118 @@
   }
 
 
-  .why-choose-us {
-      max-width: 1350px;
-      margin: 60px auto;
-      padding: 0 20px;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      line-height: 1.8;
-      font-size: 18px;
-      color: #333;
-  }
+.why-choose-us {
+    max-width: 1350px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    line-height: 1.8;
+    font-size: 18px;
+    color: #333;
+}
 
-  .why-choose-us h2 {
-      font-size: 2.4rem;
-      font-weight: bold;
-      margin-bottom: 25px;
-      color: #5a2a83;
-      text-align: left;
-      border-left: 6px solid #5a2a83;
-      padding-left: 12px;
-  }
+.why-choose-us h2 {
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #5a2a83;
+    text-align: left;
+    border-left: 6px solid #5a2a83;
+    padding-left: 12px;
+}
 
-  .why-choose-us ul {
-      margin-bottom: 25px;
-      padding-left: 20px;
-      list-style: none;
-  }
+.why-choose-us ul {
+    margin-bottom: 25px;
+    padding-left: 20px;
+    list-style: none;
+}
 
-  .why-choose-us ul li {
-      margin-bottom: 15px;
-      position: relative;
-      padding-left: 28px;
-  }
+.why-choose-us ul li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 28px;
+}
 
-  .why-choose-us ul li::before {
-      content: "✔";
-      position: absolute;
-      left: 0;
-      color: #5a2a83;
-      font-weight: bold;
-  }
+.why-choose-us ul li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: #5a2a83;
+    font-weight: bold;
+}
 
-  .why-choose-us p {
-      margin-bottom: 18px;
-  }
+.why-choose-us p {
+    margin-bottom: 18px;
+}
 
-  .why-choose-us .cta-text {
-      font-weight: bold;
-      color: #5a2a83;
-      font-size: 20px;
-  }
+.why-choose-us .cta-text {
+    font-weight: bold;
+    color: #5a2a83;
+    font-size: 20px;
+}
+
+.why-choose-us-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.text-part {
+    flex: 1;
+}
+
+.image-part {
+    flex: 1;
+    text-align: right;
+}
+
+.image-part img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    height: 400px; /* keep original height */
+    object-fit: cover;
+}
+
+/* 📱 Responsive for smaller screens */
+@media (max-width: 992px) {
+    .why-choose-us-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image-part {
+        text-align: center;
+    }
+
+    .image-part img {
+        width: 100%;
+        height: auto; /* let it shrink automatically */
+        max-width: 400px; /* keep reasonable size */
+    }
+}
+
+@media (max-width: 576px) {
+    .why-choose-us {
+        font-size: 16px;
+        margin: 40px auto;
+    }
+
+    .why-choose-us h2 {
+        font-size: 2rem;
+    }
+
+    .why-choose-us .cta-text {
+        font-size: 18px;
+    }
+
+    .image-part img {
+        max-width: 100%;
+        height: auto; /* fully responsive */
+    }
+}
+
+
 
   .commitment-section {
     padding: 80px 20px;
@@ -561,34 +624,43 @@
 
 
 <div class="why-choose-us">
-    <h2>Why Choose Us</h2>
-    <ul>
-        <li>
-            <strong>Expertise Across Industries</strong> – We cater to a wide range of business sectors, from startups to enterprises.
-        </li>
-        <li>
-            <strong>Custom Solutions</strong> – Our tailored services ensure that your business gets exactly what it needs.
-        </li>
-        <li>
-            <strong>Scalability & Security</strong> – We design solutions that grow with your business while maintaining top-tier security.
-        </li>
-        <li>
-            <strong>Future-Ready Technology</strong> – We implement AI, cloud computing, automation, and data analytics to give businesses a competitive edge.
-        </li>
-        <li>
-            <strong>Dedicated Support</strong> – Our team is always available to assist and optimize solutions for maximum efficiency.
-        </li>
-    </ul>
-    <p>
-        At <strong>Vindus Environment Private Limited</strong>, we don’t just provide services; 
-        we create transformational digital experiences that enable businesses to innovate, compete, 
-        and succeed in today’s digital era.
-    </p>
+    <div class="why-choose-us-content">
+        <div class="text-part">
+            <h2>Why Choose Us</h2>
+            <ul>
+                <li>
+                    <strong>Expertise Across Industries</strong> – We cater to a wide range of business sectors, from startups to enterprises.
+                </li>
+                <li>
+                    <strong>Custom Solutions</strong> – Our tailored services ensure that your business gets exactly what it needs.
+                </li>
+                <li>
+                    <strong>Scalability & Security</strong> – We design solutions that grow with your business while maintaining top-tier security.
+                </li>
+                <li>
+                    <strong>Future-Ready Technology</strong> – We implement AI, cloud computing, automation, and data analytics to give businesses a competitive edge.
+                </li>
+                <li>
+                    <strong>Dedicated Support</strong> – Our team is always available to assist and optimize solutions for maximum efficiency.
+                </li>
+            </ul>
+            <p>
+                At <strong>Vindus Environment Private Limited</strong>, we don’t just provide services; 
+                we create transformational digital experiences that enable businesses to innovate, compete, 
+                and succeed in today’s digital era.
+            </p>
 
-    <p class="cta-text">
-        Join us on this journey toward a smarter and more efficient future!
-    </p>
+            <p class="cta-text">
+                Join us on this journey toward a smarter and more efficient future!
+            </p>
+        </div>
+
+        <div class="image-part">
+            <img src="{% static 'images/vinduswhychooseus.jpeg' %}" alt="Why Choose Us Image">
+        </div>
+    </div>
 </div>
+
 
 <div class="commitment-section" id="our-commitment">
   <div class="commitment-container">

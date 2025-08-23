@@ -17,6 +17,12 @@ def terms_of_use(request):
 def privacy_policy(request):
     return render(request, 'pages/privacy_policy.html')
 
+def how_it_works(request):
+    return render(request,'pages/howitworks.html')
+
+def why_choose_us(request):
+    return render(request,'pages/whychooseus.html')
+
 
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
