@@ -36,7 +36,7 @@
   }
 
   .why-choose-us__card {
-    background: linear-gradient(135deg, #5a2a83, #9b59b6);
+    background: linear-gradient(135deg, rgba(90, 42, 131, 0.9) 40%, rgba(247, 37, 133, 0.8) 100%);
     border-radius: 12px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     width: calc(50% - 30px);
@@ -75,35 +75,57 @@
     }
   }
 
-  .ready-to-partner {
-    background: linear-gradient(
-      135deg,
-      rgba(90, 42, 131, 0.9) 40%,
-      rgba(247, 37, 133, 0.8) 100%
-    );
-    color: #fff;
-    text-align: center;
-    padding: 50px 20px;
-    border-radius: 12px;
-    margin-top: 50px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  }
+.ready-to-partner {
+  background: linear-gradient(
+    135deg,
+    rgba(90, 42, 131, 0.9) 40%,
+    rgba(247, 37, 133, 0.8) 100%
+  );
+  color: #fff;
+  text-align: center;
+  padding: 50px 20px;
+  border-radius: 12px;
+  margin-top: 50px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
 
-  .ready-to-partner .ready-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    letter-spacing: 0.5px;
-  }
+.ready-to-partner .ready-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
 
-  .ready-to-partner .ready-description {
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-    line-height: 1.6;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.ready-to-partner .ready-description {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ Contact Us Button */
+.ready-to-partner .contact-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #fff;
+  color: #5A2A83; /* matches the gradient’s darker shade */
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.ready-to-partner .contact-btn:hover {
+  background: #f72585; /* bright pink shade from gradient */
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
 </style>
 
 <section class="why-choose-us">
@@ -152,8 +174,11 @@
 <div class="ready-to-partner">
   <h3 class="ready-title">Ready to Partner?</h3>
   <p class="ready-description">
-    Choose Vindus Environment Pvt Ltd as your software solutions partner. Contact us today to discuss how we can help you achieve your goals!
+    Choose Vindus Environment Pvt Ltd as your software solutions partner. 
+    Contact us today to discuss how we can help you achieve your goals!
   </p>
+  <a href="/contact" class="contact-btn">Contact Us</a>
 </div>
+
 
 {% endblock %}
