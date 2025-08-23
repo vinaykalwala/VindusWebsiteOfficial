@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Website.views import *
+from Website.views import case_studies
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -33,6 +34,8 @@ urlpatterns = [
     path('cookies/', cookies_policy, name='cookies_policy'),
     path('save-cookie-preferences/', save_cookie_preferences, name='save_cookie_preferences'),
     path('sitemap/', sitemap, name='sitemap'),
+    path('case_studies/', sitemap, name='case_studies'),
+    path('how_it_works/', sitemap, name='how_it_works'),
     path('login/', admin_login, name='admin_login'),
     path('dashboard/', dashboard, name='dashboard'),
     path('logout/', admin_logout, name='admin_logout'),
@@ -41,7 +44,13 @@ urlpatterns = [
     path('internships/', internship_list, name='internship_list'),
     path('internship/<int:pk>/', internship_detail, name='internship_detail'),
     path('internship/<int:pk>/edit/', internship_edit, name='internship_edit'),
-    
+    path('jobs/', job_list, name='job_list'),
+    path('jobs/create/', job_create, name='job_create'),
+    path('jobs/<int:pk>/update/', job_update, name='job_update'),
+    path('jobs/<int:pk>/delete/', job_delete, name='job_delete'),
+    path('case_studies', case_studies, name='case_studies'),
+    path('jobs/<int:pk>/apply/', apply_for_job, name='apply_for_job'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

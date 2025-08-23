@@ -1,10 +1,826 @@
 {% extends 'base.html' %}
-{% block title %}Careers{% endblock %}
+{% load static %}
+{% block title %}Careers | Vindus - Join Our Innovation Journey{% endblock %}
+
 {% block content %}
-<h1>Apply for Careers</h1>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Submit</button>
-</form>
+<style>
+    :root {
+        --primary-purple: #5E35B1;
+        --primary-pink: #E91E63;
+        --light-purple: #f3e5f5;
+        --dark-purple: #4527A0;
+        --success-green: #4CAF50;
+        --text-dark: #212121;
+        --text-light: #757575;
+        --background-light: #fafafa;
+        --card-shadow: 0 10px 40px rgba(94, 53, 177, 0.15);
+        --card-hover: 0 20px 60px rgba(94, 53, 177, 0.25);
+        --gradient-primary: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        --gradient-accent: linear-gradient(135deg, var(--primary-pink), #ff4081);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background: var(--background-light);
+    }
+
+    /* Hero Section */
+    .hero-banner {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 6rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        animation: float 30s infinite linear;
+        opacity: 0.6;
+    }
+
+    @keyframes float {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(-10px, -10px) rotate(90deg); }
+        50% { transform: translate(0, -20px) rotate(180deg); }
+        75% { transform: translate(10px, -10px) rotate(270deg); }
+        100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    .careers-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .careers-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .careers-header h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #fff, #e1bee7, #fff);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3s infinite;
+        letter-spacing: -0.02em;
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    .careers-header p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+        font-weight: 300;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+        text-align: center;
+    }
+
+    .stat-item {
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-pink);
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 500;
+    }
+
+    /* Main Content */
+    .main-content {
+        padding: 5rem 0;
+    }
+
+    .careers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 5rem;
+    }
+
+    .career-card {
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        position: relative;
+        overflow: hidden;
+        animation: slideInUp 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    .career-card:nth-child(1) { animation-delay: 0.1s; }
+    .career-card:nth-child(2) { animation-delay: 0.2s; }
+    .career-card:nth-child(3) { animation-delay: 0.3s; }
+    .career-card:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes slideInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .career-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: var(--gradient-accent);
+        border-radius: 24px 24px 0 0;
+    }
+
+    .career-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: var(--card-hover);
+    }
+
+    .career-card.light {
+        background: linear-gradient(135deg, #ffffff, #f8f9ff);
+        color: var(--text-dark);
+    }
+
+    .career-card.dark {
+        background: var(--gradient-primary);
+        color: #fff;
+        position: relative;
+    }
+
+    .career-card.dark::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -50px;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: pulse 4s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+        50% { transform: scale(1.2) rotate(180deg); opacity: 0.1; }
+    }
+
+    .career-card h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        position: relative;
+    }
+
+    .career-card.dark h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--primary-pink);
+        border-radius: 2px;
+    }
+
+    .career-card p {
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        opacity: 0.9;
+    }
+
+    .career-card ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .career-card li {
+        margin-bottom: 0.8rem;
+        padding-left: 1.5rem;
+        position: relative;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .career-card.light li::before {
+        content: '✨';
+        position: absolute;
+        left: 0;
+        color: var(--primary-purple);
+        font-weight: bold;
+    }
+
+    .career-card.dark li::before {
+        content: '💎';
+        position: absolute;
+        left: 0;
+        color: var(--primary-pink);
+    }
+
+    /* Job Listings */
+    .job-listings ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .job-listings li {
+        background: rgba(255,255,255,0.15);
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-listings li::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary-pink);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .job-listings li:hover {
+        background: rgba(255,255,255,0.25);
+        transform: translateX(5px);
+    }
+
+    .job-listings li:hover::before {
+        transform: scaleY(1);
+    }
+
+    .job-listings strong {
+        font-size: 1.2rem;
+        display: block;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+    }
+
+    .job-listings p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        margin-bottom: 1rem !important;
+    }
+
+    .job-listings a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #fff;
+        background: var(--gradient-accent);
+        padding: 0.7rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-listings a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .job-listings a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
+    }
+
+    .job-listings a:hover::before {
+        left: 100%;
+    }
+
+    .job-listings a::after {
+        content: '→';
+        margin-left: 0.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .job-listings a:hover::after {
+        transform: translateX(5px);
+    }
+
+    /* Form Section */
+    .form-section {
+        margin-top: 4rem;
+        background: linear-gradient(135deg, #ffffff, #f8f9ff);
+        padding: 4rem 3rem;
+        border-radius: 32px;
+        border: 1px solid rgba(94, 53, 177, 0.1);
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(94, 53, 177, 0.05) 0%, transparent 70%);
+        animation: rotate 20s infinite linear;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .form-section h2 {
+        font-size: 2.5rem;
+        color: var(--primary-purple);
+        margin-bottom: 2rem;
+        text-align: center;
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--gradient-accent);
+        border-radius: 2px;
+    }
+
+    .form-section form {
+        max-width: 800px;
+        margin: auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-section form p {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-section label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 0.95rem;
+    }
+
+    .form-section input, 
+    .form-section select,
+    .form-section textarea {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .form-section input:focus, 
+    .form-section select:focus,
+    .form-section textarea:focus {
+        border-color: var(--primary-purple);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(94, 53, 177, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-section textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-section button {
+        background: var(--gradient-primary);
+        color: #fff;
+        border: none;
+        padding: 1.2rem 3rem;
+        border-radius: 16px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: block;
+        margin: 2rem auto 0;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-section button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .form-section button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(94, 53, 177, 0.4);
+    }
+
+    .form-section button:hover::before {
+        left: 100%;
+    }
+
+    .form-section button:active {
+        transform: translateY(-1px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .careers-container {
+            padding: 0 1rem;
+        }
+
+        .careers-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .career-card {
+            padding: 2rem;
+        }
+
+        .form-section {
+            padding: 2.5rem 1.5rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .careers-header h1 {
+            font-size: 2.2rem;
+        }
+
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Scroll animations */
+    .scroll-reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease;
+    }
+
+    .scroll-reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Loading animation for form */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero-banner">
+    <div class="careers-container">
+        <div class="careers-header">
+            <h1>Careers at Vindus</h1>
+            <p>Be part of a team driving innovation, sustainability, and excellence across the globe</p>
+            
+            <!-- <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Open Positions</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">200+</span>
+                    <span class="stat-label">Team Members</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Countries</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Employee Satisfaction</span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</section>
+
+<!-- Main Content -->
+<section class="main-content">
+    <div class="careers-container">
+        <!-- Grid Section -->
+        <div class="careers-grid">
+            <!-- Why Join Us -->
+            <div class="career-card light scroll-reveal">
+                <h2>Why Join Us?</h2>
+                <p>At Vindus, we're passionate about transforming industries through innovation. Join us in a growth-oriented environment committed to sustainability and excellence.</p>
+                <ul>
+                    <li>Innovate with cutting-edge technology and groundbreaking solutions</li>
+                    <li>Grow with continuous learning, mentorship, and career development</li>
+                    <li>Contribute to sustainable solutions that make a real impact</li>
+                    <li>Work in a collaborative, inclusive, and diverse culture</li>
+                    <li>Enjoy competitive benefits and flexible work arrangements</li>
+                </ul>
+            </div>
+
+            <!-- Open Positions -->
+            <div class="career-card dark scroll-reveal">
+                <h2>Open Positions</h2>
+                <p>Explore exciting opportunities to join our innovative team and shape the future:</p>
+                <div class="job-listings">
+                    {% if jobs %}
+                        <ul>
+                            {% for job in jobs %}
+                                <li>
+                                    <strong>{{ job.title }}</strong> — {{ job.job_type|title }}, {{ job.location }}
+                                    <p>{{ job.description|truncatewords:20 }}</p>
+                                    <a href="{% url 'careers' %}#application-form">Apply Now</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>We're always looking for exceptional talent! Even if there are no specific openings, we'd love to hear from you.</p>
+                        <a href="#application-form" style="margin-top: 1rem;">Submit Your Profile</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Application Process -->
+            <div class="career-card light scroll-reveal">
+                <h2>Application Process</h2>
+                <p>Our streamlined hiring process is designed to be transparent, efficient, and candidate-friendly:</p>
+                <ul>
+                    <li>Browse open positions and select roles that match your skills and interests</li>
+                    <li>Submit your comprehensive application through our user-friendly portal</li>
+                    <li>Participate in structured interviews to showcase your expertise and passion</li>
+                    <li>Complete technical assessments or portfolio reviews if applicable</li>
+                    <li>Receive your offer and begin your transformative journey with Vindus</li>
+                </ul>
+            </div>
+
+            <!-- Our Culture -->
+            <div class="career-card dark scroll-reveal">
+                <h2>Our Culture</h2>
+                <p>We foster a culture of collaboration, innovation, and sustainability where every voice matters and every idea has the potential to change the world.</p>
+                <ul>
+                    <li><strong>Collaborative:</strong> Work alongside passionate professionals who share your vision</li>
+                    <li><strong>Innovative:</strong> Drive technological advancements and disruptive solutions</li>
+                    <li><strong>Sustainable:</strong> Commit to eco-friendly practices and social responsibility</li>
+                    <li><strong>Inclusive:</strong> Embrace diversity and create belonging for everyone</li>
+                    <li><strong>Growth-Oriented:</strong> Continuous learning and development opportunities</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Application Form -->
+        <div class="form-section scroll-reveal" id="application-form">
+            <h2>Submit Your Application</h2>
+            <form method="POST" enctype="multipart/form-data" id="careerForm">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    {{ form.as_p }}
+                </div>
+                
+                <button type="submit" id="submitBtn">
+                    <span class="btn-text">Submit Application</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Scroll reveal animation
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all scroll-reveal elements
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Form submission with loading state
+    const form = document.getElementById('careerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function() {
+            const btnText = submitBtn.querySelector('.btn-text');
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span>Submitting Application...';
+            
+            // Re-enable after 5 seconds in case of errors
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                btnText.innerHTML = 'Submit Application';
+            }, 5000);
+        });
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Add hover effects to job listings
+    document.querySelectorAll('.job-listings li').forEach(job => {
+        job.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(10px) scale(1.02)';
+        });
+        
+        job.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(5px) scale(1)';
+        });
+    });
+
+    // Form field animations
+    document.querySelectorAll('.form-section input, .form-section textarea, .form-section select').forEach(field => {
+        field.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        field.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+});
+
+// Counter animation for stats
+function animateStats() {
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+        const target = parseInt(stat.textContent);
+        const increment = target / 100;
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                stat.textContent = target + (stat.textContent.includes('+') ? '+' : '') + (stat.textContent.includes('%') ? '%' : '');
+                clearInterval(timer);
+            } else {
+                stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : '') + (stat.textContent.includes('%') ? '%' : '');
+            }
+        }, 20);
+    });
+}
+
+// Trigger stats animation when hero is visible
+const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            setTimeout(animateStats, 500);
+            heroObserver.unobserve(entry.target);
+        }
+    });
+});
+
+const heroSection = document.querySelector('.hero-banner');
+if (heroSection) {
+    heroObserver.observe(heroSection);
+}
+</script>
 {% endblock %}

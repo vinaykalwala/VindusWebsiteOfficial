@@ -900,6 +900,119 @@
   display: block;
   border-radius: 20px;
 }
+    /* Updated Cookie Consent Styles to match cookies.html */
+    .cookie-consent-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1000px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 25px;
+      z-index: 1000;
+      display: none;
+      animation: slideUp 0.5s ease forwards;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .cookie-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .cookie-text {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .cookie-text h3 {
+      color: #5a2a83;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .cookie-text h3 i {
+      color: #f72585;
+    }
+    
+    .cookie-text p {
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+    
+    .cookie-text a {
+      color: #f72585;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .cookie-text a:hover {
+      text-decoration: underline;
+    }
+    
+    .cookie-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .cookie-btn {
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.95rem;
+    }
+    
+    .btn-accept {
+      background: linear-gradient(to right, #5a2a83, #f72585);
+      color: white;
+    }
+    
+    .btn-accept:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(90, 42, 131, 0.3);
+    }
+    
+    .btn-settings {
+      background: white;
+      color: #5a2a83;
+      border: 2px solid #5a2a83;
+    }
+    
+    .btn-settings:hover {
+      background: #f9f5ff;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+      .cookie-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .cookie-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .cookie-btn {
+        flex: 1;
+        min-width: 140px;
+      }
+    }
 
 /* Responsive */
 @media (max-width: 992px) {
@@ -1250,7 +1363,94 @@
   </div>
 </section>
 
+<!-- Updated Cookie Consent Popup -->
+  <div class="cookie-consent-container" id="cookieConsent">
+    <div class="cookie-content">
+      <div class="cookie-text">
+        <h3><i class="fas fa-cookie-bite"></i> We Use Cookies</h3>
+        <p>We use cookies to improve your experience on our website. By clicking "Accept All", you consent to the use of ALL cookies. However, you may visit <a href="{% url 'cookies_policy' %}">Cookie Settings</a> to provide controlled consent.</p>
+      </div>
+      <div class="cookie-buttons">
+        <button class="cookie-btn btn-settings" onclick="window.location.href='{% url 'cookies_policy' %}'">Cookie Settings</button>
+        <button class="cookie-btn btn-accept" id="acceptCookies">Accept All</button>
+      </div>
+    </div>
+  </div>
 
+  <script>
+    // Enhanced cookie consent functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user has already made a choice
+      if (!localStorage.getItem('cookiePreferences')) {
+        // Show the popup after a short delay
+        setTimeout(function() {
+          document.getElementById('cookieConsent').style.display = 'block';
+        }, 1000);
+      }
+      
+      // Accept cookies button - stores all preferences
+      document.getElementById('acceptCookies').addEventListener('click', function() {
+        // Save all cookie preferences as accepted
+        const preferences = {
+          necessary: true,
+          analytics: true,
+          marketing: true,
+          functionality: true
+        };
+        
+        localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+        document.getElementById('cookieConsent').style.display = 'none';
+        
+        // Show confirmation
+        showToast('All cookies accepted!', true);
+        
+        // You can add code here to set all cookies or trigger analytics
+        console.log('All cookies accepted:', preferences);
+      });
+      
+      // Toast notification function
+      function showToast(message, isSuccess = true) {
+        // Create toast element if it doesn't exist
+        let toast = document.getElementById('cookieToast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'cookieToast';
+          toast.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${isSuccess ? 'linear-gradient(to right, #5a2a83, #f72585)' : '#e74c3c'};
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          `;
+          document.body.appendChild(toast);
+        }
+        
+        // Set message and icon
+        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        
+        // Show toast
+        toast.style.opacity = '1';
+        toast.style.visibility = 'visible';
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.visibility = 'hidden';
+        }, 3000);
+      }
+    });
+  </script>
 
 
 </body>
