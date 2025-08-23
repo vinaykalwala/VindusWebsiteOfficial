@@ -1,10 +1,975 @@
 {% extends 'base.html' %}
-{% block title %}Internship Opportunities{% endblock %}
+{% block title %}TechBridge Internship{% endblock %}
 {% block content %}
-<h1>Internship Registration</h1>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Register</button>
+{% load static %}
+
+<style>
+  /* Hero Section */
+.hero {
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+  min-height: 60vh;   /* less height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 60px 20px;
+  overflow: hidden;
+}
+
+/* Gradient Overlay */
+.hero-overlay {
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 150%;
+  height: 150%;
+  background: linear-gradient(135deg, rgba(90,42,131,0.9) 40%, rgba(247,37,133,0.8) 100%);
+  transform: skewY(-6deg);
+  z-index: 1;
+}
+
+/* Content */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  animation: fadeSlideUp 1s ease forwards;
+}
+
+.hero h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* Button */
+.btn-apply {
+  display: inline-block;
+  background: #f72585;
+  color: #fff;
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.4);
+}
+
+.btn-apply:hover {
+  background: #fff;
+  color: #5a2a83;
+  transform: scale(1.07) rotate(-1deg);
+  box-shadow: 0 8px 25px rgba(247, 37, 133, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 60vh;
+    padding: 80px 20px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}
+
+/* Common Container */
+.tb-intro-container, .tb-why-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-top: 60px;
+  padding-bottom: 30px;
+}
+
+/* Section 1: Intro */
+.tb-intro-unique {
+  background: #fff;
+}
+
+.tb-intro-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.tb-intro-text h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #5a2a83;
+  margin-bottom: 20px;
+}
+
+.tb-intro-text p {
+  font-size: 1.15rem;
+  color: #444;
+}
+
+.tb-highlight-unique {
+  color: #f72585;
+  font-weight: 600;
+}
+
+.tb-intro-image img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+/* Section 2: Why TechBridge */
+.tb-why-unique {
+  background: linear-gradient(135deg, #f8f6fb, #ffffff);
+  border-top: 2px solid #eee;
+  border-bottom: 2px solid #eee;
+  text-align: center;
+}
+
+.tb-title-unique {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #5a2a83;
+}
+
+.tb-sub-unique {
+  display: block;
+  font-size: 1.2rem;
+  margin-top: 12px;
+  color: #f72585;
+}
+
+/* Problem Cards */
+.tb-problem-grid {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.tb-problem-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.tb-problem-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(90,42,131,0.15);
+}
+
+.tb-problem-card i {
+  font-size: 2rem;
+  color: #f72585;
+  margin-bottom: 15px;
+}
+
+.tb-problem-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #5a2a83;
+}
+
+.tb-problem-card p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Conclusion */
+.tb-conclusion {
+  margin-top: 40px;
+  font-size: 1.1rem;
+  color: #444;
+  line-height: 1.7;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .tb-intro-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .tb-intro-text h2 {
+    font-size: 2rem;
+  }
+  .tb-intro-text p {
+    font-size: 1rem;
+  }
+}
+/* Program Highlights Section */
+.techbridge-highlights {
+  padding: 60px 20px;
+  background-color: #efdcff;
+}
+
+.techbridge-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Heading */
+.techbridge-heading {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #5a2a83;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.techbridge-heading span {
+  color: #f72585;
+}
+
+.techbridge-intro {
+  font-size: 1.1rem;
+  color: #555;
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 50px;
+  line-height: 1.7;
+}
+
+/* Table Styling */
+.techbridge-table-wrapper {
+  overflow-x: auto; /* mobile scroll */
+  margin-top: 30px;
+}
+
+.techbridge-table {
+  width: 100%;
+  border-collapse: collapse; /* ensures borders merge cleanly */
+  font-size: 1rem;
+  text-align: left;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(90, 42, 131, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.techbridge-table th,
+.techbridge-table td {
+  padding: 16px 20px;
+  border: 1px solid #ddd; /* ✅ adds both vertical & horizontal lines */
+  vertical-align: top;
+}
+
+.techbridge-table th {
+  background: #5a2a83;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.techbridge-table tbody tr:nth-child(even) {
+  background: #f9f5fc; /* light purple shade for zebra effect */
+}
+
+.techbridge-gains {
+  margin-top: 40px;
+}
+
+.techbridge-gains-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #5a2a83;
+  margin-bottom: 20px;
+}
+
+.techbridge-gains-list {
+  list-style: none;
+  padding: 0;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+.techbridge-gains-list li {
+  margin-bottom: 12px;
+  padding-left: 5px;
+}
+/* Gains Section Layout */
+.techbridge-gains {
+  margin-top: 60px;
+}
+
+.techbridge-gains-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.techbridge-gains-image img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(90, 42, 131, 0.15);
+  object-fit: cover;
+}
+
+.techbridge-gains-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.techbridge-gains-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #5a2a83;
+  margin-bottom: 20px;
+}
+
+.techbridge-gains-list {
+  list-style: none;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.techbridge-gains-list li {
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 28px;
+}
+
+.techbridge-gains-list li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #f72585;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .techbridge-gains-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .techbridge-gains-image {
+    order: -1; /* image above text on mobile */
+  }
+}
+.tc-why-section {
+  padding: 80px 20px;
+background: linear-gradient(135deg, #f72583 0%, #5a2a83 50%, #5a2a83 100%);
+  color: #fff;
+}
+
+.tc-why-container {
+  max-width: 1300px;
+  margin: auto;
+  text-align: center;
+}
+
+.tc-why-heading {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+}
+
+.tc-why-heading span {
+  color: #ffd1f3;
+}
+
+.tc-why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 25px;
+}
+
+.tc-why-card {
+  background: #fff;
+  color: #333;
+  border-radius: 14px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.tc-why-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.tc-why-icon {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.tc-why-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #5a2a83;
+}
+
+.tc-why-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .tc-ideal-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .tc-ideal-text {
+    order: 2;
+  }
+  .tc-ideal-image {
+    order: 1;
+  }
+}
+
+.tc-why-icon {
+  font-size: 2rem;
+  color: #5a2a83;
+  margin-bottom: 12px;
+}
+.tc-candidates-unique {
+  padding: 0 20px;
+  background: linear-gradient(135deg, #f9f5fc, #ffffff);
+  padding-bottom: 70px;
+  padding-top: 60px;
+}
+
+.tc-candidates-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tc-candidates-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #5a2a83;
+  margin-bottom: 50px;
+}
+
+
+
+.tc-candidates-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.tc-candidate-card {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(90, 42, 131, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+  border: 1px solid #5a2a83;
+}
+
+.tc-candidate-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(90, 42, 131, 0.2);
+}
+
+.tc-candidate-card i {
+  font-size: 2rem;
+  color: #f72585;
+  margin-bottom: 15px;
+}
+
+.tc-candidate-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #5a2a83;
+  margin-bottom: 10px;
+}
+
+.tc-candidate-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.tc-candidates-footer {
+  margin-top: 40px;
+  padding: 20px;
+  background: #5a2a83;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(90, 42, 131, 0.2);
+}
+
+.tc-candidates-footer i {
+  margin-right: 8px;
+  color: #f8dfff;
+}
+
+</style>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>TechBridge Internship: Elevate Your Tech Career</h1>
+    <p>Bridge the Academia-Industry Divide with a 3-Month Mentor-Driven Program</p>
+    <a href="#apply" class="btn-apply">Apply Now</a>
+  </div>
+</section>
+
+
+<!-- Section 1: Intro -->
+<section class="tb-intro-unique">
+  <div class="tb-intro-container">
+    <div class="tb-intro-text">
+      <h2 class="tb-title-unique">Bridge the Academia-Industry Divide</h2>
+      <p>
+        Are you a final-year student or recent graduate poised to enter the dynamic world of technology? 
+        In India's thriving IT landscape, where over half of engineering graduates face unemployment or 
+        non-core roles, <strong>practical experience</strong> is the key differentiator. 
+        <span class="tb-highlight-unique">The TechBridge Internship</span> is a 
+        <strong>3-month mentor-driven program</strong> designed to equip you with hands-on skills 
+        in high-demand areas — transforming you into an industry-ready professional.
+      </p>
+    </div>
+    <div class="tb-intro-image">
+<img src="{% static 'images/learning.webp' %}" alt="Students learning">
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Why TechBridge -->
+<section class="tb-why-unique">
+  <div class="tb-why-container">
+    <h2 class="tb-title-unique"> Why TechBridge? The Problem We're Solving
+
+      <span class="tb-sub-unique"> India produces millions of tech graduates annually, but over 50% struggle with employability due
+ to</span>
+    </h2>
+
+    <div class="tb-problem-grid">
+      <div class="tb-problem-card">
+        <i class="fa-solid fa-book-open"></i>
+        <h3>Lack of Practical Skills</h3>
+        <p>Theory alone doesn’t cut it in the workplace — you need hands-on training.</p>
+      </div>
+
+      <div class="tb-problem-card">
+        <i class="fa-solid fa-laptop-code"></i>
+        <h3>No Real-World Exposure</h3>
+        <p>College projects rarely mimic actual business challenges.</p>
+      </div>
+
+      <div class="tb-problem-card">
+        <i class="fa-solid fa-people-arrows"></i>
+        <h3>Limited Placement Support</h3>
+        <p>Especially in Tier 2/3 colleges with few corporate ties.</p>
+      </div>
+
+      <div class="tb-problem-card">
+        <i class="fa-solid fa-trophy"></i>
+        <h3>Fierce Competition</h3>
+        <p>Stand out with proven experience that sets you apart from peers.</p>
+      </div>
+    </div>
+
+    <p class="tb-conclusion">
+      Don’t let unemployment hold you back — <span class="tb-highlight-unique">TechBridge</span> equips you 
+      with the tools to thrive in high-demand roles like <strong>full-stack development</strong>.
+    </p>
+  </div>
+</section>
+<section class="techbridge-highlights">
+  <div class="techbridge-container">
+
+    <!-- Title -->
+    <h2 class="techbridge-heading">
+      Program Highlights: Structured Path to Proficiency
+    </h2>
+    <p class="techbridge-intro">
+      Engage in a comprehensive, mentor-guided journey focused on building expertise through
+      intensive training and authentic projects.
+    </p>
+
+    <!-- Table for Phases -->
+    <div class="techbridge-table-wrapper">
+      <table class="techbridge-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Duration</th>
+            <th>What’s Included</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Phase 1: Intensive Training</td>
+            <td>2 Months</td>
+            <td>
+              Live and recorded sessions on selected tech stacks, assignments, quizzes, and project introductions.
+            </td>
+          </tr>
+          <tr>
+            <td>Phase 2: Hands-On Implementation</td>
+            <td>1 Month</td>
+            <td>
+              Team-based and individual work on real client projects, with mentor guidance, progress reviews, and final submissions.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- What You Gain with image -->
+    <div class="techbridge-gains">
+      <div class="techbridge-gains-grid">
+        <!-- Left Image -->
+        <div class="techbridge-gains-image">
+          <img src="{% static 'images/gain.jpeg' %}" alt="Student achieving success">
+        </div>
+        <!-- Right Content -->
+        <div class="techbridge-gains-content">
+          <h3 class="techbridge-gains-title">What You Gain</h3>
+          <ul class="techbridge-gains-list">
+            <li>Internship Certificate to validate your experience.</li>
+            <li>Portfolio-Ready Project to highlight your achievements.</li>
+            <li>Recommendation Letter tailored to your performance.</li>
+            <li>Soft Skills Training and Resume Building to prepare you for interviews.</li>
+            <li>Access to Resources for ongoing reference.</li>
+            <li>Bonus: Job Interview Prep Sessions for that extra edge.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="tc-candidates-unique">
+  <div class="tc-candidates-wrapper">
+    <h2 class="tc-candidates-heading">Ideal Candidates: Your Gateway to Opportunity</h2>
+
+    <div class="tc-candidates-cards">
+      <div class="tc-candidate-card">
+        <i class="fa-solid fa-user-graduate"></i>
+        <h3>Primary Audience</h3>
+        <p>Final-year engineering and IT students seeking practical expertise.</p>
+      </div>
+
+      <div class="tc-candidate-card">
+        <i class="fa-solid fa-briefcase"></i>
+        <h3>Secondary Audience</h3>
+        <p>Unemployed graduates aiming to upskill for enhanced job prospects.</p>
+      </div>
+
+      <div class="tc-candidate-card">
+        <i class="fa-solid fa-location-dot"></i>
+        <h3>Geographical Focus</h3>
+        <p>Tier 2 and Tier 3 cities with limited access to quality internships.</p>
+      </div>
+    </div>
+
+    <div class="tc-candidates-footer">
+      <p>
+        <i class="fa-solid fa-laptop-house"></i>
+        Aligned with post-COVID trends in remote work and online learning, TechBridge adapts 
+        to the expanding IT sector's needs.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="tc-why-section">
+  <div class="tc-why-container">
+    <h2 class="tc-why-heading">Why TechBridge Stands Out: Authentic Value</h2>
+    
+    <div class="tc-why-grid">
+  <div class="tc-why-card">
+    <div class="tc-why-icon"><i class="fa-solid fa-folder-open"></i></div>
+    <h3>Live Client Projects</h3>
+    <p>Tackle genuine requirements for true authenticity.</p>
+  </div>
+
+  <div class="tc-why-card">
+    <div class="tc-why-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+    <h3>Personalized Mentorship</h3>
+    <p>Advance from fundamentals to deployment with expert support.</p>
+  </div>
+
+  <div class="tc-why-card">
+    <div class="tc-why-icon"><i class="fa-solid fa-coins"></i></div>
+    <h3>Affordable Access</h3>
+    <p>Offered at a very low affordable cost.</p>
+  </div>
+
+  <div class="tc-why-card">
+    <div class="tc-why-icon"><i class="fa-solid fa-cloud"></i></div>
+    <h3>Future-Proof Flexibility</h3>
+    <p>Modules evolve with market trends like AI & Cloud.</p>
+  </div>
+
+  <div class="tc-why-card">
+    <div class="tc-why-icon"><i class="fa-solid fa-handshake"></i></div>
+    <h3>Talent Pipeline</h3>
+    <p>Outstanding participants may connect with our partner firms.</p>
+  </div>
+</div>
+
+  </div>
+</section>
+<br>
+<!-- Final CTA + Form -->
+<section id="apply" class="apply-section">
+  <div class="apply-container">
+    <h2 class="apply-heading">🚀 Next Steps: Begin Your Transformation</h2>
+    <p class="apply-subtext">
+      Register today — limited spots available! Our team will review your application and contact you with further steps.
+    </p>
+
+   <form method="POST" enctype="multipart/form-data" class="apply-form">
+  {% csrf_token %}
+  <div class="form-grid">
+    {% for field in form %}
+      <div class="form-field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <small class="form-text">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <small class="error-text">{{ error }}</small>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn-apply-submit">Register Now</button>
 </form>
+
+  </div>
+</section>
+
+<style>
+/* Apply Section */
+.apply-section {
+  background: linear-gradient(135deg, #f8f6fb, #ffffff);
+  padding: 80px 20px;
+  border-top: 2px solid #eee;
+}
+
+.apply-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 35px;
+  box-shadow: 0 8px 25px rgba(90, 42, 131, 0.1);
+  text-align: center;
+}
+
+.apply-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #5a2a83;
+  margin-bottom: 15px;
+}
+
+.apply-subtext {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 35px;
+  line-height: 1.6;
+}
+
+/* Form Styling */
+.apply-form {
+  text-align: left;
+}
+
+.apply-form p {
+  margin-bottom: 20px;
+}
+
+.apply-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #5a2a83;
+  font-size: 1rem;
+}
+
+.apply-form input,
+.apply-form select,
+.apply-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #333;
+  background: #fdfdfd;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.apply-form input:focus,
+.apply-form select:focus,
+.apply-form textarea:focus {
+  outline: none;
+  border-color: #f72585;
+  box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.15);
+}
+
+/* Submit Button */
+.btn-apply-submit {
+  display: inline-block;
+  margin-top: 10px;
+  background: #f72585;
+  color: #fff;
+  padding: 14px 40px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.4);
+}
+
+.btn-apply-submit:hover {
+  background: #fff;
+  color: #5a2a83;
+  transform: scale(1.07) rotate(-1deg);
+  box-shadow: 0 8px 25px rgba(247, 37, 133, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .apply-container {
+    padding: 30px 20px;
+  }
+  .apply-heading {
+    font-size: 1.6rem;
+  }
+  .btn-apply-submit {
+    width: 100%;
+  }
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 25px; /* row gap & column gap */
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #5a2a83;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  height: 50px;              /* same height for all */
+  min-height: 50px;          /* force consistency */
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: 0.3s;
+  background: #fdfdfd;
+  resize: none;              /* stops textarea from expanding */
+  box-sizing: border-box;
+}
+
+/* For textareas specifically (so text isn't cut off vertically) */
+.form-field textarea {
+  line-height: 1.4;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto; /* scroll if needed */
+}
+
+/* Apply same height to inputs/selects/textarea EXCEPT checkboxes & radios */
+.form-field input:not([type="checkbox"]):not([type="radio"]),
+.form-field select,
+.form-field textarea {
+  height: 50px;
+  min-height: 50px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: 0.3s;
+  background: #fdfdfd;
+  resize: none;
+  box-sizing: border-box;
+}
+
+/* Normal size for checkbox/radio */
+.form-field input[type="checkbox"],
+.form-field input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #5a2a83; /* matches your theme */
+  cursor: pointer;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: #f72585;
+  box-shadow: 0 0 0 3px rgba(247, 37, 133, 0.15);
+}
+
+/* Error & Help Text */
+.error-text {
+  color: #d9534f;
+  font-size: 0.85rem;
+}
+
+.form-text {
+  color: #777;
+  font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr; /* stack on small screens */
+  }
+}
+
+</style>
+
+
+
 {% endblock %}
