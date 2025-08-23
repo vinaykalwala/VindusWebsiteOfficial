@@ -1,178 +1,140 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block title %}Site Map{% endblock %}
 {% load static %}
-
-{% block title %}Sitemap | Vindus{% endblock %}
-
 {% block content %}
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 <style>
-/* Hero Section */
-.hero {
-  position: relative;
-  height: 280px;
-  background: linear-gradient(rgba(87, 38, 122, 0.7), rgba(214, 51, 132, 0.7)),
-              url("{% static 'images/hero-bg.jpg' %}") center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 0 20px 20px;
+/* ===== Banner (unchanged) ===== */
+.contact-banner-container{
+  position:relative;width:100%;height:280px;overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(90,42,131,.9) 40%,rgba(247,37,133,.8) 100%),
+    url("{% static 'images/sitemap.webp' %}") no-repeat center/cover;
+  display:flex;align-items:center;justify-content:center;
+}
+.banner-text{color:#fff;font-size:3rem;font-weight:700;text-transform:uppercase;text-shadow:2px 2px 5px rgba(0,0,0,.5);text-align:center;}
+@media (max-width:768px){.contact-banner-container{height:250px}.banner-text{font-size:2rem}}
+@media (max-width:480px){.contact-banner-container{height:200px}.banner-text{font-size:1.5rem}}
+
+/* ===== Flow layout ===== */
+.sitemap-wrap{max-width:1100px;margin:60px auto 70px;padding:0 16px;position:relative}
+.root{
+  display:inline-block;margin:0 auto 20px;padding:12px 22px;border-radius:12px;
+  background:linear-gradient(135deg,#f72585,#5a2a83);color:#fff;font-weight:600;box-shadow:0 6px 16px rgba(0,0,0,.15)
+}
+.spine{height:2px;background:#5a2a83;margin:18px 0 40px;border-radius:2px}
+
+.columns{display:flex;gap:36px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.col{flex:1 1 300px;min-width:260px;position:relative}
+
+/* connector from spine to each column head */
+.col-head{position:relative;display:inline-block;margin:0 auto 14px;padding:10px 18px;border-radius:12px;
+  background:linear-gradient(135deg,#5a2a83);color:#fff;font-weight:600;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.col-head:before{content:"";position:absolute;top:-34px;left:50%;transform:translateX(-50%);width:2px;height:34px;background:#5a2a83;border-radius:2px}
+
+/* items */
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.pill, .pill-link{
+  display:block;padding:10px 14px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.08);
+  background:linear-gradient(135deg,#5a2a83, #5a2a83, #f72585);color:#fff;font-weight:500;text-decoration:none;text-align:center;
+  transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease
+}
+.pill-link:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.14);opacity:.95}
+
+
+@media (max-width: 768px) {
+    .sitemap-container {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center !important;   /* center horizontally */
+        justify-content: center !important; /* center vertically if needed */
+        margin: 0 auto !important;
+        text-align: center !important;
+    }
+
+    .sitemap-column {
+        width: 100% !important;
+        max-width: 350px !important;   /* keep a neat size */
+        margin: 0 auto !important;     /* force center */
+    }
+
+    .sitemap-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto !important;     /* center UL */
+        width: 100%;
+        max-width: 280px;              /* stops going full width */
+    }
+
+    .sitemap-column ul li {
+        margin: 10px auto !important;  /* force li center */
+        text-align: center !important;
+    }
+
+    .sitemap-column ul li a {
+        display: block;
+        margin: 0 auto !important;     /* center button */
+        max-width: 250px;              /* button width */
+    }
 }
 
-.hero-content h1 {
-  font-size: 2.8rem;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.hero-content p {
-  font-size: 1.2rem;
-  max-width: 700px;
-  margin: auto;
-}
-
-/* Sitemap Layout */
-.sitemap-container {
-  max-width: 1200px;
-  margin: 50px auto;
-  padding: 0 20px;
-}
-
-.sitemap-heading {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 40px;
-  font-weight: bold;
-  color: #57267A;
-}
-
-.sitemap-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 25px;
-}
-
-.sitemap-item {
-  background: #fff;
-  padding: 20px 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.sitemap-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-}
-
-.sitemap-link {
-  display: block;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #d63384;
-  text-decoration: none;
-  margin-bottom: 12px;
-  transition: color 0.3s ease;
-}
-
-.sitemap-link:hover {
-  color: #57267A;
-}
-
-.sitemap-sublist {
-  list-style: none;
-  padding-left: 15px;
-}
-
-.sitemap-sublist li {
-  margin: 5px 0;
-  font-size: 0.95rem;
-  color: #444;
-}
 </style>
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>Explore Our Website</h1>
-        <p>A complete sitemap to help you discover Vindus services, solutions, and insights effortlessly.</p>
+<!-- Banner -->
+<div class="contact-banner-container">
+  <div class="banner-text">Site Map</div>
+</div>
+
+<!-- Flow -->
+<div class="sitemap-wrap">
+  <div class="root"><i class="fas fa-sitemap"></i> Sitemap</div>
+  <div class="spine"></div>
+
+  <div class="columns">
+
+    <!-- Main Pages -->
+    <div class="col">
+      <div class="col-head"><i class="fas fa-home"></i> Main Pages</div>
+      <ul class="items">
+        <li><a class="pill-link" href="{% url 'home' %}">Home</a></li>
+        <li><a class="pill-link" href="{% url 'about' %}">About Us</a></li>
+        <li><a class="pill-link" href="{% url 'services' %}">Services</a></li>
+        <li><a class="pill-link" href="{% url 'case_studies' %}">Case Studies</a></li>
+        <li><a class="pill-link" href="{% url 'careers' %}">Careers</a></li>
+        <li><a class="pill-link" href="{% url 'internship' %}">Internship</a></li>
+        <li><a class="pill-link" href="{% url 'contact' %}">Contact Us</a></li>
+      </ul>
     </div>
-</section>
 
-<!-- Sitemap Grid -->
-<div class="sitemap-container">
-    <h2 class="sitemap-heading">Project Sitemap</h2>
-    <div class="sitemap-grid">
-
-        <!-- Column 1 -->
-        <div class="sitemap-column">
-            <div class="sitemap-item">
-                <a href="{% url 'home' %}" class="sitemap-link">🏠 Home Page</a>
-                <ul class="sitemap-sublist">
-                    <li>Carousel Banner</li>
-                    <li>Business Analytics Section</li>
-                    <li>Services Grid</li>
-                    <li>SEO Section</li>
-                    <li>Development Process Cards</li>
-                    <li>Technology Stack</li>
-                    <li>Client Showcase</li>
-                    <li>Social Media Links</li>
-                    <li>Chatbox</li>
-                </ul>
-            </div>
-
-            <div class="sitemap-item">
-                <a href="{% url 'services' %}" class="sitemap-link">🛠 Services</a>
-                <ul class="sitemap-sublist">
-                    <li>SEO Tools</li>
-                    <li>Software Development</li>
-                    <li>Digital Marketing</li>
-                    <li>AWS Cloud</li>
-                    <li>Software Testing</li>
-                    <li>Video Marketing</li>
-                    <li>Blockchain</li>
-                    <li>IoT Solutions</li>
-                    <li>AI/ML Solutions</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Column 2 -->
-        <div class="sitemap-column">
-            <div class="sitemap-item">
-                <a href="{% url 'about' %}" class="sitemap-link">ℹ️ About Us</a>
-                <ul class="sitemap-sublist">
-                    <li>Company Overview</li>
-                    <li>Mission Statement</li>
-                    <li>Vision Statement</li>
-                    <li>Core Values</li>
-                    <li>Team/Leadership Section</li>
-                </ul>
-            </div>
-
-            <div class="sitemap-item">
-                <a href="{% url 'careers' %}" class="sitemap-link">💼 Careers</a>
-                <ul class="sitemap-sublist">
-                    <li>Current Openings List</li>
-                    <li>Job Cards</li>
-                    <li>Join Our Team Section</li>
-                    <li>Resume Submission Form</li>
-                    <li>Application Status Popups</li>
-                </ul>
-            </div>
-
-            <div class="sitemap-item">
-                <a href="{% url 'contact' %}" class="sitemap-link">📞 Contact Us</a>
-                <ul class="sitemap-sublist">
-                    <li>Contact Cards</li>
-                    <li>Contact Form</li>
-                    <li>Location Map</li>
-                    <li>Message Submission Popups</li>
-                </ul>
-            </div>
-        </div>
+    <!-- Information -->
+    <div class="col">
+      <div class="col-head"><i class="fas fa-info-circle"></i> Information</div>
+      <ul class="items">
+        <li><a class="pill-link" href="{% url 'how_it_works' %}">How it Works</a></li>
+        <li><a class="pill-link" href="{% url 'why_choose_us' %}">Why Choose Us</a></li>
+        <li><a class="pill-link" href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+        <li><a class="pill-link" href="{% url 'terms_of_use' %}">Terms of Use</a></li>
+        <li><a class="pill-link" href="{% url 'cookies_policy' %}">Cookies Policy</a></li>
+        <li><a class="pill-link" href="{% url 'sitemap' %}">Sitemap</a></li>
+      </ul>
     </div>
+
+    <!-- Services -->
+    <div class="col">
+      <div class="col-head"><i class="fas fa-cogs"></i> Services</div>
+      <ul class="items">
+        <li><span class="pill">Web Design & Development</span></li>
+        <li><span class="pill">Blockchain Services</span></li>
+        <li><span class="pill">IoT Solutions</span></li>
+        <li><span class="pill">Mobile App Development</span></li>
+        <li><span class="pill">AI & Cloud Solutions</span></li>
+      </ul>
+    </div>
+
+  </div>
 </div>
 
 {% endblock %}
