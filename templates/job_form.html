@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{% if create %}Add Job{% else %}Edit Job{% endif %}</h1>
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% if create %}Create{% else %}Update{% endif %} Job</button>
+</form>
+<a href="{% url 'job_list' %}">Back to Job List</a>
+{% endblock %}

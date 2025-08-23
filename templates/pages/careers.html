@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Careers | Vindus - Join Our Innovation Journey{% endblock %}
 
 {% block content %}
@@ -606,7 +605,7 @@
             <h1>Careers at Vindus</h1>
             <p>Be part of a team driving innovation, sustainability, and excellence across the globe</p>
             
-            <div class="stats-row">
+            <!-- <div class="stats-row">
                 <div class="stat-item">
                     <span class="stat-number">50+</span>
                     <span class="stat-label">Open Positions</span>
@@ -625,7 +624,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 
 <!-- Main Content -->
@@ -657,7 +656,7 @@
                                 <li>
                                     <strong>{{ job.title }}</strong> — {{ job.job_type|title }}, {{ job.location }}
                                     <p>{{ job.description|truncatewords:20 }}</p>
-                                    <a href="{% url 'apply_for_job' job.id %}">Apply Now</a>
+                                    <a href="{% url 'careers' %}#application-form">Apply Now</a>
                                 </li>
                             {% endfor %}
                         </ul>
