@@ -1,22 +1,25 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block title %}Job Openings | Vindus{% endblock %}
+
 {% block content %}
-<h1>Job Listings (Admin)</h1>
-<a href="{% url 'job_create' %}">+ Add New Job</a>
-<table>
-  <tr>
-    <th>Title</th><th>Type</th><th>Location</th><th>Status</th><th>Actions</th>
-  </tr>
-  {% for job in jobs %}
-  <tr>
-    <td>{{ job.title }}</td>
-    <td>{{ job.get_job_type_display }}</td>
-    <td>{{ job.location }}</td>
-    <td>{{ job.is_open|yesno:"Open,Closed" }}</td>
-    <td>
-      <a href="{% url 'job_update' job.pk %}">Edit</a> |
-      <a href="{% url 'job_delete' job.pk %}">Delete</a>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+<section class="main-content">
+<div class="careers-container">
+    <h2 class="scroll-reveal">Job Openings</h2>
+    <a href="{% url 'job_create' %}" class="btn" style="margin-bottom:20px;">Add New Job</a>
+    {% if jobs %}
+        <ul class="job-listings scroll-reveal">
+            {% for job in jobs %}
+                <li>
+                    <strong>{{ job.title }}</strong> — {{ job.employment_type }}, {{ job.location }}
+                    <p>{{ job.description|truncatewords:30 }}</p>
+                    <a href="{% url 'job_edit' job.id %}">Edit</a> |
+                    <a href="{% url 'job_delete' job.id %}" onclick="return confirm('Are you sure?');">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No job openings available.</p>
+    {% endif %}
+</div>
+</section>
 {% endblock %}

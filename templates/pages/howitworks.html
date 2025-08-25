@@ -152,45 +152,59 @@
   }
 
   /* CTA Section */
-  .how-it-works__cta {
-    background: linear-gradient(135deg, rgba(90, 42, 131, 0.9) 40%, rgba(247, 37, 133, 0.8) 100%);;
-    color: #fff;
-    text-align: center;
-    padding: 50px 20px;
-    border-radius: 12px;
-    margin-top: 50px;
-  }
+.how-it-works__cta {
+  background: linear-gradient(
+    135deg,
+    rgba(90, 42, 131, 0.9) 40%,
+    rgba(247, 37, 133, 0.8) 100%
+  );
+  color: #fff;
+  text-align: center;
+  padding: 50px 20px;
+  border-radius: 16px;
 
-  .how-it-works__cta-heading {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-  }
+  /* neat alignment */
+  margin: 60px auto;     
+  max-width: 1400px;     
+  width: 90%;            
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
 
-  .how-it-works__cta-text {
-    font-size: 1.1rem;
-    margin-bottom: 25px;
-  }
+.how-it-works__cta-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
 
-  .how-it-works__cta-button {
+.how-it-works__cta-text {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.how-it-works__cta-button {
   padding: 12px 28px;
   background: #fff;
-  color: #5A2A83; /* matches gradient dark purple */
+  color: #5a2a83; /* matches gradient dark purple */
   font-size: 1rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .how-it-works__cta-button:hover {
   background: #f72585; /* bright pink from your gradient */
   color: #fff;
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
+
 
 </style>
 

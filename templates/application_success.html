@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Application Submitted Successfully!</h1>
+<p>Thank you for applying for {{ job.title }}. We will contact you soon.</p>
+<a href="{% url 'job_list' %}">Back to Job Listings</a>
+{% endblock %}
