@@ -597,33 +597,16 @@
     }
 </style>
 
+
+
 <!-- Hero Section -->
 <section class="hero-banner">
     <div class="careers-container">
         <div class="careers-header">
             <h1>Careers at Vindus</h1>
             <p>Be part of a team driving innovation, sustainability, and excellence across the globe</p>
-            
-            <!-- <div class="stats-row">
-                <div class="stat-item">
-                    <span class="stat-number">50+</span>
-                    <span class="stat-label">Open Positions</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">200+</span>
-                    <span class="stat-label">Team Members</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">15+</span>
-                    <span class="stat-label">Countries</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">98%</span>
-                    <span class="stat-label">Employee Satisfaction</span>
-                </div>
-            </div>
         </div>
-    </div> -->
+    </div>
 </section>
 
 <!-- Main Content -->
@@ -645,26 +628,26 @@
             </div>
 
             <!-- Open Positions -->
-            <div class="career-card dark scroll-reveal">
-                <h2>Open Positions</h2>
-                <p>Explore exciting opportunities to join our innovative team and shape the future:</p>
-                <div class="job-listings">
-                    {% if jobs %}
-                        <ul>
-                            {% for job in jobs %}
-                                <li>
-                                    <strong>{{ job.title }}</strong> — {{ job.job_type|title }}, {{ job.location }}
-                                    <p>{{ job.description|truncatewords:20 }}</p>
-                                    <a href="{% url 'careers' %}#application-form">Apply Now</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>We're always looking for exceptional talent! Even if there are no specific openings, we'd love to hear from you.</p>
-                        <a href="#application-form" style="margin-top: 1rem;">Submit Your Profile</a>
-                    {% endif %}
-                </div>
-            </div>
+<div class="career-card dark scroll-reveal">
+    <h2>Open Positions</h2>
+    <p>Explore exciting opportunities to join our innovative team:</p>
+    <div class="job-listings">
+        {% if jobs %}
+            <ul>
+                {% for job in jobs %}
+                    <li>
+                        <strong>{{ job.title }}</strong> — {{ job.employment_type }}, {{ job.location }}
+                        <p>{{ job.description|truncatewords:25 }}</p>
+                        <a href="{% url 'apply_job' job.id %}">Apply Now</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No openings currently. Submit your profile and we'll keep it on record!</p>
+        {% endif %}
+    </div>
+</div>
+
 
             <!-- Application Process -->
             <div class="career-card light scroll-reveal">
@@ -693,133 +676,81 @@
             </div>
         </div>
 
-        <!-- Application Form -->
+
+        <!-- General Profile Form -->
         <div class="form-section scroll-reveal" id="application-form">
-            <h2>Submit Your Application</h2>
+            <h2>Submit Your Profile</h2>
             <form method="POST" enctype="multipart/form-data" id="careerForm">
                 {% csrf_token %}
-                
                 <div class="form-row">
                     {{ form.as_p }}
                 </div>
-                
                 <button type="submit" id="submitBtn">
-                    <span class="btn-text">Submit Application</span>
+                    <span class="btn-text">Submit Your Profile</span>
                 </button>
             </form>
         </div>
+
     </div>
 </section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Scroll reveal animation
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const observer = new IntersectionObserver(function(entries) {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('revealed');
         });
     }, observerOptions);
+    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-    // Observe all scroll-reveal elements
-    document.querySelectorAll('.scroll-reveal').forEach(el => {
-        observer.observe(el);
+    // Smooth scroll for anchors
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
     });
 
-    // Form submission with loading state
-    const form = document.getElementById('careerForm');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    if (form && submitBtn) {
-        form.addEventListener('submit', function() {
-            const btnText = submitBtn.querySelector('.btn-text');
-            submitBtn.disabled = true;
+    // Set job_id on clicking Apply Now
+    document.querySelectorAll('.apply-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const jobId = this.getAttribute('data-job-id');
+            document.getElementById('job_id_field').value = jobId;
+        });
+    });
+
+    // Loading animation for Job Form
+    const jobForm = document.getElementById('jobForm');
+    const jobSubmitBtn = document.getElementById('jobSubmitBtn');
+    if (jobForm && jobSubmitBtn) {
+        jobForm.addEventListener('submit', function() {
+            const btnText = jobSubmitBtn.querySelector('.btn-text');
+            jobSubmitBtn.disabled = true;
             btnText.innerHTML = '<span class="loading"></span>Submitting Application...';
-            
-            // Re-enable after 5 seconds in case of errors
             setTimeout(() => {
-                submitBtn.disabled = false;
+                jobSubmitBtn.disabled = false;
                 btnText.innerHTML = 'Submit Application';
             }, 5000);
         });
     }
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+    // Loading animation for Profile Form
+    const profileForm = document.getElementById('careerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    if (profileForm && submitBtn) {
+        profileForm.addEventListener('submit', function() {
+            const btnText = submitBtn.querySelector('.btn-text');
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span>Submitting Application...';
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                btnText.innerHTML = 'Submit Your Profile';
+            }, 5000);
         });
-    });
-
-    // Add hover effects to job listings
-    document.querySelectorAll('.job-listings li').forEach(job => {
-        job.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateX(10px) scale(1.02)';
-        });
-        
-        job.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateX(5px) scale(1)';
-        });
-    });
-
-    // Form field animations
-    document.querySelectorAll('.form-section input, .form-section textarea, .form-section select').forEach(field => {
-        field.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-        });
-        
-        field.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
-    });
+    }
 });
-
-// Counter animation for stats
-function animateStats() {
-    const stats = document.querySelectorAll('.stat-number');
-    stats.forEach(stat => {
-        const target = parseInt(stat.textContent);
-        const increment = target / 100;
-        let current = 0;
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                stat.textContent = target + (stat.textContent.includes('+') ? '+' : '') + (stat.textContent.includes('%') ? '%' : '');
-                clearInterval(timer);
-            } else {
-                stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : '') + (stat.textContent.includes('%') ? '%' : '');
-            }
-        }, 20);
-    });
-}
-
-// Trigger stats animation when hero is visible
-const heroObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            setTimeout(animateStats, 500);
-            heroObserver.unobserve(entry.target);
-        }
-    });
-});
-
-const heroSection = document.querySelector('.hero-banner');
-if (heroSection) {
-    heroObserver.observe(heroSection);
-}
 </script>
 {% endblock %}

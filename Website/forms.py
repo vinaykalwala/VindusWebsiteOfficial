@@ -59,9 +59,22 @@ class InternshipApplicationForm(forms.ModelForm):
             'batch_assigned', 'internship_type', 'interview_score', 'message', 'agreement_acceptance', 'status'
         ]
 
-from .models import Job
 
-class JobForm(forms.ModelForm):
+
+from django import forms
+from .models import JobApplication
+
+class JobApplicationForm(forms.ModelForm):
     class Meta:
-        model = Job
-        fields = ['title', 'job_type', 'location', 'description', 'requirements', 'is_open']
+        model = JobApplication
+        fields = [
+            'name', 'email', 'phone', 'date_of_birth', 'gender', 'address',
+            'qualification', 'specialization', 'aggregate_percentage', 'skills',
+            'prior_experience', 'resume', 'cover_letter', 'agreement_acceptance'
+        ]
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'address': forms.Textarea(attrs={'placeholder': 'Your Address'}),
+            'skills': forms.Textarea(attrs={'placeholder': 'Technical and Soft Skills'}),
+            'prior_experience': forms.Textarea(attrs={'placeholder': 'Previous Experience'}),
+        }

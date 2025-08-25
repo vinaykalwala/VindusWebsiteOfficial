@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import ContactForm, CareerForm, InternshipForm
-from .models import Contact, CareerApplication, InternshipApplication, Job
+from .models import Contact, CareerApplication, InternshipApplication
 
 def home(request):
     return render(request, 'pages/home.html')
@@ -202,73 +202,53 @@ def internship_edit(request, pk):
     return render(request, 'internship_edit.html', {'form': form})
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import JobOpening, CareerApplication, JobApplication
+from .forms import CareerForm, JobApplicationForm
+
 def careers(request):
-    jobs = Job.objects.filter(is_open=True).order_by('-posted_at')
+    jobs = JobOpening.objects.filter(is_active=True).order_by('-posted_at')
+
     if request.method == "POST":
-        form = CareerForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('careers')
+        # Determine which form is submitted
+        if 'job_id' in request.POST:
+            # Job application form submitted
+            form = JobApplicationForm(request.POST, request.FILES)
+            job_id = request.POST.get('job_id')
+            job = get_object_or_404(JobOpening, id=job_id)
+            if form.is_valid():
+                application = form.save(commit=False)
+                application.job = job
+                application.save()
+                messages.success(request, f"Your application for {job.title} has been submitted!")
+                return redirect('careers')
+            else:
+                messages.error(request, "Please fill all required fields correctly for the job application.")
+        else:
+            # General profile form submitted
+            form = CareerForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your profile has been submitted successfully!")
+                return redirect('careers')
+            else:
+                messages.error(request, "Please fill all required fields correctly for your profile.")
     else:
         form = CareerForm()
-    return render(request, 'pages/careers.html', {'jobs': jobs, 'form': form})
+        job_form = JobApplicationForm()
 
-# Job CRUD views for admin panel
+    return render(request, 'pages/careers.html', {
+        'jobs': jobs,
+        'form': form,
+        'job_form': JobApplicationForm()
+    })
 
-@superuser_required
-def job_list(request):
-    jobs = Job.objects.all().order_by('-posted_at')
-    return render(request, 'job_list.html', {'jobs': jobs})
-
-@superuser_required
-def job_create(request):
-    if request.method == "POST":
-        form = JobForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('job_list')
-    else:
-        form = JobForm()
-    return render(request, 'job_form.html', {'form': form, 'create': True})
-
-@superuser_required
-def job_update(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-    if request.method == "POST":
-        form = JobForm(request.POST, instance=job)
-        if form.is_valid():
-            form.save()
-            return redirect('job_list')
-    else:
-        form = JobForm(instance=job)
-    return render(request, 'job_form.html', {'form': form, 'create': False, 'job': job})
-
-@superuser_required
-def job_delete(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-    if request.method == "POST":
-        job.delete()
-        return redirect('job_list')
-    return render(request, 'job_confirm_delete.html', {'job': job})
 from django.shortcuts import render
 
 def case_studies(request):
     return render(request, "pages/case_studies.html")
 
-from django.shortcuts import get_object_or_404, render
-from .models import Job
-from .forms import CareerForm
-
-def apply_for_job(request, pk):
-    job = get_object_or_404(Job, pk=pk)
-    if request.method == 'POST':
-        form = CareerForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('careers')
-    else:
-        form = CareerForm()
-    return render(request, 'pages/apply_for_job.html', {'job': job, 'form': form})
 
 
 from django.shortcuts import render
@@ -343,7 +323,33 @@ class ProductsView(TemplateView):
                 'link_text': 'Request a Demo'
             }
         ]
-        
-       
-        
         return context
+    
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import JobOpening, JobApplication
+from .forms import JobApplicationForm
+
+# List all active jobs
+def job_list(request):
+    jobs = JobOpening.objects.filter(is_active=True)
+    return render(request, 'job_list.html', {'jobs': jobs})
+
+# Job details page
+def job_detail(request, job_id):
+    job = get_object_or_404(JobOpening, id=job_id)
+    return render(request, 'job_detail.html', {'job': job})
+
+# Apply for a specific job
+def apply_job(request, job_id):
+    job = get_object_or_404(JobOpening, id=job_id)
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = job
+            application.save()
+            return render(request, 'application_success.html', {'job': job})
+    else:
+        form = JobApplicationForm()
+    return render(request, 'apply_job.html', {'form': form, 'job': job})

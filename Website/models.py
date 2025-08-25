@@ -116,22 +116,67 @@ class InternshipApplication(models.Model):
     def __str__(self):
         return f"{self.name} - {self.qualification}"
 
-class Job(models.Model):
-    JOB_TYPES = (
-        ('full-time', 'Full Time'),
-        ('part-time', 'Part Time'),
-        ('internship', 'Internship'),
-        ('contract', 'Contract'),
-        ('remote', 'Remote'),
-    )
-    title = models.CharField(max_length=150)
-    job_type = models.CharField(max_length=20, choices=JOB_TYPES, default='full-time')
-    location = models.CharField(max_length=100)
+from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+class JobOpening(models.Model):
+    title = models.CharField(max_length=200)
     description = models.TextField()
-    requirements = models.TextField(blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    employment_type = models.CharField(
+        max_length=50,
+        choices=[('Full-Time', 'Full-Time'), ('Part-Time', 'Part-Time'), ('Internship', 'Internship')],
+        default='Full-Time'
+    )
+    required_qualification = models.CharField(max_length=200, blank=True)
+    skills_required = models.TextField(blank=True)
+    experience_required = models.TextField(blank=True)
+    application_deadline = models.DateField(null=True, blank=True)
     posted_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    is_open = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.title} ({self.location})"
+        return self.title
+
+
+class JobApplication(models.Model):
+    job = models.ForeignKey(JobOpening, on_delete=models.CASCADE, related_name='applications')
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    date_of_birth = models.DateField(null=True, blank=True)
+    gender = models.CharField(
+        max_length=10,
+        choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')],
+        blank=True
+    )
+    address = models.TextField(blank=True)
+    qualification = models.CharField(max_length=100)
+    specialization = models.CharField(max_length=100, blank=True)
+    aggregate_percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    )
+    skills = models.TextField(help_text="Technical and soft skills")
+    prior_experience = models.TextField(blank=True)
+    resume = models.FileField(upload_to='job_applications/resumes/')
+    cover_letter = models.FileField(upload_to='job_applications/cover_letters/', blank=True, null=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Pending', 'Pending'),
+            ('Reviewed', 'Reviewed'),
+            ('Shortlisted', 'Shortlisted'),
+            ('Rejected', 'Rejected'),
+            ('Selected', 'Selected')
+        ],
+        default='Pending'
+    )
+    agreement_acceptance = models.BooleanField(default=False, help_text="Agree to all terms and conditions?")
+
+    def __str__(self):
+        return f"{self.name} - {self.job.title}"
