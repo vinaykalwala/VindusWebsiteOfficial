@@ -1,324 +1,736 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
+
+{% block title %}Case Studies | Vindus Environment{% endblock %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Case Studies - Vindus Environment</title>
-  <!-- Poppins Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --vindus-purple:#5a2a83;
-      --vindus-pink:#f72585;
-      --vindus-light:#efdcff;
-      --vindus-border-purple:#d6a9fd;
-      --vindus-border-pink:#b969ff;
-      --text-1:#333; --text-2:#444; --text-3:#555;
-    }
+<style>
+  :root{
+    --vindus-purple:#5a2a83;
+    --vindus-pink:#f72585;
+    --vindus-light:#efdcff;
+    --vindus-border-purple:#d6a9fd;
+    --vindus-border-pink:#b969ff;
+    --text-1:#333; --text-2:#444; --text-3:#555;
+  }
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #fafafa;
-      color: var(--text-1);
-    }
+  /* Page wrapper (scopes all styles) */
+  .vindus-case {
+    width: 100%;
+    background: #fafafa;
+    color: var(--text-1);
+  }
 
-    /* =========================
-       HERO BANNER (with angled overlay)
-       ========================= */
-    .vindus-hero {
-      position: relative;
-      background: url('https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
-      min-height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #fff;
-      overflow: hidden;
-    }
-    .vindus-hero::before {
-      content: "";
-      position: absolute;
-      top: -20%;
-      left: -20%;
-      width: 150%;
-      height: 150%;
-      /* uses Vindus purple/pink with alpha */
-      background: linear-gradient(135deg, rgba(90,42,131,0.92) 40%, rgba(247,37,133,0.8) 100%);
-      transform: skewY(-6deg);
-      z-index: 1;
-    }
-    .vindus-hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 800px;
-      padding: 0 20px;
-      animation: fadeSlideUp 1s ease forwards;
-    }
-    .vindus-hero h1 {
-      font-size: 3rem;
-      font-weight: 800;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: -1px;
-    }
-    .vindus-hero p {
-      font-size: 1.2rem;
-      line-height: 1.7;
-      opacity: 0.95;
-    }
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(60px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  /* =========================
+     HERO
+     ========================= */
+  .vindus-hero {
+    position: relative;
+    background: url("{% static 'images/CaseStudies.jpg' %}") center/cover no-repeat;
+    min-height: 52vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .vindus-hero::before {
+    content: "";
+    position: absolute;
+    inset: -30% -10%;
+    background: linear-gradient(135deg, rgba(90,42,131,.9) 30%, rgba(247,37,133,.65) 100%);
+    transform: skewY(-6deg);
+  }
+  .vindus-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+    max-width: 1200px;
+    width: 100%;
+  }
+  .vindus-hero h1 {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    margin: 0 0 .5rem;
+    letter-spacing: -.5px;
+  }
+  .vindus-hero p {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    opacity: .95;
+  }
 
-    /* =========================
-       CASE STUDY SECTION
-       ========================= */
-    .case-study-section {
-      padding: 40px 20px;
-      max-width: 1200px;
-      margin: auto;
-      text-align: center;
-    }
-    .case-study-section h2 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: var(--vindus-purple);
-      margin-bottom: 50px;
-      position: relative;
-      display: inline-block;
-    }
-    .case-study-section h2::after {
-      content: "";
-      position: absolute;
-      bottom: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      border-radius: 2px;
-      background: linear-gradient(90deg,var(--vindus-pink),var(--vindus-purple));
-    }
+  /* =========================
+     INTRO
+     ========================= */
+  .intro-body {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 40px);
+  }
+  .intro-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 1fr;
+  }
+  .intro-grid h2 {
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    color: var(--vindus-purple);
+    margin: 0 0 .5rem;
+  }
+  .intro-grid p {
+    color: var(--text-2);
+    line-height: 1.7;
+  }
 
-    .case-study-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-    }
-    .case-card {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 6px 25px rgba(90,42,131,0.12);
-      overflow: hidden;
-      transition: all 0.4s ease;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--vindus-border-purple);
-    }
-    .case-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 35px rgba(247,37,133,0.25);
-      border-color: var(--vindus-border-pink);
-    }
-    .case-card img {
-      width: 100%;
-      height: 220px;              /* uniform height */
-      object-fit: contain;        /* show full image without crop */
-      background: #fff;           /* visible where aspect ratio leaves space */
-      border-bottom: 1px solid var(--vindus-border-purple);
-    }
-    .case-card-content {
-      padding: 20px;
-      flex-grow: 1;
-    }
-    .case-card h3 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--vindus-purple);
-      margin-bottom: 8px;
-    }
-    .case-card p {
-      font-size: 0.95rem;
-      color: var(--text-3);
-      margin-bottom: 15px;
-    }
-    .case-card a {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
-      color: #fff;
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: 0.3s;
-      box-shadow: 0 6px 18px rgba(247,37,133,0.25);
-    }
-    .case-card a:hover {
-      background: linear-gradient(135deg, var(--vindus-purple), var(--vindus-pink));
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(90,42,131,0.28);
-    }
+  /* =========================
+     SECTION HEADINGS
+     ========================= */
+  .section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 56px) clamp(16px, 4vw, 40px);
+  }
+  .section .heading {
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    margin: 0 0 22px;
+    color: var(--vindus-purple);
+    position: relative;
+    display: inline-block;
+  }
+  .section .heading::after {
+    content:"";
+    display:block;
+    height:4px; width:74px;
+    margin-top:10px;
+    background: linear-gradient(90deg, var(--vindus-pink), var(--vindus-purple));
+    border-radius: 2px;
+  }
 
-    /* Filters */
-    .filters {
-      margin-bottom: 40px;
-    }
-    .filters .filter-button {
-      padding: 10px 22px;
-      border: none;
-      border-radius: 30px;
-      margin: 5px;
-      background: var(--vindus-light);
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.3s;
-      color: var(--text-2);
-      border: 1px solid var(--vindus-border-purple);
-    }
-    .filters .filter-button.active,
-    .filters .filter-button:hover {
-      background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
-      color: #fff;
-      box-shadow: 0 5px 20px rgba(90,42,131,0.2);
-      border-color: transparent;
-    }
+  /* =========================
+     FEATURED CARDS
+     ========================= */
+  .featured-case-studies .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap: clamp(16px, 2.5vw, 24px);
+  }
+  .case-card {
+    background:#fff;
+    border-radius: 18px;
+    border:1px solid var(--vindus-border-purple);
+    box-shadow: 0 6px 20px rgba(90,42,131,.10);
+    overflow: hidden;
+    display:flex; flex-direction:column;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .case-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--vindus-border-pink);
+    box-shadow: 0 10px 28px rgba(90,42,131,.18);
+  }
+  .case-card img {
+    width: 100%; height: 200px;
+    object-fit: contain; background:#fff;
+    border-bottom:1px solid var(--vindus-border-purple);
+  }
+  .case-card .content {
+    padding: 16px 18px 18px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .case-card .content h3 {
+    margin: 0; font-size:1.15rem; color:var(--vindus-purple);
+  }
+  .case-card .content p {
+    margin: 0; color: var(--text-3);
+    line-height: 1.55;
+  }
+  .case-card .actions {
+    margin-top: 8px;
+  }
+  .btn {
+    display:inline-block;
+    background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
+    color:#fff; text-decoration:none;
+    border:none; cursor:pointer;
+    padding:10px 16px; border-radius: 11px;
+    font-weight:600; font-size:.95rem;
+    box-shadow: 0 6px 16px rgba(247,37,133,.22);
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247,37,133,.28); }
+  .btn:active { transform: translateY(0); filter: brightness(.95); }
 
-    /* =========================
-       CONCLUSION SECTION
-       ========================= */
-    .conclusion {
-      background: linear-gradient(135deg, var(--vindus-purple), var(--vindus-pink));
-      border-radius: 24px;
-      padding: 60px 20px;
-      color: #fff;
-      max-width: 1100px;
-      margin: 80px auto;
-      text-align: center;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    }
-    .conclusion h2 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-    .conclusion ul {
-      text-align: left;
-      max-width: 600px;
-      margin: 30px auto;
-    }
-    .conclusion li {
-      margin-bottom: 10px;
-    }
-    .conclusion a {
-      display: inline-block;
-      margin-top: 25px;
-      background: #fff;
-      color: var(--vindus-purple);
-      padding: 14px 30px;
-      border-radius: 50px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: 0.3s;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    }
-    .conclusion a:hover {
-      background: var(--vindus-pink);
-      color: #fff;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    }
-  </style>
-</head>
-<body>
+  /* =========================
+     FILTERS
+     ========================= */
+  .filters {
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-bottom: 18px;
+  }
+  .filter-button {
+    padding:10px 16px; border-radius:999px; border:1px solid var(--vindus-border-purple);
+    background:#fff; color:var(--text-2); cursor:pointer; font-weight:600;
+    transition: background .2s ease, color .2s, border-color .2s, box-shadow .2s;
+  }
+  .filter-button:hover { border-color: var(--vindus-border-pink); }
+  .filter-button.active {
+    background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
+    color:#fff; border-color:transparent; box-shadow: 0 6px 18px rgba(90,42,131,.18);
+  }
+
+  /* =========================
+     ALL CASE STUDIES GRID
+     ========================= */
+  .grid {
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(14px, 2vw, 22px);
+  }
+  .grid > .col {
+    grid-column: span 12;
+  }
+  @media (min-width: 640px) { .grid > .col { grid-column: span 6; } }
+  @media (min-width: 1024px){ .grid > .col { grid-column: span 4; } }
+
+  .card-logo {
+    background:#fff; border-radius:16px;
+    border:1px solid var(--vindus-border-purple);
+    padding: 14px 14px 18px;
+    display:flex; flex-direction:column; gap:10px;
+    align-items:center; text-align:center;
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    height: 100%;
+  }
+  .card-logo:hover { transform: translateY(-5px); border-color: var(--vindus-border-pink); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+  .card-logo img {
+    width: 100%; max-width: 160px; height: 110px;
+    object-fit: contain; filter: grayscale(35%);
+    transition: filter .2s ease, transform .2s ease;
+  }
+  .card-logo:hover img { filter: grayscale(0%); transform: scale(1.03); }
+  .card-logo h4 { margin: 2px 0 0; font-size: 1.05rem; color: var(--vindus-purple); }
+  .card-logo small { color: var(--text-3); }
+
+  /* =========================
+     MODAL
+     ========================= */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,.65);
+    display:none; align-items:center; justify-content:center;
+    padding: 16px;
+  }
+  .modal-content {
+    background:#fff; border-radius: 16px;
+    width: min(950px, 100%);
+    max-height: 86vh; overflow:auto;
+    padding: clamp(18px, 2.5vw, 28px);
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,.3);
+  }
+  .close-button {
+    position:absolute; right: 14px; top: 8px;
+    font-size: 28px; line-height: 1; cursor: pointer;
+    color: var(--vindus-purple);
+    padding: 6px 10px; border-radius: 8px;
+    transition: background .2s ease;
+  }
+  .close-button:hover { background: #f3e8ff; }
+  .modal-content h2 { margin: 0 0 2px; color: var(--vindus-purple); }
+  .modal-content h3 { margin: 0 0 12px; color: var(--text-2); font-size: 1.05rem; }
+  .modal-content p { color: var(--text-2); line-height: 1.7; }
+  .modal-content ul { margin: 8px 0 14px 18px; }
+  blockquote {
+    margin: 12px 0 0; padding: 12px 14px;
+    border-left: 4px solid var(--vindus-pink);
+    background: #fff3fa; border-radius: 8px;
+    color: var(--text-2); font-style: italic;
+  }
+
+  /* =========================
+     CONCLUSION
+     ========================= */
+  .conclusion-section {
+    background: linear-gradient(135deg, var(--vindus-purple), var(--vindus-pink));
+    color:#fff; border-radius: 24px;
+    max-width: 1400px; margin: 18px auto 56px;
+    padding: clamp(22px, 3vw, 40px);
+    box-shadow: 0 8px 28px rgba(0,0,0,.18);
+  }
+  .conclusion-title { margin: 0 0 10px; font-size: clamp(1.4rem, 2.4vw, 1.8rem); }
+  .conclusion-summary, .conclusion-outcomes-intro, .conclusion-testament { opacity: .95; }
+  .conclusion-outcomes { margin: 12px 0 0 18px; }
+  .conclusion-link {
+    color:#fff; text-decoration: underline; font-weight: 700;
+  }
+</style>
+
+<div class="vindus-case">
 
   <!-- HERO -->
   <section class="vindus-hero">
-    <div class="vindus-hero-content">
+    <div class="vindus-hero-inner">
       <h1>Our Case Studies</h1>
       <p>Explore how Vindus Environment delivers sustainable, innovative solutions across industries.</p>
     </div>
   </section>
 
+  <!-- INTRO -->
+  <section class="intro-body">
+    <div class="intro-grid">
+      <div>
+        <h2>Our Journey</h2>
+        <p>
+          Since May 2023, Vindus Environment Pvt Ltd has been on a remarkable journey, helping clients achieve their goals through innovative solutions. Under the visionary leadership of CEO Vinay Kalwala, our dedicated team has delivered outstanding results, transforming challenges into success stories across various industries.
+        </p>
+        <p>
+          Our case studies showcase the impactful projects we’ve undertaken, highlighting the unique challenges faced by our clients and the tailored solutions we provided. Explore how we have made a difference and continue to drive progress for businesses in an ever-evolving landscape.
+        </p>
+        <p>Join us as we celebrate the successes we’ve achieved together and look forward to many more innovative solutions in the future.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURED -->
-  <section class="case-study-section">
-    <h2>🌟 Featured Projects</h2>
-    <div class="case-study-cards">
-      <div class="case-card">
-        <img src="{% static 'images/vaudit.png' %}" alt="Vaudit SEO Tool">
-        <div class="case-card-content">
+  <section class="section featured-case-studies">
+    <h2 class="heading">Featured Projects</h2>
+    <div class="cards">
+      <!-- Vaudit -->
+      <article class="case-card">
+        <img src="{% static 'images/vaudit.png' %}" alt="Vaudit - SEO Tool">
+        <div class="content">
           <h3>Vaudit - SEO Tool</h3>
-          <p>Developed with React, CSS, Bootstrap, Django, Python.</p>
-          <a href="/case-studies/4">Click for Details</a>
+          <p>Developed with React, CSS, Bootstrap, Django, Python. Real-time SEO analytics, reporting, and insights.</p>
+          <div class="actions">
+            <button class="btn js-open" data-id="vaudit">Click for Details</button>
+          </div>
         </div>
-      </div>
-      <div class="case-card">
+      </article>
+      <!-- Qtipstore -->
+      <article class="case-card">
         <img src="{% static 'images/qtip.jpg' %}" alt="Qtipstore">
-        <div class="case-card-content">
+        <div class="content">
           <h3>Qtipstore</h3>
-          <p>Developed with Django, Python, HTML, CSS, JavaScript, Bootstrap.</p>
-          <a href="/case-studies/5">Click for Details</a>
+          <p>Django-based ecommerce with advanced filtering, SEO optimizations, and conversion tracking.</p>
+          <div class="actions">
+            <button class="btn js-open" data-id="qtipstore">Click for Details</button>
+          </div>
         </div>
-      </div>
+      </article>
+      <!-- Arax -->
+      <article class="case-card">
+        <img src="{% static 'images/arax.jpeg' %}" alt="ARAX">
+        <div class="content">
+          <h3>ARAX</h3>
+          <p>Scalable ecommerce build with Django, Bootstrap, and JS for high-volume catalogs.</p>
+          <div class="actions">
+            <button class="btn js-open" data-id="arax">Click for Details</button>
+          </div>
+        </div>
+      </article>
+      <!-- VVM -->
+      <article class="case-card">
+        <img src="{% static 'images/vvm.jpg' %}" alt="VVM">
+        <div class="content">
+          <h3>VVM</h3>
+          <p>SEO & digital presence overhaul for a media org—content strategy, structured data, and speed.</p>
+          <div class="actions">
+            <button class="btn js-open" data-id="vvm">Click for Details</button>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
   <!-- ALL CASE STUDIES -->
-  <section class="case-study-section">
-    <h2>📂 All Case Studies</h2>
+  <section class="section">
+    <h2 class="heading">All Case Studies</h2>
 
-    <div class="filters">
-      <button class="filter-button active">All</button>
-      <button class="filter-button">Environmental</button>
-      <button class="filter-button">Agriculture</button>
-      <button class="filter-button">Restaurant</button>
-      <button class="filter-button">SEO & Marketing</button>
-      <button class="filter-button">Ecommerce</button>
+    <!-- Filters -->
+    <div class="filters" role="tablist" aria-label="Case study filters">
+      <button class="filter-button active" role="tab" aria-selected="true" data-category="All">All</button>
+      <button class="filter-button" role="tab" data-category="Environmental Health & Safety">Environmental Health & Safety</button>
+      <button class="filter-button" role="tab" data-category="Agriculture">Agriculture</button>
+      <button class="filter-button" role="tab" data-category="Restaurant Management">Restaurant Management</button>
+      <button class="filter-button" role="tab" data-category="SEO & Marketing">SEO & Marketing</button>
+      <button class="filter-button" role="tab" data-category="Ecommerce">Ecommerce</button>
     </div>
 
-    <div class="case-study-cards">
-      <div class="case-card">
-        <img src="{% static 'images/mlc.png' %}" alt="MLC QEHS">
-        <div class="case-card-content">
-          <h3>MLC QEHS</h3>
-          <p><strong>Owner:</strong> Ganta Bharath<br>Built with HTML, CSS, JS, Bootstrap, AWS.</p>
-          <a href="/case-studies/1">Click for Details</a>
+    <!-- Cards Grid using your client list -->
+    <div class="grid" id="cs-grid">
+      <!-- Each card gets a data-category and data-id for modal lookup -->
+      <div class="col">
+        <div class="card-logo" data-category="Environmental Health & Safety">
+          <img src="{% static 'images/mlc.png' %}" alt="MLC QEHS">
+          <h4>MLC QEHS</h4>
+          <small>Environmental Health & Safety</small>
+          <button class="btn js-open" data-id="mlc">Click for Details</button>
         </div>
       </div>
-      <div class="case-card">
-        <img src="{% static 'images/teja.png' %}" alt="Teja Traders">
-        <div class="case-card-content">
-          <h3>Teja Traders</h3>
-          <p><strong>Owner:</strong> Teja Traders<br>Ecommerce platform built with Django, JS, Bootstrap.</p>
-          <a href="/case-studies/2">Click for Details</a>
+
+      <div class="col">
+        <div class="card-logo" data-category="Restaurant Management">
+          <img src="{% static 'images/fooden.jpg' %}" alt="Food's Den">
+          <h4>Food's Den</h4>
+          <small>Restaurant Management</small>
+          <button class="btn js-open" data-id="fooden">Click for Details</button>
         </div>
       </div>
-      <div class="case-card">
-        <img src="{% static 'images/fooden.jpg' %}" alt="Food's Den">
-        <div class="case-card-content">
-          <h3>Food's Den</h3>
-          <p><strong>Owner:</strong> Raghunandhan<br>Django-based Restaurant System with Bootstrap and JS.</p>
-          <a href="/case-studies/3">Click for Details</a>
+
+      <div class="col">
+        <div class="card-logo" data-category="Agriculture">
+          <img src="{% static 'images/CKVK.jpg' %}" alt="CKVK">
+          <h4>CKVK</h4>
+          <small>Agriculture</small>
+          <button class="btn js-open" data-id="ckvk">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="Environmental Health & Safety">
+          <img src="{% static 'images/SCM.jpg' %}" alt="SCM">
+          <h4>SCM</h4>
+          <small>Environmental Health & Safety</small>
+          <button class="btn js-open" data-id="scm">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="SEO & Marketing">
+          <img src="{% static 'images/qtip.jpg' %}" alt="Qtipstore">
+          <h4>Qtipstore</h4>
+          <small>SEO & Marketing</small>
+          <button class="btn js-open" data-id="qtipstore">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="SEO & Marketing">
+          <img src="{% static 'images/vaudit.png' %}" alt="Vaudit">
+          <h4>Vaudit</h4>
+          <small>SEO & Marketing</small>
+          <button class="btn js-open" data-id="vaudit">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="Agriculture">
+          <img src="{% static 'images/teja.png' %}" alt="Teja Traders">
+          <h4>Teja Traders</h4>
+          <small>Agriculture</small>
+          <button class="btn js-open" data-id="teja">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="SEO & Marketing">
+          <img src="{% static 'images/vvm.jpg' %}" alt="VVM">
+          <h4>VVM</h4>
+          <small>SEO & Marketing</small>
+          <button class="btn js-open" data-id="vvm">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="Ecommerce">
+          <img src="{% static 'images/arax.jpeg' %}" alt="Arax">
+          <h4>ARAX</h4>
+          <small>Ecommerce</small>
+          <button class="btn js-open" data-id="arax">Click for Details</button>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card-logo" data-category="Environmental Health & Safety">
+          <img src="{% static 'images/vorbit.png' %}" alt="VOrbit">
+          <h4>VOrbit</h4>
+          <small>Environmental Health & Safety</small>
+          <button class="btn js-open" data-id="vorbit">Click for Details</button>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- MODAL (single, dynamic) -->
+  <div class="modal-overlay" id="cs-modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title">
+      <span class="close-button" id="cs-close" aria-label="Close modal">×</span>
+      <h2 id="cs-modal-title"></h2>
+      <h3 id="cs-modal-client"></h3>
+      <p id="cs-modal-desc"></p>
+      <p><strong>Timeline:</strong> <span id="cs-modal-timeline"></span></p>
+      <p><strong>Scope:</strong> <span id="cs-modal-scope"></span></p>
+      <h4>Challenges</h4>
+      <ul id="cs-modal-challenges"></ul>
+      <h4>Solutions</h4>
+      <ul id="cs-modal-solutions"></ul>
+      <h4>Results</h4>
+      <p id="cs-modal-results"></p>
+      <p><strong>Percentage Improvement:</strong> <span id="cs-modal-improvement"></span></p>
+      <h4>Sustainability Impact</h4>
+      <p id="cs-modal-sustainability"></p>
+      <h4>Testimonial</h4>
+      <blockquote id="cs-modal-testimonial"></blockquote>
+    </div>
+  </div>
 
   <!-- CONCLUSION -->
-  <section class="conclusion">
-    <h2>✅ Conclusion</h2>
-    <p>Our case studies showcase the breadth and depth of Vindus Environment’s expertise.</p>
-    <ul>
-      <li>✔ Increased operational efficiency and cost savings</li>
-      <li>✔ Enhanced customer satisfaction</li>
-      <li>✔ Delivered within schedule and budget</li>
+  <section class="conclusion-section">
+    <h3 class="conclusion-title">Conclusion</h3>
+    <p class="conclusion-summary">
+      Our case studies showcase a diverse range of projects that demonstrate our expertise and commitment to delivering exceptional results for our clients.
+    </p>
+    <p class="conclusion-outcomes-intro">Through our innovative approaches, we have consistently achieved significant outcomes, including:</p>
+    <ul class="conclusion-outcomes">
+      <li>Increased operational efficiency, resulting in cost savings and improved productivity.</li>
+      <li>Enhanced customer satisfaction scores, highlighting our focus on delivering value.</li>
+      <li>Successful project delivery within timelines and budgets, reinforcing our reliability as a partner.</li>
     </ul>
-    <a href="{% url 'contact' %}">Get in Touch With Us</a>
+    <p class="conclusion-testament">These case studies serve as a testament to our collaborative approach with clients and our long-term commitment to their success.</p>
+    <p class="conclusion-cta">
+      Have a project in mind? <a href="{% url 'contact' %}" class="conclusion-link">Get in touch</a> and let’s build it together.
+    </p>
   </section>
 
-</body>
-</html>
+</div>
+
+<script>
+  // ------- Static data for modal (keep page static, no API) -------
+  const CASES = {
+    mlc: {
+      title: "MLC QEHS",
+      client: "Ganta Bharath · Environmental Health & Safety",
+      description: "A comprehensive platform for managing QEHS systems with cloud support.",
+      timeline: "March 2023 - Present",
+      scope: "HTML, CSS, JavaScript, Bootstrap, AWS",
+      challenges: [
+        "Managing large datasets and ensuring real-time data processing.",
+        "Implementing complex health and safety standards."
+      ],
+      solutions: [
+        "Built a cloud-based QEHS platform to handle large data efficiently.",
+        "Implemented automated reports and dashboards for data visualization."
+      ],
+      results: "Improved process efficiency and compliance through automation.",
+      improvement: "35%",
+      sustainability: "Enhanced long-term compliance with safety regulations and standards.",
+      testimonial: "“MLC QEHS is now more streamlined thanks to the team at Vindus Environment.” - Ganta Bharath"
+    },
+    teja: {
+      title: "Teja Traders - Fertilizers",
+      client: "Teja Traders · Agriculture",
+      description: "An ecommerce platform for fertilizer trading.",
+      timeline: "June 2022 - December 2022",
+      scope: "Python, Django, HTML, CSS, JavaScript, Bootstrap",
+      challenges: [
+        "Integrating multiple payment gateways.",
+        "Ensuring smooth inventory and order management."
+      ],
+      solutions: [
+        "Built a robust ecommerce platform with integrated payment and inventory systems.",
+        "Implemented an intuitive admin dashboard for easy management."
+      ],
+      results: "Increased sales and improved inventory management.",
+      improvement: "50%",
+      sustainability: "Optimized fertilizer supply chains for reduced waste.",
+      testimonial: "“Teja Traders experienced immense growth with the new ecommerce platform.” - Teja Traders"
+    },
+    fooden: {
+      title: "Food's Den",
+      client: "Raghunandhan · Restaurant Management",
+      description: "A restaurant management system with online ordering and reservations.",
+      timeline: "July 2022 - February 2023",
+      scope: "Python, Django, HTML, CSS, JavaScript, Bootstrap",
+      challenges: [
+        "Managing real-time inventory and reservations.",
+        "Integrating online ordering with the backend system."
+      ],
+      solutions: [
+        "Full-fledged restaurant system with real-time order and table management.",
+        "Seamless online ordering experience."
+      ],
+      results: "Increased customer satisfaction and efficiency through online services.",
+      improvement: "45%",
+      sustainability: "Reduced food waste via efficient inventory system.",
+      testimonial: "“Our operations are now more efficient and user-friendly.” - Raghunandhan"
+    },
+    vaudit: {
+      title: "Vaudit - SEO Tool",
+      client: "Vaudit · SEO & Marketing",
+      description: "A comprehensive SEO tool for analyzing and improving website performance.",
+      timeline: "January 2023 - Present",
+      scope: "React, CSS, Bootstrap, Django, Python",
+      challenges: [
+        "Handling large-scale data for SEO metrics.",
+        "Providing real-time insights for users."
+      ],
+      solutions: [
+        "Sleek SEO analysis with data visualization and report generation.",
+        "Real-time updates for rankings and metrics."
+      ],
+      results: "Improved SEO performance across client sites.",
+      improvement: "60%",
+      sustainability: "Promoted efficient online marketing strategies.",
+      testimonial: "“Vaudit transformed our SEO strategy.” - Vaudit Client"
+    },
+    qtipstore: {
+      title: "Qtipstore",
+      client: "Qtipstore · Ecommerce / SEO & Marketing",
+      description: "An ecommerce platform with strong SEO and online visibility.",
+      timeline: "February 2023 - Present",
+      scope: "Python, Django, HTML, CSS, JavaScript, Bootstrap",
+      challenges: [
+        "Increasing online visibility and SEO rankings.",
+        "Handling many products and categories."
+      ],
+      solutions: [
+        "SEO-optimized ecommerce with advanced filtering & product management.",
+        "Robust analytics for tracking traffic and conversions."
+      ],
+      results: "Boosted traffic and sales through enhanced SEO.",
+      improvement: "70%",
+      sustainability: "Promoted environmentally conscious products.",
+      testimonial: "“Qtipstore became a top-tier ecommerce platform in a short period.” - Qtipstore Client"
+    },
+    ckvk: {
+      title: "CKVK",
+      client: "CKVK · Agriculture",
+      description: "Digitizing farm inputs management and supplier coordination.",
+      timeline: "2023",
+      scope: "Django, Bootstrap, JS",
+      challenges: ["Distributed stakeholders", "Seasonal demand swings"],
+      solutions: ["Centralized order & supplier portal", "Stock alerts & reorder logic"],
+      results: "Fewer stockouts, smoother dispatch planning.",
+      improvement: "32%",
+      sustainability: "Better inventory planning reduced wastage.",
+      testimonial: "“Planning our inputs is finally predictable.” - CKVK Team"
+    },
+    scm: {
+      title: "SCM",
+      client: "SCM · Environmental Health & Safety",
+      description: "Safety & compliance workflows for operations at scale.",
+      timeline: "2023 - 2024",
+      scope: "Django, Bootstrap, Charts",
+      challenges: ["Compliance tracking across sites", "Data consolidation"],
+      solutions: ["Unified incident registry", "Automated KPI dashboards"],
+      results: "Faster reporting and corrective action cycles.",
+      improvement: "28%",
+      sustainability: "Consistent compliance across facilities.",
+      testimonial: "“Compliance reviews are faster and clearer.” - SCM Ops"
+    },
+    vvm: {
+      title: "VVM",
+      client: "VVM · SEO & Marketing",
+      description: "SEO overhaul for content-heavy properties.",
+      timeline: "2024",
+      scope: "React, Django, Lighthouse tuning",
+      challenges: ["Slow pages & crawl inefficiencies", "Unstructured content"],
+      solutions: ["Core Web Vitals improvements", "Schema & sitemap hygiene"],
+      results: "Meaningful lifts in organic sessions and CTR.",
+      improvement: "48%",
+      sustainability: "Lean builds reduce server overhead.",
+      testimonial: "“The visibility lift was immediate.” - VVM Editorial"
+    },
+    arax: {
+      title: "ARAX",
+      client: "ARAX · Ecommerce",
+      description: "Catalog-first ecommerce with modern UX.",
+      timeline: "2024",
+      scope: "Django, DRF, JS, Bootstrap",
+      challenges: ["Large catalogs & filters", "Checkout friction"],
+      solutions: ["Server-side search & facets", "Streamlined checkout"],
+      results: "Higher conversion and fewer drop-offs.",
+      improvement: "41%",
+      sustainability: "Caching lowers infra usage.",
+      testimonial: "“We scaled without losing speed.” - ARAX Team"
+    },
+    vorbit: {
+      title: "VOrbit",
+      client: "VOrbit · Environmental Health & Safety",
+      description: "Real-time monitoring dashboards for site safety.",
+      timeline: "2024 - Present",
+      scope: "Django, Realtime polling, Charts",
+      challenges: ["Sensor data volume", "Alert fatigue"],
+      solutions: ["Thresholding & aggregation", "Role-based alerting"],
+      results: "Faster incident detection & response.",
+      improvement: "33%",
+      sustainability: "Proactive safety reduces incidents.",
+      testimonial: "“We see issues before they escalate.” - VOrbit Safety"
+    }
+  };
+
+  // ------- Modal logic -------
+  const modal = document.getElementById('cs-modal');
+  const closeBtn = document.getElementById('cs-close');
+  const openBtns = document.querySelectorAll('.js-open');
+
+  const titleEl = document.getElementById('cs-modal-title');
+  const clientEl = document.getElementById('cs-modal-client');
+  const descEl = document.getElementById('cs-modal-desc');
+  const timelineEl = document.getElementById('cs-modal-timeline');
+  const scopeEl = document.getElementById('cs-modal-scope');
+  const challengesEl = document.getElementById('cs-modal-challenges');
+  const solutionsEl = document.getElementById('cs-modal-solutions');
+  const resultsEl = document.getElementById('cs-modal-results');
+  const improvementEl = document.getElementById('cs-modal-improvement');
+  const sustainabilityEl = document.getElementById('cs-modal-sustainability');
+  const testimonialEl = document.getElementById('cs-modal-testimonial');
+
+  function openModal(id){
+    const data = CASES[id];
+    if(!data) return;
+
+    titleEl.textContent = data.title || "";
+    clientEl.textContent = data.client || "";
+    descEl.textContent = data.description || "";
+    timelineEl.textContent = data.timeline || "";
+    scopeEl.textContent = data.scope || "";
+
+    challengesEl.innerHTML = (data.challenges || []).map(c=>`<li>${c}</li>`).join("");
+    solutionsEl.innerHTML = (data.solutions || []).map(s=>`<li>${s}</li>`).join("");
+
+    resultsEl.textContent = data.results || "";
+    improvementEl.textContent = data.improvement || "";
+    sustainabilityEl.textContent = data.sustainability || "";
+    testimonialEl.textContent = data.testimonial || "";
+
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  openBtns.forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      openModal(btn.dataset.id);
+    });
+  });
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+
+  // ------- Filters -------
+  const filterButtons = document.querySelectorAll('.filter-button');
+  const cards = document.querySelectorAll('.card-logo');
+
+  filterButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      filterButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+
+      const cat = btn.getAttribute('data-category');
+      cards.forEach(card=>{
+        const match = (cat === 'All') || (card.getAttribute('data-category') === cat);
+        card.parentElement.style.display = match ? '' : 'none';
+      });
+    });
+  });
+</script>
 {% endblock %}
