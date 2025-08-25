@@ -115,3 +115,23 @@ class InternshipApplication(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.qualification}"
+
+class Job(models.Model):
+    JOB_TYPES = (
+        ('full-time', 'Full Time'),
+        ('part-time', 'Part Time'),
+        ('internship', 'Internship'),
+        ('contract', 'Contract'),
+        ('remote', 'Remote'),
+    )
+    title = models.CharField(max_length=150)
+    job_type = models.CharField(max_length=20, choices=JOB_TYPES, default='full-time')
+    location = models.CharField(max_length=100)
+    description = models.TextField()
+    requirements = models.TextField(blank=True)
+    posted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_open = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.location})"

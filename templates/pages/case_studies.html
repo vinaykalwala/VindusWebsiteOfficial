@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Case Studies - Vindus Environment</title>
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --vindus-purple:#5a2a83;
+      --vindus-pink:#f72585;
+      --vindus-light:#efdcff;
+      --vindus-border-purple:#d6a9fd;
+      --vindus-border-pink:#b969ff;
+      --text-1:#333; --text-2:#444; --text-3:#555;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fafafa;
+      color: var(--text-1);
+    }
+
+    /* =========================
+       HERO BANNER (with angled overlay)
+       ========================= */
+    .vindus-hero {
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+    }
+    .vindus-hero::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 150%;
+      height: 150%;
+      /* uses Vindus purple/pink with alpha */
+      background: linear-gradient(135deg, rgba(90,42,131,0.92) 40%, rgba(247,37,133,0.8) 100%);
+      transform: skewY(-6deg);
+      z-index: 1;
+    }
+    .vindus-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+      animation: fadeSlideUp 1s ease forwards;
+    }
+    .vindus-hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+    .vindus-hero p {
+      font-size: 1.2rem;
+      line-height: 1.7;
+      opacity: 0.95;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(60px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================
+       CASE STUDY SECTION
+       ========================= */
+    .case-study-section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+    }
+    .case-study-section h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--vindus-purple);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+    .case-study-section h2::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(90deg,var(--vindus-pink),var(--vindus-purple));
+    }
+
+    .case-study-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+    .case-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 6px 25px rgba(90,42,131,0.12);
+      overflow: hidden;
+      transition: all 0.4s ease;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--vindus-border-purple);
+    }
+    .case-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba(247,37,133,0.25);
+      border-color: var(--vindus-border-pink);
+    }
+    .case-card img {
+      width: 100%;
+      height: 220px;              /* uniform height */
+      object-fit: contain;        /* show full image without crop */
+      background: #fff;           /* visible where aspect ratio leaves space */
+      border-bottom: 1px solid var(--vindus-border-purple);
+    }
+    .case-card-content {
+      padding: 20px;
+      flex-grow: 1;
+    }
+    .case-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--vindus-purple);
+      margin-bottom: 8px;
+    }
+    .case-card p {
+      font-size: 0.95rem;
+      color: var(--text-3);
+      margin-bottom: 15px;
+    }
+    .case-card a {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+      box-shadow: 0 6px 18px rgba(247,37,133,0.25);
+    }
+    .case-card a:hover {
+      background: linear-gradient(135deg, var(--vindus-purple), var(--vindus-pink));
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(90,42,131,0.28);
+    }
+
+    /* Filters */
+    .filters {
+      margin-bottom: 40px;
+    }
+    .filters .filter-button {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 30px;
+      margin: 5px;
+      background: var(--vindus-light);
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+      color: var(--text-2);
+      border: 1px solid var(--vindus-border-purple);
+    }
+    .filters .filter-button.active,
+    .filters .filter-button:hover {
+      background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
+      color: #fff;
+      box-shadow: 0 5px 20px rgba(90,42,131,0.2);
+      border-color: transparent;
+    }
+
+    /* =========================
+       CONCLUSION SECTION
+       ========================= */
+    .conclusion {
+      background: linear-gradient(135deg, var(--vindus-purple), var(--vindus-pink));
+      border-radius: 24px;
+      padding: 60px 20px;
+      color: #fff;
+      max-width: 1100px;
+      margin: 80px auto;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .conclusion h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    .conclusion ul {
+      text-align: left;
+      max-width: 600px;
+      margin: 30px auto;
+    }
+    .conclusion li {
+      margin-bottom: 10px;
+    }
+    .conclusion a {
+      display: inline-block;
+      margin-top: 25px;
+      background: #fff;
+      color: var(--vindus-purple);
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+    .conclusion a:hover {
+      background: var(--vindus-pink);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="vindus-hero">
+    <div class="vindus-hero-content">
+      <h1>Our Case Studies</h1>
+      <p>Explore how Vindus Environment delivers sustainable, innovative solutions across industries.</p>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="case-study-section">
+    <h2>🌟 Featured Projects</h2>
+    <div class="case-study-cards">
+      <div class="case-card">
+        <img src="{% static 'images/seoclient.png' %}" alt="Vaudit SEO Tool">
+        <div class="case-card-content">
+          <h3>Vaudit - SEO Tool</h3>
+          <p>Developed with React, CSS, Bootstrap, Django, Python.</p>
+          <a href="/case-studies/4">Click for Details</a>
+        </div>
+      </div>
+      <div class="case-card">
+        <img src="{% static 'images/qtip.jpg' %}" alt="Qtipstore">
+        <div class="case-card-content">
+          <h3>Qtipstore</h3>
+          <p>Developed with Django, Python, HTML, CSS, JavaScript, Bootstrap.</p>
+          <a href="/case-studies/5">Click for Details</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALL CASE STUDIES -->
+  <section class="case-study-section">
+    <h2>📂 All Case Studies</h2>
+
+    <div class="filters">
+      <button class="filter-button active">All</button>
+      <button class="filter-button">Environmental</button>
+      <button class="filter-button">Agriculture</button>
+      <button class="filter-button">Restaurant</button>
+      <button class="filter-button">SEO & Marketing</button>
+      <button class="filter-button">Ecommerce</button>
+    </div>
+
+    <div class="case-study-cards">
+      <div class="case-card">
+        <img src="{% static 'images/mlc.png' %}" alt="MLC QEHS">
+        <div class="case-card-content">
+          <h3>MLC QEHS</h3>
+          <p><strong>Owner:</strong> Ganta Bharath<br>Built with HTML, CSS, JS, Bootstrap, AWS.</p>
+          <a href="/case-studies/1">Click for Details</a>
+        </div>
+      </div>
+      <div class="case-card">
+        <img src="{% static 'images/teja.png' %}" alt="Teja Traders">
+        <div class="case-card-content">
+          <h3>Teja Traders</h3>
+          <p><strong>Owner:</strong> Teja Traders<br>Ecommerce platform built with Django, JS, Bootstrap.</p>
+          <a href="/case-studies/2">Click for Details</a>
+        </div>
+      </div>
+      <div class="case-card">
+        <img src="{% static 'images/fooden.jpg' %}" alt="Food's Den">
+        <div class="case-card-content">
+          <h3>Food's Den</h3>
+          <p><strong>Owner:</strong> Raghunandhan<br>Django-based Restaurant System with Bootstrap and JS.</p>
+          <a href="/case-studies/3">Click for Details</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCLUSION -->
+  <section class="conclusion">
+    <h2>✅ Conclusion</h2>
+    <p>Our case studies showcase the breadth and depth of Vindus Environment’s expertise.</p>
+    <ul>
+      <li>✔ Increased operational efficiency and cost savings</li>
+      <li>✔ Enhanced customer satisfaction</li>
+      <li>✔ Delivered within schedule and budget</li>
+    </ul>
+    <a href="{% url 'contact' %}">Get in Touch With Us</a>
+  </section>
+
+</body>
+</html>
+{% endblock %}

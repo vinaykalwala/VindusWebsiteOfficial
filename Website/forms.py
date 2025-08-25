@@ -58,3 +58,10 @@ class InternshipApplicationForm(forms.ModelForm):
             'linkedin_profile', 'portfolio_link', 'reference',
             'batch_assigned', 'internship_type', 'interview_score', 'message', 'agreement_acceptance', 'status'
         ]
+
+from .models import Job
+
+class JobForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ['title', 'job_type', 'location', 'description', 'requirements', 'is_open']

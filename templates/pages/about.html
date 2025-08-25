@@ -1,7 +1,764 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<section>
-    <h2>About Us</h2>
-    <p>Vindus Environment Private Limited is dedicated to providing innovative, sustainable, and environmentally responsible solutions. We strive to make industries eco-friendly and efficient.</p>
+
+<style>
+    .banner-container {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background: 
+    linear-gradient(135deg, rgba(90,42,131,0.9) 40%, rgba(247,37,133,0.8) 100%),
+    url("{% static 'images/vindusaboutusbanner3.jpeg' %}") no-repeat center/cover;
+    }
+
+
+    .banner-text {
+        position: absolute;
+        top: 50%;
+        left: 5%; /* keep it on left side */
+        transform: translateY(-50%);
+        text-align: left;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        max-width: 600px;
+        text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+
+    .banner-text h1 {
+        font-size: 42px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+
+    .banner-text p {
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .first-section{
+      background-color: #fff;
+      min-height: 400px;
+      
+    }
+    .about-section {
+        max-width: 1350px; /* increased width */
+        margin: 0px auto;
+        padding: 20px 20px;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        line-height: 1.8;
+        font-size: 18px;
+        color: #333;
+        
+    }
+
+    .about-section h2 {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #5a2a83;
+        text-align: left;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        
+    }
+
+    .about-section p {
+        margin-bottom: 20px;
+        
+        margin-right: 5%;
+    }
+
+  .second-section {
+  background-color: #3b046e; /* purple background */
+  text-align: center;
+  padding: 60px 20px 120px; /* bottom padding ఎక్కువగా */
+  position: relative;
+  }
+
+  .second-content p {
+    font-size: 18px;
+    color: #fff;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* image cards container */
+  .image-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: -100px; 
+    padding: 20px;
+    flex-wrap: wrap; /* allow wrapping on small screens */
+  }
+
+  /* card */
+  .card {
+    position: relative;
+    flex: 1 1 300px;   /* responsive width, min ~300px */
+    max-width: 320px;  /* prevent getting too large */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+
+  /* image */
+  .card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  /* overlay (hidden initially) */
+  .card .overlay {
+    position: absolute;
+    bottom: -100%; /* start completely hidden below */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(90, 42, 131, 0.9); 
+    color: #fff;
+    padding: 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: bottom 0.4s ease;
+  }
+
+  /* hover */
+  .card:hover .overlay {
+    bottom: 0; 
+  }
+
+  .card:hover img {
+    transform: scale(1.1);
+  }
+
+  /* 📱 Mobile screens */
+  @media (max-width: 768px) {
+    .image-cards {
+      gap: 20px;
+    }
+    .card {
+      flex: 1 1 100%;   /* full width on mobile */
+      max-width: 100%;
+    }
+  }
+
+  /* 📱 Very small screens */
+  @media (max-width: 480px) {
+    .card .overlay {
+      padding: 15px;
+    }
+    .card .overlay h3 {
+      font-size: 18px;
+    }
+    .card .overlay p {
+      font-size: 14px;
+    }
+  }
+
+  .core-values-section {
+    padding: 80px 20px;
+    /* background-color: #3b046e; */
+
+  }
+
+  .core-values-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1300px;
+    margin: auto;
+    opacity: 0; /* hidden initially */
+    transform: translateY(80px); /* start down */
+    transition: all 1s ease;
+  }
+
+  .core-values-container.show {
+    opacity: 1;
+    transform: translateY(0); /* move to normal */
+  }
+
+  .core-image img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  .core-content {
+    flex: 1;
+    color: black; /* White text for readability */
+  }
+
+  .core-content h2 {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: #5a2a83;
+    margin-bottom: 10px;
+  }
+
+  .core-content p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+  }
+    
+  /* Responsive */
+  @media (max-width: 768px) {
+    .core-values-container {
+      flex-direction: column;
+      text-align: center;
+    }
+    .core-content {
+      margin-top: 20px;
+    }
+  }
+
+
+.why-choose-us {
+    max-width: 1350px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    line-height: 1.8;
+    font-size: 18px;
+    color: #333;
+}
+
+.why-choose-us h2 {
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #5a2a83;
+    text-align: left;
+    border-left: 6px solid #5a2a83;
+    padding-left: 12px;
+}
+
+.why-choose-us ul {
+    margin-bottom: 25px;
+    padding-left: 20px;
+    list-style: none;
+}
+
+.why-choose-us ul li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 28px;
+}
+
+.why-choose-us ul li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: #5a2a83;
+    font-weight: bold;
+}
+
+.why-choose-us p {
+    margin-bottom: 18px;
+}
+
+.why-choose-us .cta-text {
+    font-weight: bold;
+    color: #5a2a83;
+    font-size: 20px;
+}
+
+.why-choose-us-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.text-part {
+    flex: 1;
+}
+
+.image-part {
+    flex: 1;
+    text-align: right;
+}
+
+.image-part img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    height: 400px; /* keep original height */
+    object-fit: cover;
+}
+
+/* 📱 Responsive for smaller screens */
+@media (max-width: 992px) {
+    .why-choose-us-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image-part {
+        text-align: center;
+    }
+
+    .image-part img {
+        width: 100%;
+        height: auto; /* let it shrink automatically */
+        max-width: 400px; /* keep reasonable size */
+    }
+}
+
+@media (max-width: 576px) {
+    .why-choose-us {
+        font-size: 16px;
+        margin: 40px auto;
+    }
+
+    .why-choose-us h2 {
+        font-size: 2rem;
+    }
+
+    .why-choose-us .cta-text {
+        font-size: 18px;
+    }
+
+    .image-part img {
+        max-width: 100%;
+        height: auto; /* fully responsive */
+    }
+}
+
+
+
+  .commitment-section {
+    padding: 80px 20px;
+  }
+
+  .commitment-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1300px;
+    margin: auto;
+    opacity: 0; /* hidden initially */
+    transform: translateY(80px);
+    transition: all 1s ease;
+  }
+
+  .commitment-container.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .commitment-image img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+
+  .commitment-content {
+    flex: 1;
+    color: black;
+  }
+
+  .commitment-content h2 {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: #5a2a83;
+    margin-bottom: 10px;
+  }
+
+  .commitment-content p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .commitment-container {
+      flex-direction: column;
+      text-align: center;
+    }
+    .commitment-content {
+      margin-top: 20px;
+    }
+  }
+
+
+  .our-clients {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f9f9f9;
+  }
+
+  .our-clients h2 {
+    font-size: 2.4rem;
+    margin-bottom: 30px;
+    color: #5a2a83;
+  }
+
+  .client-slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .client-track {
+    display: flex;
+    gap: 50px;                 /* space between logos */
+    width: max-content;        /* content ఎంత ఉందో అంతే width */
+    animation: scroll 20s linear infinite;
+  }
+
+  .client-track img {
+    width: 200px;
+    height: auto;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  /* Continuous animation */
+  @keyframes scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* half track (1 set logos) */
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .client-track img {
+      width: 120px;
+    }
+  }
+
+  .clients-section {
+    padding: 60px 20px;
+    background:#fff;
+    text-align: center;
+  }
+
+  .clients-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .clients-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #5a2a83;
+    margin-bottom: 15px;
+  }
+
+  .clients-subtitle {
+    font-size: 1.15rem;
+    color: #555;
+    margin-bottom: 50px;
+  }
+
+  /* Carousel wrapper */
+  .clients-carousel-wrapper {
+    overflow-x: hidden;
+    padding: 0 50px;
+  }
+
+  .clients-carousel {
+    display: flex;
+    width: max-content;
+    animation: scrollClients 25s linear infinite;
+  }
+
+  @keyframes scrollClients {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .clients-row {
+    display: flex;
+    gap: 40px;
+  }
+
+  .client-item {
+    min-width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    padding: 10px;
+  }
+
+  .client-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .client-item:hover {
+    transform: scale(1.05);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .client-item {
+      min-width: 120px;
+      height: 60px;
+    }
+  }
+
+  /* Extra large screens */
+  @media (min-width: 1400px) {
+    .client-item {
+      min-width: 180px;
+      height: 100px;
+    }
+  }
+
+  
+
+</style>
+
+<div class="banner-container">
+   
+    <div class="banner-text">
+        <h1>Powering Progress:</h1>
+        <p>Our Promise to Get Clients to The Future, Faster. Together.</p>
+    </div>
+</div>
+
+<section class="first-section">
+<div class="about-section">
+    <h2>About-Us</h2>
+    <p>
+        At <strong>Vindus</strong>, our values are the foundation of every solution we deliver. 
+        We believe in integrity, ensuring transparency and ethical practices in every project we undertake. 
+        Innovation drives us to stay ahead of the curve—constantly experimenting with new technologies and ideas 
+        to provide cutting-edge solutions. 
+        We are client-centric at our core, customizing our services to meet unique needs and ensuring that every 
+        interaction adds measurable value.
+    </p>
+
+    <p>
+        Every project we take on reflects our dedication to excellence, relevance, and measurable impact. 
+        We believe meaningful partnerships are built on trust, transparency, and shared success. 
+        That’s why we focus on long-term value, not just short-term delivery. 
+        Our team works closely with clients to understand their unique challenges, tailor solutions accordingly, 
+        and ensure seamless execution at every stage.
+    </p>
+
+    <p>
+        Whether it’s transforming an idea into a full-scale product or optimizing existing systems for efficiency 
+        and growth, <strong>Vindus</strong> remains committed to delivering consistent results and unlocking the full 
+        potential of digital transformation.
+    </p>
+</div>
 </section>
+
+<div class="second-section">
+  <div class="second-content">
+    <p>
+      Whether you're a growing startup, a large enterprise, or an
+      individual with a bold idea, <strong>Vindus</strong> is here to turn your vision into
+      reality. We bring together strategy, design, and technology to build
+      solutions that truly make a difference. Let’s collaborate to create
+      something impactful, scalable, and future-ready.
+    </p>
+  </div>
+</div>
+
+<div class="image-cards">
+  <div class="card">
+    <img src="{% static 'images/ourpurpose.jpeg' %}" alt="Purpose">
+    <div class="overlay">
+      <h3>Purpose</h3>
+      <p>Our purpose is to drive meaningful innovation and growth.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="{% static 'images/ourvision.jpeg' %}" alt="Vision">
+    <div class="overlay">
+      <h3>Vision</h3>
+      <p>Our vision is to empower enterprises with future-ready solutions.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="{% static 'images/ourvalues.jpeg' %}" alt="Values">
+    <div class="overlay">
+      <h3>Values</h3>
+      <p>Our values are integrity, collaboration, and innovation.</p>
+    </div>
+  </div>
+</div>
+
+<div class="core-values-section" id="core-values">
+  <div class="core-values-container">
+    <!-- Left Image -->
+    <div class="core-image">
+      <img src="{% static 'images/vinduscorevalues.jpeg' %}" alt="Our Core Values">
+    </div>
+
+    <!-- Right Content -->
+    <div class="core-content">
+      <h2>Our Core Values</h2>
+      <p><strong>Innovation</strong>  Constantly evolving to integrate the latest technological advancements.</p>
+      <p><strong>Integrity</strong>  Maintaining transparency and trust in all our collaborations.</p>
+      <p><strong>Client Success</strong>  Prioritizing customer satisfaction and ensuring solutions align with business goals.</p>
+      <p><strong>Excellence</strong>  Delivering quality solutions with attention to detail and long-term value.</p>
+      <p><strong>Adaptability</strong>  Keeping up with industry trends to ensure businesses remain competitive.</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="why-choose-us">
+    <div class="why-choose-us-content">
+        <div class="text-part">
+            <h2>Why Choose Us</h2>
+            <ul>
+                <li>
+                    <strong>Expertise Across Industries</strong> – We cater to a wide range of business sectors, from startups to enterprises.
+                </li>
+                <li>
+                    <strong>Custom Solutions</strong> – Our tailored services ensure that your business gets exactly what it needs.
+                </li>
+                <li>
+                    <strong>Scalability & Security</strong> – We design solutions that grow with your business while maintaining top-tier security.
+                </li>
+                <li>
+                    <strong>Future-Ready Technology</strong> – We implement AI, cloud computing, automation, and data analytics to give businesses a competitive edge.
+                </li>
+                <li>
+                    <strong>Dedicated Support</strong> – Our team is always available to assist and optimize solutions for maximum efficiency.
+                </li>
+            </ul>
+            <p>
+                At <strong>Vindus Environment Private Limited</strong>, we don’t just provide services; 
+                we create transformational digital experiences that enable businesses to innovate, compete, 
+                and succeed in today’s digital era.
+            </p>
+
+            <p class="cta-text">
+                Join us on this journey toward a smarter and more efficient future!
+            </p>
+        </div>
+
+        <div class="image-part">
+            <img src="{% static 'images/whychooseus.jpeg' %}" alt="Why Choose Us Image">
+        </div>
+    </div>
+</div>
+
+
+<div class="commitment-section" id="our-commitment">
+  <div class="commitment-container">
+    <!-- Left Image -->
+    <div class="commitment-image">
+      <img src="{% static 'images/vinduscommitment2.jpeg' %}" alt="Our Commitment">
+    </div>
+
+    <!-- Right Content -->
+    <div class="commitment-content">
+      <h2>Our Commitment</h2>
+      <p>
+        At <strong>Vindus</strong>, we go beyond providing digital services — we engineer
+        purposeful, intuitive experiences that empower businesses and individuals
+        to lead in the digital era. Our commitment is rooted in innovation,
+        sustainability, and a deep understanding of emerging technologies.
+      </p>
+      <p>
+        We leverage data-driven insights, ethical practices, and forward-thinking
+        strategies to create solutions that are not only high-performing but also
+        scalable and future-ready. Every project we take on reflects our dedication
+        to excellence, relevance, and measurable impact.
+      </p>
+      <p>
+        We believe meaningful partnerships are built on trust, transparency, and
+        shared success. That’s why we focus on long-term value, not just short-term
+        delivery. Our team works closely with clients to understand their unique
+        challenges, tailor solutions accordingly, and ensure seamless execution at
+        every stage.
+      </p>
+      <p>
+        Whether it’s transforming an idea into a full-scale product or optimizing
+        existing systems for efficiency and growth, <strong>Vindus</strong> remains
+        committed to delivering consistent results and unlocking the full potential
+        of digital transformation.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<section class="clients-section">
+  <div class="clients-container">
+    <h2 class="clients-title">Our Clients</h2>
+    <p class="clients-subtitle">Trusted by leading brands and organizations.</p>
+
+    <div class="clients-carousel-wrapper">
+      <div class="clients-carousel">
+        <!-- Copy 1 -->
+        <div class="clients-row">
+          <div class="client-item"><img src="{% static 'images/mlc.png' %}" alt="Client 1"></div>
+          <div class="client-item"><img src="{% static 'images/fooden.jpg' %}" alt="Client 2"></div>
+          <div class="client-item"><img src="{% static 'images/CKVK.jpg' %}" alt="Client 3"></div>
+          <div class="client-item"><img src="{% static 'images/SCM.jpg' %}" alt="Client 4"></div>
+          <div class="client-item"><img src="{% static 'images/qtip.jpg' %}" alt="Client 5"></div>
+          <div class="client-item"><img src="{% static 'images/vaudit.png' %}" alt="Client 6"></div>
+          <div class="client-item"><img src="{% static 'images/teja.png' %}" alt="Client 7"></div>
+          <div class="client-item"><img src="{% static 'images/vvm.jpg' %}" alt="Client 8"></div>
+          <div class="client-item"><img src="{% static 'images/arax.jpeg' %}" alt="Client 9"></div>
+          <div class="client-item"><img src="{% static 'images/vorbit.png' %}" alt="Client 9"></div>
+          <div class="client-item"><img src="{% static 'images/mlc.png' %}" alt="Client 1"></div>
+          <div class="client-item"><img src="{% static 'images/fooden.jpg' %}" alt="Client 2"></div>
+          <div class="client-item"><img src="{% static 'images/CKVK.jpg' %}" alt="Client 3"></div>
+          <div class="client-item"><img src="{% static 'images/SCM.jpg' %}" alt="Client 4"></div>
+          <div class="client-item"><img src="{% static 'images/qtip.jpg' %}" alt="Client 5"></div>
+          <div class="client-item"><img src="{% static 'images/vaudit.png' %}" alt="Client 6"></div>
+          <div class="client-item"><img src="{% static 'images/teja.png' %}" alt="Client 7"></div>
+          <div class="client-item"><img src="{% static 'images/vvm.jpg' %}" alt="Client 8"></div>
+          <div class="client-item"><img src="{% static 'images/arax.jpeg' %}" alt="Client 9"></div>
+          <div class="client-item"><img src="{% static 'images/vorbit.png' %}" alt="Client 9"></div>
+        </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      } else {
+        
+        entry.target.classList.remove("show");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const section = document.querySelector(".core-values-container");
+  observer.observe(section);
+
+
+  // Select all sections you want to animate
+  const sections = document.querySelectorAll(".core-values-container, .commitment-container");
+  sections.forEach(section => observer.observe(section));
+  
+</script>
+
+
 {% endblock %}

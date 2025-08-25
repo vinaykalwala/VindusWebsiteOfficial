@@ -1,25 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Careers | Vindus - Join Our Innovation Journey{% endblock %}
 
 {% block content %}
 <style>
     :root {
-        --primary-purple: #5E35B1;
-        --primary-pink: #E91E63;
-        --light-purple: #f3e5f5;
-        --dark-purple: #4527A0;
-        --success-green: #4CAF50;
-        --text-dark: #212121;
-        --text-light: #757575;
+        --primary-purple: #5a2a83;
+        --primary-pink: #f72585;
+        --light-purple: #efdcff;
+        --border-purple: #d6a9fd;
+        --border-pink: #b969ff;
+        --text-dark: #333;
+        --text-light: #555;
         --background-light: #fafafa;
-        --card-shadow: 0 10px 40px rgba(94, 53, 177, 0.15);
-        --card-hover: 0 20px 60px rgba(94, 53, 177, 0.25);
-        --gradient-primary: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
-        --gradient-accent: linear-gradient(135deg, var(--primary-pink), #ff4081);
+        --card-shadow: 0 10px 40px rgba(90, 42, 131, 0.15);
+        --card-hover: 0 20px 60px rgba(90, 42, 131, 0.25);
+        --gradient-primary: linear-gradient(135deg, var(--primary-purple), var(--border-pink));
+        --gradient-accent: linear-gradient(135deg, var(--primary-pink), var(--border-pink));
     }
-
     * {
         margin: 0;
         padding: 0;
@@ -606,7 +604,7 @@
             <h1>Careers at Vindus</h1>
             <p>Be part of a team driving innovation, sustainability, and excellence across the globe</p>
             
-            <div class="stats-row">
+            <!-- <div class="stats-row">
                 <div class="stat-item">
                     <span class="stat-number">50+</span>
                     <span class="stat-label">Open Positions</span>
@@ -625,7 +623,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 
 <!-- Main Content -->
@@ -657,7 +655,7 @@
                                 <li>
                                     <strong>{{ job.title }}</strong> — {{ job.job_type|title }}, {{ job.location }}
                                     <p>{{ job.description|truncatewords:20 }}</p>
-                                    <a href="{% url 'apply_for_job' job.id %}">Apply Now</a>
+                                    <a href="{% url 'careers' %}#application-form">Apply Now</a>
                                 </li>
                             {% endfor %}
                         </ul>

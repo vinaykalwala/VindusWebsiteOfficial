@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  .why-choose-us {
+    padding: 60px 20px;
+    text-align: center;
+    max-width: 1300px;
+    margin: auto;
+  }
+
+  .why-choose-us h2 {
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+    color: #5a2a83;
+    font-weight: bold;
+  }
+
+  .why-choose-us p.intro {
+    max-width: 800px;
+    margin: auto;
+    font-size: 1.1rem;
+    color: #555;
+  }
+
+  .why-choose-us__points {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+  }
+
+  .why-choose-us__card {
+    background: linear-gradient(135deg, rgba(90, 42, 131, 0.9) 40%, rgba(247, 37, 133, 0.8) 100%);
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 30px);
+    padding: 30px 25px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: #fff;
+  }
+
+  .why-choose-us__card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(90, 42, 131, 0.3);
+  }
+
+  .why-choose-us__icon-container {
+    font-size: 3rem;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .why-choose-us__card h3 {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .why-choose-us__card p {
+    font-size: 1rem;
+    color: #f0f0f0;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .why-choose-us__card {
+      width: 100%;
+    }
+  }
+
+.ready-to-partner {
+  background: linear-gradient(
+    135deg,
+    rgba(90, 42, 131, 0.9) 40%,
+    rgba(247, 37, 133, 0.8) 100%
+  );
+  color: #fff;
+  text-align: center;
+  padding: 50px 20px;
+  border-radius: 12px;
+  margin-top: 50px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.ready-to-partner .ready-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
+.ready-to-partner .ready-description {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ Contact Us Button */
+.ready-to-partner .contact-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #fff;
+  color: #5A2A83; /* matches the gradient’s darker shade */
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.ready-to-partner .contact-btn:hover {
+  background: #f72585; /* bright pink shade from gradient */
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+</style>
+
+<section class="why-choose-us">
+  <h2>Why Choose Us</h2>
+  <p class="intro">We provide innovative solutions with trust, quality, and reliability.</p>
+
+  <div class="why-choose-us__points">
+    <div class="why-choose-us__card">
+      <div class="why-choose-us__icon-container"><i class="fas fa-lightbulb"></i></div>
+      <h3>Innovative Ideas</h3>
+      <p>We bring unique and creative solutions tailored to your needs.</p>
+    </div>
+
+    <div class="why-choose-us__card">
+      <div class="why-choose-us__icon-container"><i class="fas fa-users"></i></div>
+      <h3>Expert Team</h3>
+      <p>Our skilled professionals ensure top-quality results every time.</p>
+    </div>
+
+    <div class="why-choose-us__card">
+      <div class="why-choose-us__icon-container"><i class="fas fa-shield-alt"></i></div>
+      <h3>Trusted Service</h3>
+      <p>Reliable services trusted by clients across multiple industries.</p>
+    </div>
+
+    <div class="why-choose-us__card">
+      <div class="why-choose-us__icon-container"><i class="fas fa-handshake"></i></div>
+      <h3>Commitment</h3>
+      <p>We are committed to delivering excellence and building trust.</p>
+    </div>
+
+    <div class="why-choose-us__card">
+      <div class="why-choose-us__icon-container"><i class="fas fa-cogs"></i></div>
+      <h3>Smart Solutions</h3>
+      <p>Technology-driven solutions for sustainable growth.</p>
+    </div>
+
+    <div class="why-choose-us__card">
+      <div class="why-choose-us__icon-container"><i class="fas fa-award"></i></div>
+      <h3>Award Winning</h3>
+      <p>Recognized for our quality and customer satisfaction.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ready-to-partner">
+  <h3 class="ready-title">Ready to Partner?</h3>
+  <p class="ready-description">
+    Choose Vindus Environment Pvt Ltd as your software solutions partner. 
+    Contact us today to discuss how we can help you achieve your goals!
+  </p>
+  <a href="/contact" class="contact-btn">Contact Us</a>
+</div>
+
+
+{% endblock %}
