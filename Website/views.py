@@ -330,10 +330,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import JobOpening, JobApplication
 from .forms import JobApplicationForm
 
-# List all active jobs
-def job_list(request):
-    jobs = JobOpening.objects.filter(is_active=True)
-    return render(request, 'job_list.html', {'jobs': jobs})
 
 # Job details page
 def job_detail(request, job_id):
@@ -353,3 +349,75 @@ def apply_job(request, job_id):
     else:
         form = JobApplicationForm()
     return render(request, 'apply_job.html', {'form': form, 'job': job})
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import JobOpening, JobApplication
+from .forms import JobOpeningForm, JobApplicationForm
+
+# ===============================
+# JobOpening Views
+# ===============================
+
+def job_list(request):
+    jobs = JobOpening.objects.all().order_by('-posted_at')
+    return render(request, 'job_list.html', {'jobs': jobs})
+
+def job_create(request):
+    if request.method == "POST":
+        form = JobOpeningForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Job opening created successfully!")
+            return redirect('job_list')
+    else:
+        form = JobOpeningForm()
+    return render(request, 'job_form.html', {'form': form, 'title': 'Add Job Opening'})
+
+def job_edit(request, job_id):
+    job = get_object_or_404(JobOpening, id=job_id)
+    if request.method == "POST":
+        form = JobOpeningForm(request.POST, instance=job)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Job opening updated successfully!")
+            return redirect('job_list')
+    else:
+        form = JobOpeningForm(instance=job)
+    return render(request, 'job_form.html', {'form': form, 'title': 'Edit Job Opening'})
+
+def job_delete(request, job_id):
+    job = get_object_or_404(JobOpening, id=job_id)
+    job.delete()
+    messages.success(request, "Job opening deleted successfully!")
+    return redirect('job_list')
+
+# ===============================
+# JobApplication Views
+# ===============================
+
+def application_list(request):
+    status_filter = request.GET.get('status')
+    applications = JobApplication.objects.all().order_by('-applied_at')
+    if status_filter:
+        applications = applications.filter(status=status_filter)
+    return render(request, 'application_list.html', {'applications': applications, 'status_filter': status_filter})
+
+def application_edit(request, application_id):
+    application = get_object_or_404(JobApplication, id=application_id)
+    if request.method == "POST":
+        form = JobApplicationForm(request.POST, request.FILES, instance=application)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Application updated successfully!")
+            return redirect('application_list')
+    else:
+        form = JobApplicationForm(instance=application)
+    return render(request, 'application_form.html', {'form': form, 'title': 'Edit Job Application'})
+
+def application_delete(request, application_id):
+    application = get_object_or_404(JobApplication, id=application_id)
+    application.delete()
+    messages.success(request, "Application deleted successfully!")
+    return redirect('application_list')

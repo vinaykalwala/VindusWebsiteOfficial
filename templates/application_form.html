@@ -6,14 +6,14 @@
 <div class="careers-container">
     <div class="form-section scroll-reveal">
         <h2>{{ title }}</h2>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-row">
                 {{ form.as_p }}
             </div>
             <button type="submit">Submit</button>
         </form>
-        <a href="{% url 'job_list' %}" class="btn" style="margin-top:15px;">Back to List</a>
+        <a href="{% url 'application_list' %}" class="btn" style="margin-top:15px;">Back to List</a>
     </div>
 </div>
 </section>

@@ -62,8 +62,12 @@ class InternshipApplicationForm(forms.ModelForm):
 
 
 from django import forms
-from .models import JobApplication
+from .models import JobApplication,JobOpening
 
+class JobOpeningForm(forms.ModelForm):
+    class Meta:
+        model = JobOpening
+        fields = '__all__'
 class JobApplicationForm(forms.ModelForm):
     class Meta:
         model = JobApplication

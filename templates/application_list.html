@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Job Applications | Vindus{% endblock %}
+
+{% block content %}
+<section class="main-content">
+<div class="careers-container">
+    <h2 class="scroll-reveal">Job Applications</h2>
+
+    <form method="get" action="" class="scroll-reveal" style="margin-bottom:20px;">
+        <label for="status">Filter by Status:</label>
+        <select name="status" id="status" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="Pending" {% if status_filter == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Reviewed" {% if status_filter == 'Reviewed' %}selected{% endif %}>Reviewed</option>
+            <option value="Shortlisted" {% if status_filter == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+            <option value="Rejected" {% if status_filter == 'Rejected' %}selected{% endif %}>Rejected</option>
+            <option value="Selected" {% if status_filter == 'Selected' %}selected{% endif %}>Selected</option>
+        </select>
+    </form>
+
+    {% if applications %}
+        <ul class="job-listings scroll-reveal">
+            {% for app in applications %}
+                <li>
+                    <strong>{{ app.name }}</strong> — {{ app.job.title }}
+                    <p>Email: {{ app.email }} | Phone: {{ app.phone }} | Status: {{ app.status }}</p>
+                    <a href="{% url 'application_edit' app.id %}">Edit</a> |
+                    <a href="{% url 'application_delete' app.id %}" onclick="return confirm('Are you sure?');">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No applications found.</p>
+    {% endif %}
+</div>
+</section>
+{% endblock %}
