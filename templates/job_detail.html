@@ -1,9 +1,399 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{ job.title }}</h1>
-<p>{{ job.description }}</p>
-<p><strong>Location:</strong> {{ job.location }}</p>
-<p><strong>Type:</strong> {{ job.employment_type }}</p>
-<p><strong>Deadline:</strong> {{ job.application_deadline }}</p>
-<a href="{% url 'apply_job' job.id %}">Apply Now</a>
+<style>
+    :root {
+        --primary-purple: #5a2a83;
+        --primary-pink: #f72585;
+        --light-purple: #efdcff;
+        --border-purple: #5a2a83;
+        --border-pink: #f72585;
+        --text-dark: #333;
+        --text-light: #555;
+        --background-light: #fafafa;
+        --card-shadow: 0 10px 40px rgba(90, 42, 131, 0.15);
+        --card-hover: 0 20px 60px rgba(90, 42, 131, 0.25);
+        --gradient-primary: linear-gradient(135deg, var(--primary-purple), var(--border-pink));
+        --gradient-accent: linear-gradient(135deg, var(--primary-pink), var(--border-pink));
+        --gradient-bg: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+   
+    .job-detail-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    /* Header Section */
+    .job-header {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        animation: slideInUp 0.8s ease-out;
+    }
+
+    .job-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--gradient-primary);
+    }
+
+    .job-title {
+        font-size: 2.5rem;
+        color: var(--primary-purple);
+        margin-bottom: 1rem;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        color: var(--text-light);
+    }
+
+    .meta-item i {
+        color: var(--primary-pink);
+        font-size: 1.2rem;
+    }
+
+    .deadline {
+        background: var(--light-purple);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        color: var(--primary-purple);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .apply-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--gradient-accent);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+        box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+    }
+
+    .apply-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(247, 37, 133, 0.4);
+    }
+
+    /* Content Section */
+    .job-content {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 2rem;
+    }
+
+    .job-description {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: var(--card-shadow);
+        animation: fadeIn 1s ease-out 0.2s forwards;
+        opacity: 0;
+    }
+
+    .job-description h2 {
+        color: var(--primary-purple);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--light-purple);
+        font-size: 1.8rem;
+    }
+
+    .job-description p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+        color: var(--text-dark);
+    }
+
+    .job-description ul {
+        margin-left: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .job-description li {
+        margin-bottom: 0.8rem;
+        position: relative;
+    }
+
+    .job-description li::before {
+        content: '•';
+        color: var(--primary-pink);
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+
+    /* Sidebar */
+    .job-sidebar {
+        animation: fadeIn 1s ease-out 0.4s forwards;
+        opacity: 0;
+    }
+
+    .sidebar-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+    }
+
+    .sidebar-card h3 {
+        color: var(--primary-purple);
+        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .sidebar-card h3 i {
+        color: var(--primary-pink);
+    }
+
+    .sidebar-card ul {
+        list-style: none;
+    }
+
+    .sidebar-card li {
+        margin-bottom: 0.8rem;
+        padding-left: 1.5rem;
+        position: relative;
+    }
+
+    .sidebar-card li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--primary-pink);
+        font-weight: bold;
+    }
+
+    .quick-apply {
+        text-align: center;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .quick-apply h3 {
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    .quick-apply p {
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+    }
+
+    .secondary-btn {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .secondary-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Animation */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        .job-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .job-sidebar {
+            order: -1;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .job-header {
+            padding: 1.5rem;
+        }
+        
+        .job-title {
+            font-size: 2rem;
+        }
+        
+        .job-meta {
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .job-description, .sidebar-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="job-detail-container">
+    <!-- Header Section -->
+    <div class="job-header">
+        <h1 class="job-title">{{ job.title }}</h1>
+        
+        <div class="job-meta">
+            <div class="meta-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ job.location }}</span>
+            </div>
+            
+            <div class="meta-item">
+                <i class="fas fa-briefcase"></i>
+                <span>{{ job.employment_type }}</span>
+            </div>
+            
+            {% if job.department %}
+            <div class="meta-item">
+                <i class="fas fa-building"></i>
+                <span>{{ job.department }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="deadline">
+            <i class="fas fa-clock"></i>
+            <strong>Application Deadline:</strong> {{ job.application_deadline }}
+        </div>
+        
+        <a href="{% url 'apply_job' job.id %}" class="apply-btn">
+            <i class="fas fa-paper-plane"></i>
+            Apply Now
+        </a>
+    </div>
+    
+    <!-- Content Section -->
+    <div class="job-content">
+        <div class="job-description">
+            <h2>Job Description</h2>
+            {{ job.description|linebreaks }}
+        </div>
+        
+        <div class="job-sidebar">
+            <div class="sidebar-card">
+                <h3><i class="fas fa-info-circle"></i> Job Details</h3>
+                <ul>
+                    <li><strong>Location:</strong> {{ job.location }}</li>
+                    <li><strong>Employment Type:</strong> {{ job.employment_type }}</li>
+                    {% if job.department %}
+                    <li><strong>Department:</strong> {{ job.department }}</li>
+                    {% endif %}
+                    <li><strong>Application Deadline:</strong> {{ job.application_deadline }}</li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3><i class="fas fa-star"></i> Why Join Us?</h3>
+                <ul>
+                    <li>Competitive salary and benefits</li>
+                    <li>Flexible working arrangements</li>
+                    <li>Professional development opportunities</li>
+                    <li>Inclusive and diverse culture</li>
+                    <li>Impactful work with modern technology</li>
+                </ul>
+            </div>
+            
+            <div class="quick-apply">
+                <h3>Ready to Apply?</h3>
+                <p>Submit your application now and join our innovative team</p>
+                <a href="{% url 'apply_job' job.id %}" class="secondary-btn">
+                    Quick Apply
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add subtle animation to elements when they come into view
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for scroll animations
+    const animatedElements = document.querySelectorAll('.job-description, .sidebar-card');
+    animatedElements.forEach(el => {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+    });
+});
+</script>
 {% endblock %}
