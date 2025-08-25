@@ -147,7 +147,7 @@
   .case-card .actions {
     margin-top: 8px;
   }
-  .btn {
+  .btns {
     display:inline-block;
     background: linear-gradient(135deg, var(--vindus-pink), var(--vindus-purple));
     color:#fff; text-decoration:none;
@@ -157,8 +157,8 @@
     box-shadow: 0 6px 16px rgba(247,37,133,.22);
     transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
   }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247,37,133,.28); }
-  .btn:active { transform: translateY(0); filter: brightness(.95); }
+  .btns:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(247,37,133,.28); }
+  .btns:active { transform: translateY(0); filter: brightness(.95); }
 
   /* =========================
      FILTERS
@@ -254,7 +254,7 @@
   .conclusion-section {
     background: linear-gradient(135deg, var(--vindus-purple), var(--vindus-pink));
     color:#fff; border-radius: 24px;
-    max-width: 1300px; margin: 18px auto 56px;
+    max-width: 1200px; margin: 18px auto 56px;
     padding: clamp(22px, 3vw, 40px);
     box-shadow: 0 8px 28px rgba(0,0,0,.18);
   }
@@ -303,7 +303,7 @@
           <h3>Vaudit - SEO Tool</h3>
           <p>Developed with React, CSS, Bootstrap, Django, Python. Real-time SEO analytics, reporting, and insights.</p>
           <div class="actions">
-            <button class="btn js-open" data-id="vaudit">Click for Details</button>
+            <button class="btns js-open" data-id="vaudit">Click for Details</button>
           </div>
         </div>
       </article>
@@ -314,29 +314,18 @@
           <h3>Qtipstore</h3>
           <p>Django-based ecommerce with advanced filtering, SEO optimizations, and conversion tracking.</p>
           <div class="actions">
-            <button class="btn js-open" data-id="qtipstore">Click for Details</button>
+            <button class="btns js-open" data-id="qtipstore">Click for Details</button>
           </div>
         </div>
       </article>
-      <!-- Arax -->
+      <!-- VOrbit -->
       <article class="case-card">
-        <img src="{% static 'images/arax.jpeg' %}" alt="ARAX">
+        <img src="{% static 'images/vorbit.png' %}" alt="VOrbit">
         <div class="content">
-          <h3>ARAX</h3>
-          <p>Scalable ecommerce build with Django, Bootstrap, and JS for high-volume catalogs.</p>
+          <h3>VOrbit</h3>
+          <p>Vorbit is a comprehensive organizational management tool built using Python and Django for the backend, with a frontend powered by Bootstrap and Font Awesome for a responsive and user-friendly interface.</p>
           <div class="actions">
-            <button class="btn js-open" data-id="arax">Click for Details</button>
-          </div>
-        </div>
-      </article>
-      <!-- VVM -->
-      <article class="case-card">
-        <img src="{% static 'images/vvm.jpg' %}" alt="VVM">
-        <div class="content">
-          <h3>VVM</h3>
-          <p>SEO & digital presence overhaul for a media org—content strategy, structured data, and speed.</p>
-          <div class="actions">
-            <button class="btn js-open" data-id="vvm">Click for Details</button>
+            <button class="btns js-open" data-id="vorbit">Click for Details</button>
           </div>
         </div>
       </article>
@@ -365,7 +354,7 @@
           <img src="{% static 'images/mlc.png' %}" alt="MLC QEHS">
           <h4>MLC QEHS</h4>
           <small>Environmental Health & Safety</small>
-          <button class="btn js-open" data-id="mlc">Click for Details</button>
+          <button class="btns js-open" data-id="mlc">Click for Details</button>
         </div>
       </div>
 
@@ -374,7 +363,7 @@
           <img src="{% static 'images/fooden.jpg' %}" alt="Food's Den">
           <h4>Food's Den</h4>
           <small>Restaurant Management</small>
-          <button class="btn js-open" data-id="fooden">Click for Details</button>
+          <button class="btns js-open" data-id="fooden">Click for Details</button>
         </div>
       </div>
 
@@ -383,7 +372,7 @@
           <img src="{% static 'images/CKVK.jpg' %}" alt="CKVK">
           <h4>CKVK</h4>
           <small>Agriculture</small>
-          <button class="btn js-open" data-id="ckvk">Click for Details</button>
+          <button class="btns js-open" data-id="ckvk">Click for Details</button>
         </div>
       </div>
 
@@ -392,34 +381,19 @@
           <img src="{% static 'images/SCM.jpg' %}" alt="SCM">
           <h4>SCM</h4>
           <small>Environmental Health & Safety</small>
-          <button class="btn js-open" data-id="scm">Click for Details</button>
+          <button class="btns js-open" data-id="scm">Click for Details</button>
         </div>
       </div>
 
-      <div class="col">
-        <div class="card-logo" data-category="SEO & Marketing">
-          <img src="{% static 'images/qtip.jpg' %}" alt="Qtipstore">
-          <h4>Qtipstore</h4>
-          <small>SEO & Marketing</small>
-          <button class="btn js-open" data-id="qtipstore">Click for Details</button>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card-logo" data-category="SEO & Marketing">
-          <img src="{% static 'images/vaudit.png' %}" alt="Vaudit">
-          <h4>Vaudit</h4>
-          <small>SEO & Marketing</small>
-          <button class="btn js-open" data-id="vaudit">Click for Details</button>
-        </div>
-      </div>
+     
+     
 
       <div class="col">
         <div class="card-logo" data-category="Agriculture">
           <img src="{% static 'images/teja.png' %}" alt="Teja Traders">
           <h4>Teja Traders</h4>
           <small>Agriculture</small>
-          <button class="btn js-open" data-id="teja">Click for Details</button>
+          <button class="btns js-open" data-id="teja">Click for Details</button>
         </div>
       </div>
 
@@ -428,7 +402,7 @@
           <img src="{% static 'images/vvm.jpg' %}" alt="VVM">
           <h4>VVM</h4>
           <small>SEO & Marketing</small>
-          <button class="btn js-open" data-id="vvm">Click for Details</button>
+          <button class="btns js-open" data-id="vvm">Click for Details</button>
         </div>
       </div>
 
@@ -437,18 +411,11 @@
           <img src="{% static 'images/arax.jpeg' %}" alt="Arax">
           <h4>ARAX</h4>
           <small>Ecommerce</small>
-          <button class="btn js-open" data-id="arax">Click for Details</button>
+          <button class="btns js-open" data-id="arax">Click for Details</button>
         </div>
       </div>
 
-      <div class="col">
-        <div class="card-logo" data-category="Environmental Health & Safety">
-          <img src="{% static 'images/vorbit.png' %}" alt="VOrbit">
-          <h4>VOrbit</h4>
-          <small>Environmental Health & Safety</small>
-          <button class="btn js-open" data-id="vorbit">Click for Details</button>
-        </div>
-      </div>
+      
     </div>
   </section>
 
@@ -662,8 +629,8 @@
 
   // ------- Modal logic -------
   const modal = document.getElementById('cs-modal');
-  const closeBtn = document.getElementById('cs-close');
-  const openBtns = document.querySelectorAll('.js-open');
+  const closebtns = document.getElementById('cs-close');
+  const openbtnss = document.querySelectorAll('.js-open');
 
   const titleEl = document.getElementById('cs-modal-title');
   const clientEl = document.getElementById('cs-modal-client');
@@ -706,13 +673,13 @@
     document.body.style.overflow = '';
   }
 
-  openBtns.forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
+  openbtnss.forEach(btns=>{
+    btns.addEventListener('click', (e)=>{
       e.preventDefault();
-      openModal(btn.dataset.id);
+      openModal(btns.dataset.id);
     });
   });
-  closeBtn.addEventListener('click', closeModal);
+  closebtns.addEventListener('click', closeModal);
   modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
   window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
 
@@ -720,12 +687,12 @@
   const filterButtons = document.querySelectorAll('.filter-button');
   const cards = document.querySelectorAll('.card-logo');
 
-  filterButtons.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
+  filterButtons.forEach(btns=>{
+    btns.addEventListener('click', ()=>{
       filterButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-      btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+      btns.classList.add('active'); btns.setAttribute('aria-selected','true');
 
-      const cat = btn.getAttribute('data-category');
+      const cat = btns.getAttribute('data-category');
       cards.forEach(card=>{
         const match = (cat === 'All') || (card.getAttribute('data-category') === cat);
         card.parentElement.style.display = match ? '' : 'none';

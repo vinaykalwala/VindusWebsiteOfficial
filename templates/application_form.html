@@ -1,20 +1,183 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 {% block title %}{{ title }} | Vindus{% endblock %}
 
 {% block content %}
+<style>
+/* Container */
+.careers-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.form-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 650px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.form-section h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #3F5187;
+  font-weight: 600;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs, selects, file fields */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Segoe UI", sans-serif;
+  height: 45px;
+  box-sizing: border-box;
+}
+
+/* File input consistency */
+.form-group input[type="file"] {
+  padding: 8px;
+  height: 45px;
+}
+
+/* Checkbox + label inline */
+.form-group input[type="checkbox"] {
+  width: auto;
+  height: 18px;
+  margin-right: 8px;
+}
+.form-group label[for*="agreement"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Error messages */
+.error {
+  color: #d9534f;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+/* Actions */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-size: 15px;
+}
+
+.btn-submit {
+  background: #ff007f;
+  color: #fff;
+}
+
+.btn-back {
+  background: #3F5187;
+  color: #fff;
+}
+.btn:hover { opacity: 0.9; }
+/* Ensure form centers properly */
+.form-section {
+  max-width: 600px;   /* limit size on large screens */
+  width: 100%;        /* allow shrinking */
+  margin: 0 auto;     /* center horizontally */
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .form-section {
+    max-width: 90%;   /* shrink container */
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .form-section {
+    max-width: 100%;  /* full width */
+    margin: 0 auto;   /* make sure centered */
+    border-radius: 0; /* neat edge-to-edge look */
+  }
+
+  .form-section h2 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+.form-section a {
+  word-break: break-word;   /* allow breaking inside long words/URLs */
+  overflow-wrap: break-word;
+  display: inline-block;
+  max-width: 100%;
+  white-space: normal;      /* prevent single-line overflow */
+}
+
+</style>
 <section class="main-content">
-<div class="careers-container">
+  <div class="careers-container">
     <div class="form-section scroll-reveal">
-        <h2>{{ title }}</h2>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-row">
-                {{ form.as_p }}
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-        <a href="{% url 'application_list' %}" class="btn" style="margin-top:15px;">Back to List</a>
+      <h2>{{ title }}</h2>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+              <small class="form-text">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <p class="error">{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit">Submit</button>
+          <a href="{% url 'application_list' %}" class="btn btn-back">Back to List</a>
+        </div>
+      </form>
     </div>
-</div>
+  </div>
 </section>
+
+
 {% endblock %}

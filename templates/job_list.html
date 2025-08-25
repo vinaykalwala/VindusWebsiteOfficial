@@ -1,25 +1,118 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 {% block title %}Job Openings | Vindus{% endblock %}
 
 {% block content %}
-<section class="main-content">
-<div class="careers-container">
-    <h2 class="scroll-reveal">Job Openings</h2>
-    <a href="{% url 'job_create' %}" class="btn" style="margin-bottom:20px;">Add New Job</a>
+<style>
+    .career-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+
+    .career-card h3 {
+        color: #5a2a83;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .btn-accent {
+        background-color: #f72585;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 25px;
+        padding: 6px 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .btn-accent:hover {
+        background-color: #d81b70;
+    }
+
+    .job-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .job-table th, .job-table td {
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .job-table th {
+        background-color: #5a2a83;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .job-table tr:nth-child(even) {
+        background-color: #f8f8f8;
+    }
+
+    .job-table tr:hover {
+        background-color: #f0e6f8;
+    }
+
+    .action-links a {
+        margin-right: 8px;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .action-links a.edit {
+        color: #ffc107; /* yellow edit */
+    }
+
+    .action-links a.delete {
+        color: #dc3545; /* red delete */
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+</style>
+
+<div class="career-card">
+    <div class="d-flex justify-content-between align-items-center" style="margin-bottom:15px;">
+        <h3>Job Openings</h3>
+        <a href="{% url 'job_create' %}" class="btn-accent">+ Add New Job</a>
+    </div>
+
     {% if jobs %}
-        <ul class="job-listings scroll-reveal">
-            {% for job in jobs %}
-                <li>
-                    <strong>{{ job.title }}</strong> — {{ job.employment_type }}, {{ job.location }}
-                    <p>{{ job.description|truncatewords:30 }}</p>
-                    <a href="{% url 'job_edit' job.id %}">Edit</a> |
-                    <a href="{% url 'job_delete' job.id %}" onclick="return confirm('Are you sure?');">Delete</a>
-                </li>
-            {% endfor %}
-        </ul>
+    <div class="table-responsive">
+        <table class="job-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td><strong>{{ job.title }}</strong></td>
+                    <td>{{ job.employment_type }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.description|truncatewords:20 }}</td>
+                    <td class="action-links">
+                        <a href="{% url 'job_edit' job.id %}" class="edit">Edit</a>
+                        <a href="{% url 'job_delete' job.id %}" class="delete" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% else %}
-        <p>No job openings available.</p>
+        <p style="text-align:center; color:#777; padding:20px 0;">No job openings available.</p>
     {% endif %}
 </div>
-</section>
 {% endblock %}

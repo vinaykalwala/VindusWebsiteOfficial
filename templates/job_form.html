@@ -1,20 +1,150 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 {% block title %}{{ title }} | Vindus{% endblock %}
 
 {% block content %}
-<section class="main-content">
-<div class="careers-container">
-    <div class="form-section scroll-reveal">
-        <h2>{{ title }}</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-row">
-                {{ form.as_p }}
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-        <a href="{% url 'job_list' %}" class="btn" style="margin-top:15px;">Back to List</a>
-    </div>
+<style>
+    .career-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        padding: 30px;
+        max-width: 950px;
+        margin: auto;
+    }
+
+    .career-card h3 {
+        color: #5a2a83;
+        margin-bottom: 25px;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-align: center;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    /* Grid layout */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+
+    .form-grid p {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Label style */
+    .form-grid label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #5a2a83;
+        font-size: 0.95rem;
+    }
+
+    /* Uniform fields */
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea {
+        width: 100%;
+        height: 48px; /* ✅ same height for all */
+        padding: 10px 14px;
+        border: 1px solid #5a2a83;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    /* Make textarea same height as others */
+    .form-grid textarea {
+        resize: vertical; /* allow expansion if needed */
+        min-height: 48px; 
+        max-height: 120px; /* restrict growth */
+    }
+
+    .form-grid input:focus,
+    .form-grid select:focus,
+    .form-grid textarea:focus {
+        border-color: #5a2a83;
+        box-shadow: 0 0 5px rgba(90,42,131,0.3);
+        outline: none;
+    }
+
+    /* Buttons */
+    button[type="submit"] {
+        background-color: #f72585;
+        color: #fff;
+        font-weight: 500;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 28px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 25px;
+        display: block;
+        margin-left: auto;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #d81b70;
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 15px;
+        background: #5a2a83;
+        color: #fff;
+        padding: 10px 22px;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn-back:hover {
+        background: #472065;
+    }
+
+    /* Responsive: stack on small screens */
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    /* Only style checkbox fields */
+.form-grid input[type="checkbox"] {
+    width: auto;
+    height: auto;
+    margin-right: 8px;
+}
+
+.form-grid p:has(input[type="checkbox"]) {
+    flex-direction: row;   /* label + checkbox in one row */
+    align-items: center;   /* vertically center */
+    gap: 8px;
+}
+
+.form-grid p:has(input[type="checkbox"]) label {
+    margin: 0; /* remove extra margin */
+    font-weight: 500;
+}
+
+</style>
+
+<div class="career-card">
+    <h3>{{ title }}</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-grid">
+            {{ form.as_p }}
+        </div>
+        <button type="submit">Submit</button>
+    </form>
 </div>
-</section>
+<div style="text-align: center;">
+    <a href="{% url 'job_list' %}" class="btn-back">Back to List</a>
+</div>
 {% endblock %}

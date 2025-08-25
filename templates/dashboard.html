@@ -26,7 +26,7 @@
         <div class="card shadow-sm border-0 h-100">
             <div class="card-body text-center">
                 <i class="fa-solid fa-briefcase fa-2x mb-3 text-success"></i>
-                <h5 class="card-title">Career Applications</h5>
+                <h5 class="card-title">Career Profiles</h5>
                 <p class="card-text">Manage all career applications and resumes submitted by candidates.</p>
                 <a href="{% url 'career_list' %}" class="btn btn-accent btn-sm">View Careers</a>
             </div>
@@ -44,5 +44,29 @@
             </div>
         </div>
     </div>
+     <div class="col-md-4">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-body text-center">
+      <!-- Open Positions -->
+      <i class="fa-solid fa-briefcase fa-2x mb-3 text-primary"></i>
+      <h5 class="card-title">Open Positions</h5>
+      <p class="card-text">Check, view,edit job openings and add new openings.</p>
+      <a href="{% url 'job_list' %}" class="btn btn-accent btn-sm">View Open Jobs</a>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-body text-center">
+      <!-- Job Applications -->
+      <i class="fa-solid fa-file-signature fa-2x mb-3 text-success"></i>
+      <h5 class="card-title">Job Applications</h5>
+      <p class="card-text">Check, filter, view, and edit job applications.</p>
+      <a href="{% url 'application_list' %}" class="btn btn-accent btn-sm">View Applicants</a>
+    </div>
+  </div>
+</div>
+
 </div>
 {% endblock %}
