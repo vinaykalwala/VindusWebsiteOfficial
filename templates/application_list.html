@@ -1,12 +1,123 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 {% block title %}Job Applications | Vindus{% endblock %}
 
 {% block content %}
-<section class="main-content">
-<div class="careers-container">
-    <h2 class="scroll-reveal">Job Applications</h2>
+<style>
+    .career-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
 
-    <form method="get" action="" class="scroll-reveal" style="margin-bottom:20px;">
+    .career-card h3 {
+        color: #5a2a83;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .btn-accent {
+        background-color: #f72585;
+        color: #fff;
+        font-weight: 500;
+        border-radius: 25px;
+        padding: 6px 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .btn-accent:hover {
+        background-color: #d81b70;
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 400px) {
+        .header-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .header-row .btn-accent {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    .filter-form {
+        margin-bottom: 20px;
+    }
+
+    .filter-form label {
+        font-weight: 500;
+        margin-right: 8px;
+    }
+
+    .filter-form select {
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .job-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .job-table th, .job-table td {
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .job-table th {
+        background-color: #5a2a83;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .job-table tr:nth-child(even) {
+        background-color: #f8f8f8;
+    }
+
+    .job-table tr:hover {
+        background-color: #f0e6f8;
+    }
+
+    .action-links a {
+        margin-right: 8px;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .action-links a.edit {
+        color: #ffc107; /* yellow edit */
+    }
+
+    .action-links a.delete {
+        color: #dc3545; /* red delete */
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+<div class="career-card">
+    <div class="header-row">
+        <h3>Job Applications</h3>
+        <a href="{% url 'job_create' %}" class="btn-accent">+ Add New Job</a>
+    </div>
+
+    <form method="get" action="" class="filter-form">
         <label for="status">Filter by Status:</label>
         <select name="status" id="status" onchange="this.form.submit()">
             <option value="">All</option>
@@ -19,19 +130,37 @@
     </form>
 
     {% if applications %}
-        <ul class="job-listings scroll-reveal">
-            {% for app in applications %}
-                <li>
-                    <strong>{{ app.name }}</strong> — {{ app.job.title }}
-                    <p>Email: {{ app.email }} | Phone: {{ app.phone }} | Status: {{ app.status }}</p>
-                    <a href="{% url 'application_edit' app.id %}">Edit</a> |
-                    <a href="{% url 'application_delete' app.id %}" onclick="return confirm('Are you sure?');">Delete</a>
-                </li>
-            {% endfor %}
-        </ul>
+    <div class="table-responsive">
+        <table class="job-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Job Title</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td><strong>{{ app.name }}</strong></td>
+                    <td>{{ app.job.title }}</td>
+                    <td>{{ app.email }}</td>
+                    <td>{{ app.phone }}</td>
+                    <td>{{ app.status }}</td>
+                    <td class="action-links">
+                        <a href="{% url 'application_edit' app.id %}" class="edit">Edit</a>
+                        <a href="{% url 'application_delete' app.id %}" class="delete" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% else %}
-        <p>No applications found.</p>
+        <p style="text-align:center; color:#777; padding:20px 0;">No applications found.</p>
     {% endif %}
 </div>
-</section>
 {% endblock %}
